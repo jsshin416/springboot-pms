@@ -3,8 +3,9 @@ package edu.axboot.domain.pms.room;
 
 import com.chequer.axboot.core.annotations.ColumnPosition;
 import edu.axboot.domain.BaseJpaModel;
-import edu.axboot.domain.SimpleJpaModel;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import com.chequer.axboot.core.annotations.Comment;
@@ -58,5 +59,29 @@ public class PmsRoom extends BaseJpaModel<Long> {//**simple->base
 public Long getId() {
 return id;
 }
+
+@Builder
+	public PmsRoom(String roomNum, String roomTypCd, String dndYn,
+				   String ebYn, String roomSttusCd,
+				   String clnSttusCd, String svcSttusCd){
+	this.roomNum = roomNum;
+	this.roomTypCd = roomTypCd;
+	this.dndYn = dndYn;
+	this.ebYn =ebYn;
+	this.roomSttusCd = roomSttusCd;
+	this.clnSttusCd = clnSttusCd;
+	this. svcSttusCd =svcSttusCd;
+	}
+	public void update(String roomNum, String roomTypCd, String dndYn,
+					   String ebYn, String roomSttusCd,
+					   String clnSttusCd, String svcSttusCd) {
+		this.roomNum = roomNum;
+		this.roomTypCd = roomTypCd;
+		this.dndYn = dndYn;
+		this.ebYn =ebYn;
+		this.roomSttusCd = roomSttusCd;
+		this.clnSttusCd = clnSttusCd;
+		this. svcSttusCd =svcSttusCd;
+	}
 
 }

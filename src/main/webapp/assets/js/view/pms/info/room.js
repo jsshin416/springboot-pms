@@ -1,11 +1,11 @@
 var fnObj = {};
 var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SEARCH: function (caller, act, data) {
-        
+        var parmaObj = $.extend(caller.searchView.getData(), data, { pageSize: 2 });
         axboot.ajax({
             type: 'GET',
-            url: '/api/v1/pmsroom/querydsl',
-            data: caller.searchView.getData(),
+            url: '/api/v1/pmsroom/dto',
+            data: parmaObj,
             callback: function (res) {
                 caller.gridView01.setData(res);
             },
@@ -20,12 +20,12 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         return false;
     },
     PAGE_SAVE: function (caller, act, data) {
-        var saveList = [].concat(caller.gridView01.getData('modified'));
+        var saveList = [].concat(caller.gridView01.getData());
         saveList = saveList.concat(caller.gridView01.getData('deleted'));
 
         axboot.ajax({
-            type: 'PUT',
-            url: '/api/v1/pmsroom/querydsl',
+            type: 'POST',
+            url: '/api/v1/pmsroom/dto',
             data: JSON.stringify(saveList),
             callback: function (res) {
                 ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
@@ -71,7 +71,6 @@ fnObj.pageButtonView = axboot.viewExtend({
             save: function () {
                 ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
             },
-            excel: function () {},
         });
     },
 });
@@ -85,12 +84,15 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
         this.target = $(document['searchView0']);
         this.target.attr('onsubmit', 'return false;');
         this.filter = $('#filter');
+        this.roomTypCd = $('.js-roomTypCd').on('change', function () {
+            ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
+        });
     },
     getData: function () {
         return {
-            pageNumber: this.pageNumber,
-            pageSize: this.pageSize,
-            filter: this.filter.val(),
+            pageNumber: this.pageNumber || 0,
+            pageSize: this.pageSize || 50,
+            roomTypCd: this.roomTypCd.val(),
         };
     },
 });
@@ -103,34 +105,97 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
         var _this = this;
 
         this.target = axboot.gridBuilder({
+            onPageChange: function (pageNumber) {
+                ACTIONS.dispatch(ACTIONS.PAGE_SEARCH, { pageNumber: pageNumber });
+            },
             showRowSelector: true,
             frozenColumnIndex: 0,
             multipleSelect: true,
             target: $('[data-ax5grid="grid-view-01"]'),
             columns: [
-                { key: 'roomNum', label: '객실번호', width: 160, align: 'left', editor: 'text' },
+                { key: 'roomNum', label: COL('room.num'), width: 160, align: 'left', editor: 'text' },
                 {
                     key: 'roomTypCd',
-                    label: '객실타입',
+                    label: COL('room.type'),
                     width: 350,
-                    align: 'left',
+                    align: 'center',
+                    formatter: function () {
+                        if (!this.value) return '';
+                        return parent.COMMON_CODE['ROOM_TYPE'].map[this.value];
+                    },
                     editor: {
                         type: 'select',
                         config: {
-                            columnkeys: { optionValue: 'OV', optionText: 'OT' },
-                            options: [
-                                { OV: 'SB', OT: 'Single Bed' },
-                                { OV: 'DB', OT: 'Double Bed' },
-                                { OV: 'DT', OT: 'Double Twin Bed' },
-                            ],
+                            columnKeys: {
+                                optionValue: 'code',
+                                optionText: 'name',
+                            },
+                            options: parent.COMMON_CODE['ROOM_TYPE'],
                         },
                     },
                 },
-                { key: 'dndYn', label: 'DND 여부', width: 100, align: 'center', editor: 'text' },
-                { key: 'ebYn', label: 'ExBed 여부', width: 100, align: 'center', editor: 'text' },
-                { key: 'roomSttusCd', label: '객실상태', width: 100, align: 'center', editor: 'text' },
-                { key: 'clnSttusCd', label: '청소상태', width: 100, align: 'center', editor: 'text' },
-                { key: 'svcSttusCd', label: '서비스 상태', width: 100, align: 'center', editor: 'text' },
+                { key: 'dndYn', label: COL('room.dnd'), width: 100, align: 'center', editor: 'text' },
+                { key: 'ebYn', label: COL('room.eb'), width: 100, align: 'center', editor: 'text' },
+                {
+                    key: 'roomSttusCd',
+                    label: COL('room.rooms'),
+                    width: 100,
+                    align: 'center',
+                    formatter: function () {
+                        if (!this.value) return '';
+                        return parent.COMMON_CODE['ROOM_STATUS'].map[this.value];
+                    },
+                    editor: {
+                        type: 'select',
+                        config: {
+                            columnKeys: {
+                                optionValue: 'code',
+                                optionText: 'name',
+                            },
+                            options: parent.COMMON_CODE['ROOM_STATUS'],
+                        },
+                    },
+                },
+                {
+                    key: 'clnSttusCd',
+                    label: COL('room.clns'),
+                    width: 100,
+                    align: 'center',
+                    formatter: function () {
+                        if (!this.value) return '';
+                        return parent.COMMON_CODE['CLEAN_STATUS'].map[this.value];
+                    },
+                    editor: {
+                        type: 'select',
+                        config: {
+                            columnKeys: {
+                                optionValue: 'code',
+                                optionText: 'name',
+                            },
+                            options: parent.COMMON_CODE['CLEAN_STATUS'],
+                        },
+                    },
+                },
+                {
+                    key: 'svcSttusCd',
+                    label: COL('room.svcs'),
+                    width: 100,
+                    align: 'center',
+                    formatter: function () {
+                        if (!this.value) return '';
+                        return parent.COMMON_CODE['SVC_STATUS'].map[this.value];
+                    },
+                    editor: {
+                        type: 'select',
+                        config: {
+                            columnKeys: {
+                                optionValue: 'code',
+                                optionText: 'name',
+                            },
+                            options: parent.COMMON_CODE['SVC_STATUS'],
+                        },
+                    },
+                },
             ],
 
             body: {
@@ -139,6 +204,9 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                 },
             },
         });
+        // formatter: function formatter() {
+        //     return parent.COMMON_CODE['ROOM_TYPE'].map[this.value];
+        // };
 
         axboot.buttonClick(this, 'data-grid-view-01-btn', {
             add: function () {
@@ -155,8 +223,7 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
 
         if (_type == 'modified' || _type == 'deleted') {
             list = ax5.util.filter(_list, function () {
-                delete this.deleted;
-                return this.key;
+                return this.id;
             });
         } else {
             list = _list;

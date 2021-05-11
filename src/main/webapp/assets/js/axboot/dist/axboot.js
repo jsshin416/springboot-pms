@@ -1,6 +1,13 @@
-"use strict";
+'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _typeof =
+    typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol'
+        ? function (obj) {
+              return typeof obj;
+          }
+        : function (obj) {
+              return obj && typeof Symbol === 'function' && obj.constructor === Symbol && obj !== Symbol.prototype ? 'symbol' : typeof obj;
+          };
 
 /**
  * axboot 오브젝트 axboot 애플리케이션을 편리하게 사용하기 위한 오브젝트 입니다.
@@ -18,9 +25,9 @@ var axboot = {};
  * ```
  */
 axboot.def = {
-    "pageFunctionName": "fnObj",
-    "iframeLoadingMsg": '<i class="cqc-chequer ax-loading-icon lg"></i>',
-    "dialogTitle": "CHEQUER"
+    pageFunctionName: 'fnObj',
+    iframeLoadingMsg: '<i class="cqc-chequer ax-loading-icon lg"></i>',
+    dialogTitle: 'CHEQUER',
 };
 
 /**
@@ -34,7 +41,7 @@ axboot.init = function () {
     setTimeout(function () {
         $('[data-ax5layout]').ax5layout({
             splitter: {
-                size: 6
+                size: 6,
             },
             autoResize: false,
             onStateChanged: function onStateChanged() {},
@@ -47,7 +54,7 @@ axboot.init = function () {
                 this.activePanel.$target.find('[data-fit-height-content]').each(function () {
                     var $this = $(this);
                     var _pHeight = $this.offsetParent().height();
-                    var name = this.getAttribute("data-fit-height-content");
+                    var name = this.getAttribute('data-fit-height-content');
                     var _asideHeight = 0;
                     $('[data-fit-height-aside="' + name + '"]').each(function () {
                         _asideHeight += $(this).outerHeight();
@@ -65,18 +72,18 @@ axboot.init = function () {
                         }
                     }
                 }
-            }
+            },
         }); // 레이아웃 플러그인 실행
 
-        if (typeof parent.COMMON_CODE === "undefined" && window.SCRIPT_SESSION && SCRIPT_SESSION.login) {
+        if (typeof parent.COMMON_CODE === 'undefined' && window.SCRIPT_SESSION && SCRIPT_SESSION.login) {
             // API : /api/v1/commonCodes/getAllByMap
             axboot.ajax({
-                url: "/api/v1/commonCodes/getAllByMap",
+                url: '/api/v1/commonCodes/getAllByMap',
                 callback: function callback(res) {
                     parent.COMMON_CODE = axboot.convertCode(res);
                     axboot.pageStart();
                 },
-                options: { nomask: true }
+                options: { nomask: true },
             });
         } else {
             parent.COMMON_CODE = axboot.convertCode(parent.COMMON_CODE);
@@ -86,15 +93,15 @@ axboot.init = function () {
         var debounceFn = ax5.util.debounce(function (val) {
             axboot.pageResize();
             axboot.pageAutoHeight.align();
-            $('[data-ax5layout]').ax5layout("reset");
+            $('[data-ax5layout]').ax5layout('reset');
         }, 20);
 
         $(window).resize(function () {
             debounceFn();
         });
-        $(document.body).on("click", function () {
+        $(document.body).on('click', function () {
             if (window.parent != window) {
-                $(parent.document.body).trigger("click");
+                $(parent.document.body).trigger('click');
             }
         });
     });
@@ -129,11 +136,10 @@ axboot.pageResize = function () {
  * @method axboot.layoutResize
  */
 axboot.layoutResize = function (_delay) {
-
     $('[data-fit-height-content]').each(function () {
         var $this = $(this);
         var _pHeight = $this.offsetParent().height();
-        var name = this.getAttribute("data-fit-height-content");
+        var name = this.getAttribute('data-fit-height-content');
         var _asideHeight = 0;
         $('[data-fit-height-aside="' + name + '"]').each(function () {
             _asideHeight += $(this).outerHeight();
@@ -179,7 +185,7 @@ axboot.pageAutoHeight = {
      * @method axboot.pageAutoHeight.init
      */
     init: function init() {
-        this.active = $(document.body).attr("data-page-auto-height");
+        this.active = $(document.body).attr('data-page-auto-height');
     },
     /**
      * @method axboot.pageAutoHeight.align
@@ -191,15 +197,15 @@ axboot.pageAutoHeight = {
             var winHeight = $(window).height();
             var minusHeight = 0;
             $('[role^="page-"]').each(function () {
-                var sectionName = this.getAttribute("role");
-                if (sectionName != "page-content") {
+                var sectionName = this.getAttribute('role');
+                if (sectionName != 'page-content') {
                     minusHeight += $(this).outerHeight();
                 }
             });
             var contentHeight = winHeight - minusHeight - 10;
             $('[role="page-content"]').css({ height: contentHeight });
         })();
-    }
+    },
 };
 
 ///// ~~~~~~~~~~~~~~~~~~~~~~
@@ -207,7 +213,7 @@ $(document.body).ready(function () {
     axboot.preparePlugin.pageStart();
     axboot.init();
 
-    document.createElement("lang");
+    document.createElement('lang');
 });
 
 window.onError = function () {
@@ -260,12 +266,11 @@ window.onUnload = function () {
  * ```
  */
 
-axboot.ajax = function () {
-
+axboot.ajax = (function () {
     var queue = [];
     var defaultOption = {
-        apiType: "",
-        contentType: 'application/json; charset=UTF-8'
+        apiType: '',
+        contentType: 'application/json; charset=UTF-8',
     };
 
     return function (http) {
@@ -274,14 +279,14 @@ axboot.ajax = function () {
         if (!options.nomask) axAJAXMask.open();
 
         httpOpts = {
-            contentType: options.contentType
+            contentType: options.contentType,
         };
 
-        var url = "";
+        var url = '';
 
         if (ax5.util.isArray(http.url)) {
-            if (http.url[0] in axboot.def["API"]) {
-                http.url[0] = axboot.def["API"][http.url[0]];
+            if (http.url[0] in axboot.def['API']) {
+                http.url[0] = axboot.def['API'][http.url[0]];
                 http.url = CONTEXT_PATH + http.url.join('/');
             } else {
                 http.url = CONTEXT_PATH + http.url.join('/');
@@ -293,14 +298,14 @@ axboot.ajax = function () {
         if (http.single) {
             var keepGoing = true;
             queue.forEach(function (n) {
-                if (n.k === http.type + "~" + http.url) {
+                if (n.k === http.type + '~' + http.url) {
                     keepGoing = false;
                 }
             });
             if (!keepGoing) return false;
         }
 
-        queue.push({ k: http.type + "~" + http.url });
+        queue.push({ k: http.type + '~' + http.url });
 
         $.extend(http, httpOpts);
 
@@ -309,46 +314,50 @@ axboot.ajax = function () {
         onerror = http.onError || options.onError;
 
         jqxhr = $.ajax(http);
-        jqxhr.done(function (data, textStatus, jqXHR) {
-            if (typeof data == "string") {
-                arguments[0] = data = data == "" ? {} : JSON.parse(data);
-            }
-
-            if (data.redirect && options.apiType != "login") {
-                location.href = data.redirect;
-                return;
-            }
-
-            if (data.error) {
-                if (onerror) {
-                    onerror(data.error);
-                } else {
-                    alert(data.error.message);
-                    if (data.error.requiredKey) {
-                        $('[data-ax-path="' + data.error.requiredKey + '"]').focus();
-                    }
+        jqxhr
+            .done(function (data, textStatus, jqXHR) {
+                if (typeof data == 'string') {
+                    arguments[0] = data = data == '' ? {} : JSON.parse(data);
                 }
-            } else {
-                var args = [].concat($.makeArray(arguments));
-                if (callback) callback.apply(this, args); // callback
-            }
-        }).fail(function (data, textStatus, msg) {
-            if (msg == "") {} else {
-                if (onerror) onerror({ message: msg }); // callback
-            }
-        }).always(function (data, textStatus, jqXHR) {
-            queue.pop();
 
-            // 프레임 셋에 타이머 초기화.
-            if (top.fnObj && top.fnObj.activityTimerView) {
-                top.fnObj.activityTimerView.update();
-            }
+                if (data.redirect && options.apiType != 'login') {
+                    location.href = data.redirect;
+                    return;
+                }
 
-            if (always) always.apply(this, [data, textStatus, jqXHR]); // always
-            if (!options.nomask) if (queue.length == 0) axAJAXMask.close(300);
-        });
+                if (data.error) {
+                    if (onerror) {
+                        onerror(data.error);
+                    } else {
+                        alert(data.error.message);
+                        if (data.error.requiredKey) {
+                            $('[data-ax-path="' + data.error.requiredKey + '"]').focus();
+                        }
+                    }
+                } else {
+                    var args = [].concat($.makeArray(arguments));
+                    if (callback) callback.apply(this, args); // callback
+                }
+            })
+            .fail(function (data, textStatus, msg) {
+                if (msg == '') {
+                } else {
+                    if (onerror) onerror({ message: msg }); // callback
+                }
+            })
+            .always(function (data, textStatus, jqXHR) {
+                queue.pop();
+
+                // 프레임 셋에 타이머 초기화.
+                if (top.fnObj && top.fnObj.activityTimerView) {
+                    top.fnObj.activityTimerView.update();
+                }
+
+                if (always) always.apply(this, [data, textStatus, jqXHR]); // always
+                if (!options.nomask) if (queue.length == 0) axAJAXMask.close(300);
+            });
     };
-}();
+})();
 /* ========================================================================
  * Bootstrap: dropdown.js v3.3.7
  * http://getbootstrap.com/javascript/#dropdowns
@@ -357,7 +366,7 @@ axboot.ajax = function () {
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
-+function ($) {
++(function ($) {
     'use strict';
 
     // DROPDOWN CLASS DEFINITION
@@ -396,7 +405,7 @@ axboot.ajax = function () {
 
             if (e && e.type == 'click' && /input|textarea/i.test(e.target.tagName) && $.contains($parent[0], e.target)) return;
 
-            $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget));
+            $parent.trigger((e = $.Event('hide.bs.dropdown', relatedTarget)));
 
             if (e.isDefaultPrevented()) return;
 
@@ -422,7 +431,7 @@ axboot.ajax = function () {
             }
 
             var relatedTarget = { relatedTarget: this };
-            $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget));
+            $parent.trigger((e = $.Event('show.bs.dropdown', relatedTarget)));
 
             if (e.isDefaultPrevented()) return;
 
@@ -447,7 +456,7 @@ axboot.ajax = function () {
         var $parent = getParent($this);
         var isActive = $parent.hasClass('open');
 
-        if (!isActive && e.which != 27 || isActive && e.which == 27) {
+        if ((!isActive && e.which != 27) || (isActive && e.which == 27)) {
             if (e.which == 27) $parent.find(toggle).trigger('focus');
             return $this.trigger('click');
         }
@@ -474,7 +483,7 @@ axboot.ajax = function () {
             var $this = $(this);
             var data = $this.data('bs.dropdown');
 
-            if (!data) $this.data('bs.dropdown', data = new Dropdown(this));
+            if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)));
             if (typeof option == 'string') data[option].call($this);
         });
     }
@@ -495,10 +504,15 @@ axboot.ajax = function () {
     // APPLY TO STANDARD DROPDOWN ELEMENTS
     // ===================================
 
-    $(document).on('click.bs.dropdown.data-api', clearMenus).on('click.bs.dropdown.data-api', '.dropdown form', function (e) {
-        e.stopPropagation();
-    }).on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle).on('keydown.bs.dropdown.data-api', toggle, Dropdown.prototype.keydown).on('keydown.bs.dropdown.data-api', '.dropdown-menu', Dropdown.prototype.keydown);
-}(jQuery);
+    $(document)
+        .on('click.bs.dropdown.data-api', clearMenus)
+        .on('click.bs.dropdown.data-api', '.dropdown form', function (e) {
+            e.stopPropagation();
+        })
+        .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
+        .on('keydown.bs.dropdown.data-api', toggle, Dropdown.prototype.keydown)
+        .on('keydown.bs.dropdown.data-api', '.dropdown-menu', Dropdown.prototype.keydown);
+})(jQuery);
 
 /* ========================================================================
  * Bootstrap: modal.js v3.3.7
@@ -508,7 +522,7 @@ axboot.ajax = function () {
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
-+function ($) {
++(function ($) {
     'use strict';
 
     // MODAL CLASS DEFINITION
@@ -526,9 +540,12 @@ axboot.ajax = function () {
         this.ignoreBackdropClick = false;
 
         if (this.options.remote) {
-            this.$element.find('.modal-content').load(this.options.remote, $.proxy(function () {
-                this.$element.trigger('loaded.bs.modal');
-            }, this));
+            this.$element.find('.modal-content').load(
+                this.options.remote,
+                $.proxy(function () {
+                    this.$element.trigger('loaded.bs.modal');
+                }, this)
+            );
         }
     };
 
@@ -540,7 +557,7 @@ axboot.ajax = function () {
     Modal.DEFAULTS = {
         backdrop: true,
         keyboard: true,
-        show: true
+        show: true,
     };
 
     Modal.prototype.toggle = function (_relatedTarget) {
@@ -593,10 +610,13 @@ axboot.ajax = function () {
 
             var e = $.Event('shown.bs.modal', { relatedTarget: _relatedTarget });
 
-            transition ? that.$dialog // wait for modal to slide in
-            .one('bsTransitionEnd', function () {
-                that.$element.trigger('focus').trigger(e);
-            }).emulateTransitionEnd(Modal.TRANSITION_DURATION) : that.$element.trigger('focus').trigger(e);
+            transition
+                ? that.$dialog // wait for modal to slide in
+                      .one('bsTransitionEnd', function () {
+                          that.$element.trigger('focus').trigger(e);
+                      })
+                      .emulateTransitionEnd(Modal.TRANSITION_DURATION)
+                : that.$element.trigger('focus').trigger(e);
         });
     };
 
@@ -620,23 +640,32 @@ axboot.ajax = function () {
 
         this.$dialog.off('mousedown.dismiss.bs.modal');
 
-        $.support.transition && this.$element.hasClass('fade') ? this.$element.one('bsTransitionEnd', $.proxy(this.hideModal, this)).emulateTransitionEnd(Modal.TRANSITION_DURATION) : this.hideModal();
+        $.support.transition && this.$element.hasClass('fade')
+            ? this.$element.one('bsTransitionEnd', $.proxy(this.hideModal, this)).emulateTransitionEnd(Modal.TRANSITION_DURATION)
+            : this.hideModal();
     };
 
     Modal.prototype.enforceFocus = function () {
-        $(document).off('focusin.bs.modal') // guard against infinite focus loop
-        .on('focusin.bs.modal', $.proxy(function (e) {
-            if (document !== e.target && this.$element[0] !== e.target && !this.$element.has(e.target).length) {
-                this.$element.trigger('focus');
-            }
-        }, this));
+        $(document)
+            .off('focusin.bs.modal') // guard against infinite focus loop
+            .on(
+                'focusin.bs.modal',
+                $.proxy(function (e) {
+                    if (document !== e.target && this.$element[0] !== e.target && !this.$element.has(e.target).length) {
+                        this.$element.trigger('focus');
+                    }
+                }, this)
+            );
     };
 
     Modal.prototype.escape = function () {
         if (this.isShown && this.options.keyboard) {
-            this.$element.on('keydown.dismiss.bs.modal', $.proxy(function (e) {
-                e.which == 27 && this.hide();
-            }, this));
+            this.$element.on(
+                'keydown.dismiss.bs.modal',
+                $.proxy(function (e) {
+                    e.which == 27 && this.hide();
+                }, this)
+            );
         } else if (!this.isShown) {
             this.$element.off('keydown.dismiss.bs.modal');
         }
@@ -673,16 +702,21 @@ axboot.ajax = function () {
         if (this.isShown && this.options.backdrop) {
             var doAnimate = $.support.transition && animate;
 
-            this.$backdrop = $(document.createElement('div')).addClass('modal-backdrop ' + animate).appendTo(this.$body);
+            this.$backdrop = $(document.createElement('div'))
+                .addClass('modal-backdrop ' + animate)
+                .appendTo(this.$body);
 
-            this.$element.on('click.dismiss.bs.modal', $.proxy(function (e) {
-                if (this.ignoreBackdropClick) {
-                    this.ignoreBackdropClick = false;
-                    return;
-                }
-                if (e.target !== e.currentTarget) return;
-                this.options.backdrop == 'static' ? this.$element[0].focus() : this.hide();
-            }, this));
+            this.$element.on(
+                'click.dismiss.bs.modal',
+                $.proxy(function (e) {
+                    if (this.ignoreBackdropClick) {
+                        this.ignoreBackdropClick = false;
+                        return;
+                    }
+                    if (e.target !== e.currentTarget) return;
+                    this.options.backdrop == 'static' ? this.$element[0].focus() : this.hide();
+                }, this)
+            );
 
             if (doAnimate) this.$backdrop[0].offsetWidth; // force reflow
 
@@ -698,7 +732,9 @@ axboot.ajax = function () {
                 that.removeBackdrop();
                 callback && callback();
             };
-            $.support.transition && this.$element.hasClass('fade') ? this.$backdrop.one('bsTransitionEnd', callbackRemove).emulateTransitionEnd(Modal.BACKDROP_TRANSITION_DURATION) : callbackRemove();
+            $.support.transition && this.$element.hasClass('fade')
+                ? this.$backdrop.one('bsTransitionEnd', callbackRemove).emulateTransitionEnd(Modal.BACKDROP_TRANSITION_DURATION)
+                : callbackRemove();
         } else if (callback) {
             callback();
         }
@@ -715,14 +751,14 @@ axboot.ajax = function () {
 
         this.$element.css({
             paddingLeft: !this.bodyIsOverflowing && modalIsOverflowing ? this.scrollbarWidth : '',
-            paddingRight: this.bodyIsOverflowing && !modalIsOverflowing ? this.scrollbarWidth : ''
+            paddingRight: this.bodyIsOverflowing && !modalIsOverflowing ? this.scrollbarWidth : '',
         });
     };
 
     Modal.prototype.resetAdjustments = function () {
         this.$element.css({
             paddingLeft: '',
-            paddingRight: ''
+            paddingRight: '',
         });
     };
 
@@ -764,10 +800,16 @@ axboot.ajax = function () {
         return this.each(function () {
             var $this = $(this);
             var data = $this.data('bs.modal');
-            var options = $.extend({}, Modal.DEFAULTS, $this.data(), (typeof option === "undefined" ? "undefined" : _typeof(option)) == 'object' && option);
+            var options = $.extend(
+                {},
+                Modal.DEFAULTS,
+                $this.data(),
+                (typeof option === 'undefined' ? 'undefined' : _typeof(option)) == 'object' && option
+            );
 
-            if (!data) $this.data('bs.modal', data = new Modal(this, options));
-            if (typeof option == 'string') data[option](_relatedTarget);else if (options.show) data.show(_relatedTarget);
+            if (!data) $this.data('bs.modal', (data = new Modal(this, options)));
+            if (typeof option == 'string') data[option](_relatedTarget);
+            else if (options.show) data.show(_relatedTarget);
         });
     }
 
@@ -790,7 +832,7 @@ axboot.ajax = function () {
     $(document).on('click.bs.modal.data-api', '[data-toggle="modal"]', function (e) {
         var $this = $(this);
         var href = $this.attr('href');
-        var $target = $($this.attr('data-target') || href && href.replace(/.*(?=#[^\s]+$)/, '')); // strip for ie7
+        var $target = $($this.attr('data-target') || (href && href.replace(/.*(?=#[^\s]+$)/, ''))); // strip for ie7
         var option = $target.data('bs.modal') ? 'toggle' : $.extend({ remote: !/#/.test(href) && href }, $target.data(), $this.data());
 
         if ($this.is('a')) e.preventDefault();
@@ -803,9 +845,9 @@ axboot.ajax = function () {
         });
         Plugin.call($target, option, this);
     });
-}(jQuery);
+})(jQuery);
 
-+function ($) {
++(function ($) {
     'use strict';
 
     // TOOLTIP PUBLIC CLASS DEFINITION
@@ -839,8 +881,8 @@ axboot.ajax = function () {
         container: false,
         viewport: {
             selector: 'body',
-            padding: 0
-        }
+            padding: 0,
+        },
     };
 
     Tooltip.prototype.init = function (type, element, options) {
@@ -848,7 +890,13 @@ axboot.ajax = function () {
         this.type = type;
         this.$element = $(element);
         this.options = this.getOptions(options);
-        this.$viewport = this.options.viewport && $($.isFunction(this.options.viewport) ? this.options.viewport.call(this, this.$element) : this.options.viewport.selector || this.options.viewport);
+        this.$viewport =
+            this.options.viewport &&
+            $(
+                $.isFunction(this.options.viewport)
+                    ? this.options.viewport.call(this, this.$element)
+                    : this.options.viewport.selector || this.options.viewport
+            );
         this.inState = { click: false, hover: false, focus: false };
 
         if (this.$element[0] instanceof document.constructor && !this.options.selector) {
@@ -857,7 +905,7 @@ axboot.ajax = function () {
 
         var triggers = this.options.trigger.split(' ');
 
-        for (var i = triggers.length; i--;) {
+        for (var i = triggers.length; i--; ) {
             var trigger = triggers[i];
 
             if (trigger == 'click') {
@@ -871,7 +919,7 @@ axboot.ajax = function () {
             }
         }
 
-        this.options.selector ? this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' }) : this.fixTitle();
+        this.options.selector ? (this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' })) : this.fixTitle();
     };
 
     Tooltip.prototype.getDefaults = function () {
@@ -884,7 +932,7 @@ axboot.ajax = function () {
         if (options.delay && typeof options.delay == 'number') {
             options.delay = {
                 show: options.delay,
-                hide: options.delay
+                hide: options.delay,
             };
         }
 
@@ -895,9 +943,10 @@ axboot.ajax = function () {
         var options = {};
         var defaults = this.getDefaults();
 
-        this._options && $.each(this._options, function (key, value) {
-            if (defaults[key] != value) options[key] = value;
-        });
+        this._options &&
+            $.each(this._options, function (key, value) {
+                if (defaults[key] != value) options[key] = value;
+            });
 
         return options;
     };
@@ -983,13 +1032,17 @@ axboot.ajax = function () {
 
             if (this.options.animation) $tip.addClass('fade');
 
-            var placement = typeof this.options.placement == 'function' ? this.options.placement.call(this, $tip[0], this.$element[0]) : this.options.placement;
+            var placement =
+                typeof this.options.placement == 'function' ? this.options.placement.call(this, $tip[0], this.$element[0]) : this.options.placement;
 
             var autoToken = /\s?auto?\s?/i;
             var autoPlace = autoToken.test(placement);
             if (autoPlace) placement = placement.replace(autoToken, '') || 'top';
 
-            $tip.detach().css({ top: 0, left: 0, display: 'block' }).addClass(placement).data('bs.' + this.type, this);
+            $tip.detach()
+                .css({ top: 0, left: 0, display: 'block' })
+                .addClass(placement)
+                .data('bs.' + this.type, this);
 
             this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element);
             this.$element.trigger('inserted.bs.' + this.type);
@@ -1002,7 +1055,16 @@ axboot.ajax = function () {
                 var orgPlacement = placement;
                 var viewportDim = this.getPosition(this.$viewport);
 
-                placement = placement == 'bottom' && pos.bottom + actualHeight > viewportDim.bottom ? 'top' : placement == 'top' && pos.top - actualHeight < viewportDim.top ? 'bottom' : placement == 'right' && pos.right + actualWidth > viewportDim.width ? 'left' : placement == 'left' && pos.left - actualWidth < viewportDim.left ? 'right' : placement;
+                placement =
+                    placement == 'bottom' && pos.bottom + actualHeight > viewportDim.bottom
+                        ? 'top'
+                        : placement == 'top' && pos.top - actualHeight < viewportDim.top
+                        ? 'bottom'
+                        : placement == 'right' && pos.right + actualWidth > viewportDim.width
+                        ? 'left'
+                        : placement == 'left' && pos.left - actualWidth < viewportDim.left
+                        ? 'right'
+                        : placement;
 
                 $tip.removeClass(orgPlacement).addClass(placement);
             }
@@ -1019,7 +1081,9 @@ axboot.ajax = function () {
                 if (prevHoverState == 'out') that.leave(that);
             };
 
-            $.support.transition && this.$tip.hasClass('fade') ? $tip.one('bsTransitionEnd', complete).emulateTransitionEnd(Tooltip.TRANSITION_DURATION) : complete();
+            $.support.transition && this.$tip.hasClass('fade')
+                ? $tip.one('bsTransitionEnd', complete).emulateTransitionEnd(Tooltip.TRANSITION_DURATION)
+                : complete();
         }
     };
 
@@ -1041,14 +1105,21 @@ axboot.ajax = function () {
 
         // $.fn.offset doesn't round pixel values
         // so we use setOffset directly with our own function B-0
-        $.offset.setOffset($tip[0], $.extend({
-            using: function using(props) {
-                $tip.css({
-                    top: Math.round(props.top),
-                    left: Math.round(props.left)
-                });
-            }
-        }, offset), 0);
+        $.offset.setOffset(
+            $tip[0],
+            $.extend(
+                {
+                    using: function using(props) {
+                        $tip.css({
+                            top: Math.round(props.top),
+                            left: Math.round(props.left),
+                        });
+                    },
+                },
+                offset
+            ),
+            0
+        );
 
         $tip.addClass('in');
 
@@ -1062,7 +1133,8 @@ axboot.ajax = function () {
 
         var delta = this.getViewportAdjustedDelta(placement, offset, actualWidth, actualHeight);
 
-        if (delta.left) offset.left += delta.left;else offset.top += delta.top;
+        if (delta.left) offset.left += delta.left;
+        else offset.top += delta.top;
 
         var isVertical = /top|bottom/.test(placement);
         var arrowDelta = isVertical ? delta.left * 2 - width + actualWidth : delta.top * 2 - height + actualHeight;
@@ -1073,7 +1145,9 @@ axboot.ajax = function () {
     };
 
     Tooltip.prototype.replaceArrow = function (delta, dimension, isVertical) {
-        this.arrow().css(isVertical ? 'left' : 'top', 50 * (1 - delta / dimension) + '%').css(isVertical ? 'top' : 'left', '');
+        this.arrow()
+            .css(isVertical ? 'left' : 'top', 50 * (1 - delta / dimension) + '%')
+            .css(isVertical ? 'top' : 'left', '');
     };
 
     Tooltip.prototype.setContent = function () {
@@ -1104,7 +1178,9 @@ axboot.ajax = function () {
 
         $tip.removeClass('in');
 
-        $.support.transition && $tip.hasClass('fade') ? $tip.one('bsTransitionEnd', complete).emulateTransitionEnd(Tooltip.TRANSITION_DURATION) : complete();
+        $.support.transition && $tip.hasClass('fade')
+            ? $tip.one('bsTransitionEnd', complete).emulateTransitionEnd(Tooltip.TRANSITION_DURATION)
+            : complete();
 
         this.hoverState = null;
 
@@ -1144,15 +1220,20 @@ axboot.ajax = function () {
     };
 
     Tooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
-        return placement == 'bottom' ? { top: pos.top + pos.height, left: pos.left + pos.width / 2 - actualWidth / 2 } : placement == 'top' ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2 } : placement == 'left' ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth } :
-        /* placement == 'right' */{ top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width };
+        return placement == 'bottom'
+            ? { top: pos.top + pos.height, left: pos.left + pos.width / 2 - actualWidth / 2 }
+            : placement == 'top'
+            ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2 }
+            : placement == 'left'
+            ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth }
+            : /* placement == 'right' */ { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width };
     };
 
     Tooltip.prototype.getViewportAdjustedDelta = function (placement, pos, actualWidth, actualHeight) {
         var delta = { top: 0, left: 0 };
         if (!this.$viewport) return delta;
 
-        var viewportPadding = this.options.viewport && this.options.viewport.padding || 0;
+        var viewportPadding = (this.options.viewport && this.options.viewport.padding) || 0;
         var viewportDimensions = this.getPosition(this.$viewport);
 
         if (/right|left/.test(placement)) {
@@ -1208,7 +1289,7 @@ axboot.ajax = function () {
     };
 
     Tooltip.prototype.arrow = function () {
-        return this.$arrow = this.$arrow || this.tip().find('.tooltip-arrow');
+        return (this.$arrow = this.$arrow || this.tip().find('.tooltip-arrow'));
     };
 
     Tooltip.prototype.enable = function () {
@@ -1235,7 +1316,8 @@ axboot.ajax = function () {
 
         if (e) {
             self.inState.click = !self.inState.click;
-            if (self.isInStateTrue()) self.enter(self);else self.leave(self);
+            if (self.isInStateTrue()) self.enter(self);
+            else self.leave(self);
         } else {
             self.tip().hasClass('in') ? self.leave(self) : self.enter(self);
         }
@@ -1263,10 +1345,10 @@ axboot.ajax = function () {
         return this.each(function () {
             var $this = $(this);
             var data = $this.data('bs.tooltip');
-            var options = (typeof option === "undefined" ? "undefined" : _typeof(option)) == 'object' && option;
+            var options = (typeof option === 'undefined' ? 'undefined' : _typeof(option)) == 'object' && option;
 
             if (!data && /destroy|hide/.test(option)) return;
-            if (!data) $this.data('bs.tooltip', data = new Tooltip(this, options));
+            if (!data) $this.data('bs.tooltip', (data = new Tooltip(this, options)));
             if (typeof option == 'string') data[option]();
         });
     }
@@ -1283,7 +1365,7 @@ axboot.ajax = function () {
         $.fn.tooltip = old;
         return this;
     };
-}(jQuery);
+})(jQuery);
 /**
  * @method axboot.buttonClick
  * @param {Object} _caller - this of function
@@ -1300,7 +1382,7 @@ axboot.ajax = function () {
  * ```
  */
 
-axboot.buttonClick = function () {
+axboot.buttonClick = (function () {
     return function (_caller, _attribute, _functionJson) {
         var processor = $.extend(true, {}, _functionJson);
 
@@ -1313,10 +1395,10 @@ axboot.buttonClick = function () {
 
         return this;
     };
-}();
+})();
 /**
  * @Object {Object} axboot.call
-*/
+ */
 
 /**
  * 여러개의 AJAX콜을 순차적으로 해야 하는 경우 callback 지옥에 빠지기 쉽다. `axboot.call & done`은 이런 상황에서 코드가 보기 어려워지는 문제를 해결 하기 위해 개발된 오브젝트 입니다
@@ -1373,8 +1455,7 @@ axboot.buttonClick = function () {
  * axboot.call 참조
  * @method axboot.call.done
  */
-axboot.call = function () {
-
+axboot.call = (function () {
     var callClass = function callClass(_obj) {
         this.queue = [];
 
@@ -1393,7 +1474,7 @@ axboot.call = function () {
                         item.callback.call(this, res);
                         processor.call(this, callback);
                     }.bind(this),
-                    options: { nomask: false }
+                    options: { nomask: false },
                 });
             } else {
                 callback.call(this);
@@ -1413,11 +1494,12 @@ axboot.call = function () {
     return function (obj) {
         return new callClass(obj);
     };
-}();
-axboot.convertCode = function () {
+})();
+axboot.convertCode = (function () {
     var BASIC_CODE = {};
     var mapKeys = {
-        key: "code", value: "name"
+        key: 'code',
+        value: 'name',
     };
     return function () {
         var codes,
@@ -1449,7 +1531,7 @@ axboot.convertCode = function () {
 
         return return_code;
     };
-}();
+})();
 /**
  * @function axboot.gridBuilder
  * @param {Object} _config
@@ -1476,21 +1558,21 @@ axboot.convertCode = function () {
  * });
  * ```
  */
-axboot.gridBuilder = function () {
+axboot.gridBuilder = (function () {
     var defaultGridConfig = {
         showLineNumber: true,
         lineNumberColumnWidth: 50,
         rowSelectorColumnWidth: 28,
         multipleSelect: false,
         header: {
-            align: "center",
-            columnHeight: 28
+            align: 'center',
+            columnHeight: 28,
         },
         body: {
             columnHeight: 28,
             onClick: function onClick() {
                 this.self.select(this.dindex);
-            }
+            },
         },
         page: {
             navigationItemCount: 9,
@@ -1499,15 +1581,14 @@ axboot.gridBuilder = function () {
             firstIcon: '<i class="cqc-controller-jump-to-start"></i>',
             prevIcon: '<i class="cqc-triangle-left"></i>',
             nextIcon: '<i class="cqc-triangle-right"></i>',
-            lastIcon: '<i class="cqc-controller-next"></i>'
-        }
+            lastIcon: '<i class="cqc-controller-next"></i>',
+        },
     };
 
     return function (_config) {
         var myGridConfig = $.extend(true, {}, defaultGridConfig, _config);
 
         var convertColumn = function convertColumn(columns) {
-
             for (var i = 0, l = columns.length; i < l; i++) {
                 if (axboot.gridBuilder.preDefineColumns[columns[i].key]) {
                     columns[i] = $.extend({}, axboot.gridBuilder.preDefineColumns[columns[i].key], columns[i]);
@@ -1539,165 +1620,177 @@ axboot.gridBuilder = function () {
 
         return new ax5.ui.grid(myGridConfig);
     };
-}();
+})();
 
 axboot.gridBuilder.preDefineColumns = {
-    "insDt": { width: 100, label: "등록일", align: "center" },
-    "compCd": { width: 70, label: "업체코드", align: "center" },
-    "compNm": { width: 110, label: "업체명", align: "left" },
-    "storCd": { width: 70, label: "매장코드", align: "center" },
-    "storNm": { width: 200, label: "매장명", align: "left" },
-    "userNm": { width: 100, label: "이름", align: "center" },
-    "itemCd": { width: 80, label: "품목코드", align: "center" },
-    "itemNm": { width: 150, label: "품목명", align: "left" },
-    "posItemNm": { width: 150, label: "POS단축명", align: "left" },
-    "delYn": {
-        width: 50, label: "삭제", align: "center", formatter: function formatter() {
-            return parent.COMMON_CODE["DEL_YN"].map[this.value];
-        }
+    insDt: { width: 100, label: '등록일', align: 'center' },
+    compCd: { width: 70, label: '업체코드', align: 'center' },
+    compNm: { width: 110, label: '업체명', align: 'left' },
+    storCd: { width: 70, label: '매장코드', align: 'center' },
+    storNm: { width: 200, label: '매장명', align: 'left' },
+    userNm: { width: 100, label: '이름', align: 'center' },
+    itemCd: { width: 80, label: '품목코드', align: 'center' },
+    itemNm: { width: 150, label: '품목명', align: 'left' },
+    posItemNm: { width: 150, label: 'POS단축명', align: 'left' },
+    delYn: {
+        width: 50,
+        label: '삭제',
+        align: 'center',
+        formatter: function formatter() {
+            return parent.COMMON_CODE['DEL_YN'].map[this.value];
+        },
     },
-    "useYn": {
-        width: 70, label: "사용여부", align: "center", formatter: function formatter() {
-            return parent.COMMON_CODE["USE_YN"].map[this.value];
-        }
-    },
-    "posUseYn": {
-        width: 90, label: "포스사용여부", align: "center", formatter: function formatter() {
-            return parent.COMMON_CODE["USE_YN"].map[this.value];
-        }
-    },
-  /*  "roomTypCd":{
-            width: 90, label: "객실타입", align: "center", formatter: function formatter() {
-                return parent.COMMON_CODE["ROOM_TYPE"].map[this.value];
-    },*/
-    "sort": { width: 50, label: "정렬", align: "center" },
-    "companyJson.대표자명": { width: 100, label: "대표자명", align: "center" },
-    "companyJson.사업자등록번호": {
-        label: "사업자등록번호",
-        width: 120,
-        align: "center",
-        formatter: "bizno"
-    },
-    "storeInfoJson.대표자명": { width: 100, label: "대표자명", align: "center" },
-    "storeInfoJson.사업자등록번호": {
-        label: "사업자등록번호",
-        width: 120,
-        align: "center",
-        formatter: "bizno"
-    },
-    "storeInfoJson.영업시작시간": {
-        label: "영업시작시간",
-        width: 100,
-        align: "center"
-    },
-    "storeInfoJson.영업종료시간": {
-        label: "영업종료시간",
-        width: 100,
-        align: "center"
-    },
-    "storeInfoJson.담당자": {
-        label: "담당자",
+    useYn: {
         width: 70,
-        align: "center"
+        label: '사용여부',
+        align: 'center',
+        formatter: function formatter() {
+            return parent.COMMON_CODE['USE_YN'].map[this.value];
+        },
     },
-    "storeInfoJson.연락처": {
-        label: "연락처",
+    posUseYn: {
+        width: 90,
+        label: '포스사용여부',
+        align: 'center',
+        formatter: function formatter() {
+            return parent.COMMON_CODE['USE_YN'].map[this.value];
+        },
+    },
+
+    sort: { width: 50, label: '정렬', align: 'center' },
+    'companyJson.대표자명': { width: 100, label: '대표자명', align: 'center' },
+    'companyJson.사업자등록번호': {
+        label: '사업자등록번호',
+        width: 120,
+        align: 'center',
+        formatter: 'bizno',
+    },
+    'storeInfoJson.대표자명': { width: 100, label: '대표자명', align: 'center' },
+    'storeInfoJson.사업자등록번호': {
+        label: '사업자등록번호',
+        width: 120,
+        align: 'center',
+        formatter: 'bizno',
+    },
+    'storeInfoJson.영업시작시간': {
+        label: '영업시작시간',
         width: 100,
-        align: "center"
-    }
+        align: 'center',
+    },
+    'storeInfoJson.영업종료시간': {
+        label: '영업종료시간',
+        width: 100,
+        align: 'center',
+    },
+    'storeInfoJson.담당자': {
+        label: '담당자',
+        width: 70,
+        align: 'center',
+    },
+    'storeInfoJson.연락처': {
+        label: '연락처',
+        width: 100,
+        align: 'center',
+    },
 };
 
 // 컬럼 확장 구문
-axboot.gridBuilder.preDefineColumns["locale"] = function () {
+axboot.gridBuilder.preDefineColumns['locale'] = (function () {
     return {
-        width: 120, label: "국가", align: "center", formatter: function formatter() {
-            return parent.COMMON_CODE["LOCALE"].map[this.value];
-        }
-    };
-}();
-
-axboot.gridBuilder.preDefineColumns["printerType"] = function () {
-    return {
-        width: 100, label: "프린터 타입", align: "center",
+        width: 120,
+        label: '국가',
+        align: 'center',
         formatter: function formatter() {
-            return parent.COMMON_CODE["PRINTER_TYPE"].map[this.value];
-        }
+            return parent.COMMON_CODE['LOCALE'].map[this.value];
+        },
     };
-}();
+})();
+
+axboot.gridBuilder.preDefineColumns['printerType'] = (function () {
+    return {
+        width: 100,
+        label: '프린터 타입',
+        align: 'center',
+        formatter: function formatter() {
+            return parent.COMMON_CODE['PRINTER_TYPE'].map[this.value];
+        },
+    };
+})();
 
 axboot.gridBuilder.preDefineEditor = {
-    "useYn": {
-        type: "select", config: {
+    useYn: {
+        type: 'select',
+        config: {
             columnKeys: {
-                optionValue: "CD", optionText: "NM"
+                optionValue: 'CD',
+                optionText: 'NM',
             },
-            options: [{ CD: "Y", NM: "사용" }, { CD: "N", NM: "사용안함" }]
-        }
+            options: [
+                { CD: 'Y', NM: '사용' },
+                { CD: 'N', NM: '사용안함' },
+            ],
+        },
     },
-    "checkYn": {
-        type: "checkbox", config: { trueValue: "Y", falseValue: "N" }
+    checkYn: {
+        type: 'checkbox',
+        config: { trueValue: 'Y', falseValue: 'N' },
     },
-    "menu-program-auth-checkYn": {
-        type: "checkbox", config: { trueValue: "Y", falseValue: "N" },
+    'menu-program-auth-checkYn': {
+        type: 'checkbox',
+        config: { trueValue: 'Y', falseValue: 'N' },
         disabled: function disabled() {
-            return this.item["program_" + this.key] == "N";
-        }
+            return this.item['program_' + this.key] == 'N';
+        },
     },
-    "number": {
-        type: "number"
+    number: {
+        type: 'number',
     },
-    "text": {
-        type: "text"
+    text: {
+        type: 'text',
     },
-    "PRINTER_TYPE": function PRINTER_TYPE() {
+    PRINTER_TYPE: function PRINTER_TYPE() {
         return {
-            type: "select", config: {
+            type: 'select',
+            config: {
                 columnKeys: {
-                    optionValue: "code", optionText: "name"
+                    optionValue: 'code',
+                    optionText: 'name',
                 },
-                options: parent.COMMON_CODE["PRINTER_TYPE"]
-            }
+                options: parent.COMMON_CODE['PRINTER_TYPE'],
+            },
         };
     },
-   /* "roomTypCd":{
-    type:"select", config:{
-    columnKeys:{  optionValue: "OV", optionText: "OT"
-    },
-       options: parent.COMMON_CODE["ROOM_TYPE"]
-    }
-    },
-*/
 };
 
 axboot.gridBuilder.preDefineEditorDisabled = {
-    "notCreated": function notCreated() {
+    notCreated: function notCreated() {
         return !this.item.__created__;
-    }
+    },
 };
 
-ax5.ui.grid.formatter["bizno"] = function () {
-    var val = (this.value || "").replace(/\D/g, "");
+ax5.ui.grid.formatter['bizno'] = function () {
+    var val = (this.value || '').replace(/\D/g, '');
     var regExpPattern = /^([0-9]{3})\-?([0-9]{1,2})?\-?([0-9]{1,5})?.*$/,
         returnValue = val.replace(regExpPattern, function (a, b) {
-        var nval = [arguments[1]];
-        if (arguments[2]) nval.push(arguments[2]);
-        if (arguments[3]) nval.push(arguments[3]);
-        return nval.join("-");
-    });
+            var nval = [arguments[1]];
+            if (arguments[2]) nval.push(arguments[2]);
+            if (arguments[3]) nval.push(arguments[3]);
+            return nval.join('-');
+        });
     return returnValue;
 };
 
-ax5.ui.grid.formatter["phone"] = function () {
-    var val = this.value.replace(/\D/g, "");
+ax5.ui.grid.formatter['phone'] = function () {
+    var val = this.value.replace(/\D/g, '');
     var regExpPattern3 = /^([0-9]{3})\-?([0-9]{1,4})?\-?([0-9]{1,4})?\-?([0-9]{1,4})?\-?([0-9]{1,4})?/,
         returnValue = val.replace(regExpPattern3, function (a, b) {
-        var nval = [arguments[1]];
-        if (arguments[2]) nval.push(arguments[2]);
-        if (arguments[3]) nval.push(arguments[3]);
-        if (arguments[4]) nval.push(arguments[4]);
-        if (arguments[5]) nval.push(arguments[5]);
-        return nval.join("-");
-    });
+            var nval = [arguments[1]];
+            if (arguments[2]) nval.push(arguments[2]);
+            if (arguments[3]) nval.push(arguments[3]);
+            if (arguments[4]) nval.push(arguments[4]);
+            if (arguments[5]) nval.push(arguments[5]);
+            return nval.join('-');
+        });
     return returnValue;
 };
 
@@ -1709,9 +1802,8 @@ ax5.ui.grid.formatter["phone"] = function () {
  * @param {*} [args]
  * @return {String}
  */
-axboot.lang = function () {
+axboot.lang = (function () {
     function langClass(_json) {
-
         this.json = _json;
 
         this.get = function (_message) {
@@ -1734,34 +1826,34 @@ axboot.lang = function () {
     }
 
     return langClass;
-}();
+})();
 /**
  * @Object {Object} axboot.modal
  */
-axboot.modal = function () {
+axboot.modal = (function () {
     var modalCallback = {};
 
     var defaultCss = {
         width: 400,
         height: 400,
         position: {
-            left: "center",
-            top: "middle"
-        }
+            left: 'center',
+            top: 'middle',
+        },
     };
 
     var defaultOption = $.extend(true, {}, defaultCss, {
-        iframeLoadingMsg: "",
+        iframeLoadingMsg: '',
         iframe: {
-            method: "post",
-            url: "#"
+            method: 'post',
+            url: '#',
         },
         closeToEsc: true,
         onStateChanged: function onStateChanged() {
             // mask
-            if (this.state === "open") {
+            if (this.state === 'open') {
                 window.axMask.open();
-            } else if (this.state === "close") {
+            } else if (this.state === 'close') {
                 window.axMask.close();
             }
         },
@@ -1770,15 +1862,16 @@ axboot.modal = function () {
         absolute: true,
         fullScreen: false,
         header: {
-            title: "",
+            title: '',
             btns: {
                 close: {
-                    label: '<i class="cqc-circle-with-cross"></i>', onClick: function onClick() {
+                    label: '<i class="cqc-circle-with-cross"></i>',
+                    onClick: function onClick() {
                         window.axModal.close();
-                    }
-                }
-            }
-        }
+                    },
+                },
+            },
+        },
     });
 
     /**
@@ -1822,10 +1915,8 @@ axboot.modal = function () {
      * ```
      */
     var open = function open(modalConfig) {
-
         modalConfig = $.extend(true, {}, defaultOption, modalConfig);
         if (modalConfig.modalType) {
-
             if (axboot.def.MODAL && axboot.def.MODAL[modalConfig.modalType]) {
                 if (modalConfig.param) {
                     $.extend(true, modalConfig, { iframe: { param: modalConfig.param } });
@@ -1834,7 +1925,7 @@ axboot.modal = function () {
             }
         }
 
-        $(document.body).addClass("modalOpened");
+        $(document.body).addClass('modalOpened');
 
         this.modalCallback = modalConfig.callback;
         this.modalSendData = modalConfig.sendData;
@@ -1866,7 +1957,7 @@ axboot.modal = function () {
     var close = function close(data) {
         window.axModal.close();
         setTimeout(function () {
-            $(document.body).removeClass("modalOpened");
+            $(document.body).removeClass('modalOpened');
         }, 500);
     };
     /**
@@ -1902,26 +1993,26 @@ axboot.modal = function () {
     };
 
     return {
-        "open": open,
-        "css": css,
-        "align": align,
-        "close": close,
-        "minimize": minimize,
-        "maximize": maximize,
-        "callback": callback,
-        "modalCallback": modalCallback,
-        "getData": getData
+        open: open,
+        css: css,
+        align: align,
+        close: close,
+        minimize: minimize,
+        maximize: maximize,
+        callback: callback,
+        modalCallback: modalCallback,
+        getData: getData,
     };
-}();
+})();
 /**
  * @Object {Object} axboot.modelFormatter
  */
-axboot.modelFormatter = function () {
+axboot.modelFormatter = (function () {
     var get_real_path = function get_real_path(dataPath) {
         var path = [];
         var _path = [].concat(dataPath.split(/[\.\[\]]/g));
         _path.forEach(function (n) {
-            if (n !== "") path.push(n);
+            if (n !== '') path.push(n);
         });
         _path = null;
         return "'" + path.join("']['") + "'";
@@ -1941,7 +2032,7 @@ axboot.modelFormatter = function () {
         this.target = _model.view_target;
 
         if (!(this.target instanceof jQuery)) {
-            console.log("모델 뷰 타겟이 jQuery 오브젝트가 아니라서 modelFormatter 초기화에 실패 하였습니다");
+            console.log('모델 뷰 타겟이 jQuery 오브젝트가 아니라서 modelFormatter 초기화에 실패 하였습니다');
             return;
         }
 
@@ -1968,12 +2059,12 @@ axboot.modelFormatter = function () {
         this.getClearData = function (_data) {
             var myData = $.extend({}, _data);
             this.target.find('[data-ax-path]').each(function () {
-                var dataPath = this.getAttribute("data-ax-path");
-                var pattern = this.getAttribute("data-ax5formatter");
-                var value = Function("", "return this[" + get_real_path(dataPath) + "];").call(myData);
-                if (typeof value !== "undefined") {
+                var dataPath = this.getAttribute('data-ax-path');
+                var pattern = this.getAttribute('data-ax5formatter');
+                var value = Function('', 'return this[' + get_real_path(dataPath) + '];').call(myData);
+                if (typeof value !== 'undefined') {
                     if (pattern in axboot.modelFormatter.clearProcessor) value = axboot.modelFormatter.clearProcessor[pattern].call(this, value);
-                    Function("val", "this[" + get_real_path(dataPath) + "] = val;").call(myData, value);
+                    Function('val', 'this[' + get_real_path(dataPath) + '] = val;').call(myData, value);
                 }
             });
             return myData;
@@ -1982,57 +2073,57 @@ axboot.modelFormatter = function () {
         this.formatting();
     };
     return ax5ModelFormatter;
-}();
+})();
 
 axboot.modelFormatter.clearProcessor = {
-    "money": function money(_v) {
-        return ("" + _v).replace(/\D/g, "");
+    money: function money(_v) {
+        return ('' + _v).replace(/\D/g, '');
     },
-    "number": function number(_v) {
-        return ("" + _v).replace(/\D/g, "");
+    number: function number(_v) {
+        return ('' + _v).replace(/\D/g, '');
     },
-    "date": function date(_v) {
-        return ax5.util.date("" + _v, { "return": 'yyyy-MM-dd' });
+    date: function date(_v) {
+        return ax5.util.date('' + _v, { return: 'yyyy-MM-dd' });
     },
-    "time": function time(_v) {
-        return ("" + _v).replace(/\D/g, "");
+    time: function time(_v) {
+        return ('' + _v).replace(/\D/g, '');
     },
-    "bizno": function bizno(_v) {
-        return ("" + _v).replace(/\D/g, "");
+    bizno: function bizno(_v) {
+        return ('' + _v).replace(/\D/g, '');
     },
-    "phone": function phone(_v) {
-        return ("" + _v).replace(/\D/g, "");
+    phone: function phone(_v) {
+        return ('' + _v).replace(/\D/g, '');
     },
-    "customPattern": function customPattern(_v) {
+    customPattern: function customPattern(_v) {
         return _v;
-    }
+    },
 };
 
 /**포멧터의 포멧터 패턴 확장**/
-ax5.ui.formatter.formatter["chequer"] = {
+ax5.ui.formatter.formatter['chequer'] = {
     getEnterableKeyCodes: function getEnterableKeyCodes(_opts) {
         var enterableKeyCodes = {
-            '189': '-' // eventKeyCode
+            189: '-', // eventKeyCode
         };
         return jQuery.extend(enterableKeyCodes, ax5.ui.formatter.formatter.ctrlKeys, ax5.ui.formatter.formatter.numKeys);
     },
     getPatternValue: function getPatternValue(_opts, optIdx, e, val, eType) {
-        val = val.replace(/\D/g, "");
+        val = val.replace(/\D/g, '');
         var regExpPattern = /^([0-9]{2})\-?([0-9]{2})?\-?([0-9]{2})?\-?([0-9]{2})?/;
         return val.replace(regExpPattern, function (a, b) {
             var nval = [arguments[1]];
             if (arguments[2]) nval.push(arguments[2]);
             if (arguments[3]) nval.push(arguments[3]);
             if (arguments[4]) nval.push(arguments[4]);
-            return nval.join("-");
+            return nval.join('-');
         });
-    }
+    },
 };
 
 /**
  * @Object {Object} axboot.formFormatter
  */
-axboot.formFormatter = function () {
+axboot.formFormatter = (function () {
     /**
      * @class ax5FormFormatter
      * @param _model
@@ -2045,7 +2136,7 @@ axboot.formFormatter = function () {
         this.target = _$target;
 
         if (!(this.target instanceof jQuery)) {
-            console.log("target이 jQuery 오브젝트가 아니라서 formFormatter 초기화에 실패 하였습니다");
+            console.log('target이 jQuery 오브젝트가 아니라서 formFormatter 초기화에 실패 하였습니다');
             return;
         }
 
@@ -2063,17 +2154,16 @@ axboot.formFormatter = function () {
         this.formatting();
     };
     return ax5FormFormatter;
-}();
+})();
 /**
  * @object {Object} axboot.preparePlugin
  */
-axboot.preparePlugin = function () {
+axboot.preparePlugin = (function () {
     /**
      * js가 실행되는 타임. 페이지 레디 전에 미리 선언 하는 경우
      * @method axboot.preparePlugin.define
      */
     var define = function define() {
-
         /**
          * 기본 마스크
          * @var {ax5ui} axMask
@@ -2095,15 +2185,19 @@ axboot.preparePlugin = function () {
          * @var {ax5ui} axAJAXMask
          */
         window.axAJAXMask = new ax5.ui.mask({
-            content: '<i class="cqc-chequer cqc-50x cqc-zoom-in-out" style="color: #ccc;"></i>'
+            content: '<i class="cqc-chequer cqc-50x cqc-zoom-in-out" style="color: #ccc;"></i>',
         });
         /**
          * 프로그래스바 형태의 마스크
          * @var {ax5ui} axProgressMask
          */
         window.axProgressMask = new ax5.ui.mask({
-            theme: "progress-mask",
-            content: '<div class="progress">' + '<div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" style="width: 0%">' + '</div>' + '</div>'
+            theme: 'progress-mask',
+            content:
+                '<div class="progress">' +
+                '<div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" style="width: 0%">' +
+                '</div>' +
+                '</div>',
         });
         /**
          * 기본 모달
@@ -2111,7 +2205,7 @@ axboot.preparePlugin = function () {
          */
         window.axModal = new ax5.ui.modal({
             absolute: true,
-            iframeLoadingMsg: '<i class="cqc-chequer ax-loading-icon lg"></i>'
+            iframeLoadingMsg: '<i class="cqc-chequer ax-loading-icon lg"></i>',
         });
 
         ax5.ui.picker_instance.setConfig({
@@ -2122,7 +2216,7 @@ axboot.preparePlugin = function () {
                     yearTmpl: '%s',
                     monthTmpl: '%s',
                     right: '<i class="cqc-chevron-right"></i>',
-                    yearFirst: true
+                    yearFirst: true,
                     /*
                      dimensions: {
                      itemPadding: 1,
@@ -2134,10 +2228,11 @@ axboot.preparePlugin = function () {
                      day: "%s"
                      },
                      */
-                } }
+                },
+            },
         });
         ax5.ui.combobox_instance.setConfig({
-            removeIcon: '<i class="cqc-cancel3"></i>'
+            removeIcon: '<i class="cqc-cancel3"></i>',
         });
     };
 
@@ -2147,7 +2242,6 @@ axboot.preparePlugin = function () {
      * @method axboot.preparePlugin.pageStart
      */
     var pageStart = function pageStart() {
-
         /**
          *
          * @var {ax5ui} axDialog
@@ -2155,15 +2249,16 @@ axboot.preparePlugin = function () {
         window.axDialog = new ax5.ui.dialog({
             title: axboot.def.dialogTitle,
             lang: {
-                "ok": "확인", "cancel": "취소"
+                ok: '확인',
+                cancel: '취소',
             },
             onStateChanged: function onStateChanged() {
-                if (this.state === "open") {
+                if (this.state === 'open') {
                     axDialogMask.open();
-                } else if (this.state === "close") {
+                } else if (this.state === 'close') {
                     axDialogMask.close();
                 }
-            }
+            },
         });
         /**
          *
@@ -2171,17 +2266,18 @@ axboot.preparePlugin = function () {
          */
         window.axWarningDialog = new ax5.ui.dialog({
             title: axboot.def.dialogTitle,
-            theme: "warning",
+            theme: 'warning',
             lang: {
-                "ok": "확인", "cancel": "취소"
+                ok: '확인',
+                cancel: '취소',
             },
             onStateChanged: function onStateChanged() {
-                if (this.state === "open") {
+                if (this.state === 'open') {
                     axDialogMask.open({ theme: 'danger' });
-                } else if (this.state === "close") {
+                } else if (this.state === 'close') {
                     axDialogMask.close();
                 }
-            }
+            },
         });
         /**
          *
@@ -2196,18 +2292,18 @@ axboot.preparePlugin = function () {
          */
         window.axToast = new ax5.ui.toast({
             icon: '<i class="cqc-megaphone"></i>',
-            containerPosition: "bottom-right",
-            onStateChanged: function onStateChanged() {}
+            containerPosition: 'bottom-right',
+            onStateChanged: function onStateChanged() {},
         });
         /**
          * @var {ax5ui} axWarningToast
          *
          */
         window.axWarningToast = new ax5.ui.toast({
-            theme: "danger",
+            theme: 'danger',
             icon: '<i class="cqc-warning2"></i>',
-            containerPosition: "bottom-left",
-            onStateChanged: function onStateChanged() {}
+            containerPosition: 'bottom-left',
+            onStateChanged: function onStateChanged() {},
         });
     };
 
@@ -2215,9 +2311,9 @@ axboot.preparePlugin = function () {
 
     return {
         define: define,
-        pageStart: pageStart
+        pageStart: pageStart,
     };
-}();
+})();
 axboot.promise = function () {
     /**
      * @Class axboot.promise
@@ -2225,34 +2321,34 @@ axboot.promise = function () {
      * ```js
      * axboot.promise()
      *      .then(function (ok, fail, data) {
-      *             $.ajax({
-      *                 url: "/api/v1/connections",
-      *                 callback: function (res) {
-      *                     ok(res); // data 로 전달
-      *                 },
-      *                 onError: function (res) {
-      *                     fail(res);
-      *                 }
-      *             });
-      *         })
+     *             $.ajax({
+     *                 url: "/api/v1/connections",
+     *                 callback: function (res) {
+     *                     ok(res); // data 로 전달
+     *                 },
+     *                 onError: function (res) {
+     *                     fail(res);
+     *                 }
+     *             });
+     *         })
      *      .then(function (ok, fail, data) {
-      *             $.ajax({
-      *                 url: "/api/v1/login",
-      *                 data: data,
-      *                 callback: function (res) {
-      *                     ok(res);
-      *                 },
-      *                 onError: function (res) {
-      *                     fail(res);
-      *                 }
-      *             });
-      *         })
+     *             $.ajax({
+     *                 url: "/api/v1/login",
+     *                 data: data,
+     *                 callback: function (res) {
+     *                     ok(res);
+     *                 },
+     *                 onError: function (res) {
+     *                     fail(res);
+     *                 }
+     *             });
+     *         })
      *      .then(function (ok, fail, data) {
-      *             console.log("success");
-      *         })
+     *             console.log("success");
+     *         })
      *      .catch(function (res) {
-      *              alert(res.message);
-      *      });
+     *              alert(res.message);
+     *      });
      * ```
      */
     var myClass = function myClass() {
@@ -2272,12 +2368,16 @@ axboot.promise = function () {
                 this.busy = true;
 
                 try {
-                    Q(function (a) {
-                        self.busy = false;
-                        self.exec(a);
-                    }, function (e) {
-                        self._catch(e);
-                    }, data || {});
+                    Q(
+                        function (a) {
+                            self.busy = false;
+                            self.exec(a);
+                        },
+                        function (e) {
+                            self._catch(e);
+                        },
+                        data || {}
+                    );
                 } catch (e) {
                     this._catch(e);
                 }
@@ -2296,26 +2396,26 @@ axboot.requireSession = function (_cookieName) {
     if (!ax5.util.getCookie(_cookieName)) {
         if (window.opener) {
             window.close();
-            window.opener.top.location.href = "/";
+            window.opener.top.location.href = '/';
         } else if (top != window) {
-            top.location.href = "/";
+            top.location.href = '/';
         }
     }
 };
-axboot.treeBuilder = function () {
+axboot.treeBuilder = (function () {
     /* http://www.treejs.cn/v3/api.php 를 참고하세요. */
 
     var defaultTreeSetting = {};
 
     var treeClass = function treeClass(_target, _setting, _zNodes) {
-        this.targetId = "";
+        this.targetId = '';
         this.$target = null;
         this.setting = {};
         this.zNodes = [];
         var callbackFlag = true;
 
         this.setData = function (_zNodes) {
-            if (typeof _zNodes !== "undefined") this.zNodes = ax5.util.deepCopy(_zNodes);
+            if (typeof _zNodes !== 'undefined') this.zNodes = ax5.util.deepCopy(_zNodes);
             $.fn.zTree.init(this.$target, this.setting, this.zNodes);
         };
         this.getData = function () {
@@ -2333,7 +2433,7 @@ axboot.treeBuilder = function () {
         this.editName = function () {
             var nodes = this.zTree.getSelectedNodes();
             if (nodes.length == 0) {
-                alert("Please select one node at first...");
+                alert('Please select one node at first...');
                 return;
             }
             this.zTree.editName(nodes[0]);
@@ -2341,7 +2441,7 @@ axboot.treeBuilder = function () {
         this.removeNode = function (treeNode) {
             var nodes = this.zTree.getSelectedNodes();
             if (nodes.length == 0) {
-                alert("Please select one node at first...");
+                alert('Please select one node at first...');
                 return;
             }
             zTree.removeNode(nodes[0], callbackFlag);
@@ -2352,7 +2452,7 @@ axboot.treeBuilder = function () {
 
             var childKey = _config.childKey;
             var parentKey = _config.parentKey;
-            var childrenKey = _config.childrenKey || "children";
+            var childrenKey = _config.childrenKey || 'children';
             var labelKey = _config.labelKey;
             var seq = 0;
             var hashDigit = 3;
@@ -2362,17 +2462,17 @@ axboot.treeBuilder = function () {
                 pointer[_list[i][childKey]] = i;
                 if (!_list[i][parentKey]) {
                     var item = _list[i];
-                    item.pHash = ax5.util.setDigit("0", hashDigit);
-                    item.hash = ax5.util.setDigit("0", hashDigit) + "_" + ax5.util.setDigit(seq, hashDigit);
+                    item.pHash = ax5.util.setDigit('0', hashDigit);
+                    item.hash = ax5.util.setDigit('0', hashDigit) + '_' + ax5.util.setDigit(seq, hashDigit);
 
                     var pushItem = {
                         id: item[childKey],
                         name: item[labelKey],
                         label: item[labelKey],
-                        pHash: ax5.util.setDigit("0", hashDigit),
-                        hash: ax5.util.setDigit("0", hashDigit) + "_" + ax5.util.setDigit(seq, hashDigit),
+                        pHash: ax5.util.setDigit('0', hashDigit),
+                        hash: ax5.util.setDigit('0', hashDigit) + '_' + ax5.util.setDigit(seq, hashDigit),
                         data: $.extend({}, item),
-                        __subTreeLength: 0
+                        __subTreeLength: 0,
                     };
                     pushItem[childrenKey] = [];
 
@@ -2385,11 +2485,11 @@ axboot.treeBuilder = function () {
                     var item = _list[i];
 
                     var pItem = _list[pointer[item[parentKey]]];
-                    var pHash = pItem["hash"];
+                    var pHash = pItem['hash'];
                     var pHashs = pHash.split(/_/g);
                     var pTree = tree;
                     var pTreeItem = {};
-                    var __subTreeLength = typeof pItem.__subTreeLength !== "undefined" ? pItem.__subTreeLength : 0;
+                    var __subTreeLength = typeof pItem.__subTreeLength !== 'undefined' ? pItem.__subTreeLength : 0;
 
                     pHashs.forEach(function (T, idx) {
                         if (idx > 0) {
@@ -2399,20 +2499,21 @@ axboot.treeBuilder = function () {
                     });
 
                     item[childrenKey] = [];
-                    item["pHash"] = pHash;
-                    item["hash"] = pHash + "_" + ax5.util.setDigit(__subTreeLength, hashDigit);
+                    item['pHash'] = pHash;
+                    item['hash'] = pHash + '_' + ax5.util.setDigit(__subTreeLength, hashDigit);
 
                     var pushItem = {
                         name: item[labelKey],
                         label: item[labelKey],
                         pHash: pHash,
-                        hash: pHash + "_" + ax5.util.setDigit(__subTreeLength, hashDigit),
-                        data: $.extend({}, item)
+                        hash: pHash + '_' + ax5.util.setDigit(__subTreeLength, hashDigit),
+                        data: $.extend({}, item),
                     };
                     pushItem[childrenKey] = [];
                     pTree.push(pushItem);
 
-                    if (typeof pItem.__subTreeLength === "undefined") pItem.__subTreeLength = 1;else pItem.__subTreeLength++;
+                    if (typeof pItem.__subTreeLength === 'undefined') pItem.__subTreeLength = 1;
+                    else pItem.__subTreeLength++;
 
                     pTreeItem.__subTreeLength = pItem.__subTreeLength;
                 }
@@ -2422,11 +2523,11 @@ axboot.treeBuilder = function () {
 
         this.$target = _target;
         if (!this.$target.get(0).id) {
-            this.$target.get(0).id = "axboot-tree-" + ax5.getGuid();
+            this.$target.get(0).id = 'axboot-tree-' + ax5.getGuid();
         }
         this.targetId = this.$target.get(0).id;
         this.setting = $.extend(true, {}, defaultTreeSetting, _setting);
-        if (typeof _zNodes !== "undefined") this.zNodes = ax5.util.deepCopy(_zNodes);
+        if (typeof _zNodes !== 'undefined') this.zNodes = ax5.util.deepCopy(_zNodes);
 
         $.fn.zTree.init(this.$target, this.setting, this.zNodes);
         this.zTree = $.fn.zTree.getZTreeObj(this.targetId);
@@ -2435,7 +2536,7 @@ axboot.treeBuilder = function () {
     return function (_target, _setting, _zNodes) {
         return new treeClass(_target, _setting, _zNodes);
     };
-}();
+})();
 /**
  * Created by tom on 2016. 9. 2..
  */
@@ -2447,23 +2548,23 @@ axboot.addressPopup = {
             width: 500,
             height: 600,
             iframe: {
-                url: "/jsp/common/zipcode.jsp"
+                url: '/jsp/common/zipcode.jsp',
             },
             header: {
-                title: "우편번호 찾기"
+                title: '우편번호 찾기',
             },
-            callback: cb
+            callback: cb,
         };
         axboot.modal.open(modalConfig);
     },
     close: function close() {
         axboot.modal.close();
-    }
+    },
 };
 
-axboot.util = function () {
+axboot.util = (function () {
     var setSelectionRange = function setSelectionRange(input, pos) {
-        if (typeof pos == "undefined") {
+        if (typeof pos == 'undefined') {
             pos = input.value.length;
         }
         if (input.setSelectionRange) {
@@ -2483,9 +2584,9 @@ axboot.util = function () {
     };
 
     return {
-        setFocusPosition: setSelectionRange
+        setFocusPosition: setSelectionRange,
     };
-}();
+})();
 /**
  * commonView
  * @Object {Object} axboot.commonView
@@ -2505,18 +2606,18 @@ axboot.searchView = {
         }
     },
     getCheckedValue: function getCheckedValue($inp) {
-        if ($inp[0].type == "radio") {
-            return $inp.filter(":checked").val();
-        } else if ($inp[0].type == "checkbox") {
+        if ($inp[0].type == 'radio') {
+            return $inp.filter(':checked').val();
+        } else if ($inp[0].type == 'checkbox') {
             return function (_$inp) {
                 var vals = [];
-                _$inp.filter(":checked").each(function () {
+                _$inp.filter(':checked').each(function () {
                     vals.push(this.value);
                 });
                 return vals.join(',');
             }.call(this, $inp);
         }
-    }
+    },
 };
 
 /**
@@ -2532,7 +2633,7 @@ axboot.treeView = {};
 axboot.gridView = {
     page: {
         pageNumber: 0,
-        pageSize: 99999
+        pageSize: 99999,
     },
     setData: function setData(_data) {
         this.target.setData(_data);
@@ -2540,7 +2641,7 @@ axboot.gridView = {
     getData: function getData(_type) {
         var list = [];
         var _list = this.target.getList(_type);
-        if (_type == "modified" || _type == "deleted") {
+        if (_type == 'modified' || _type == 'deleted') {
             list = ax5.util.filter(_list, function () {
                 return true;
             });
@@ -2550,7 +2651,7 @@ axboot.gridView = {
         return list;
     },
     addRow: function addRow() {
-        this.target.addRow({ __created__: true }, "last", { focus: "END" });
+        this.target.addRow({ __created__: true }, 'last', { focus: 'END' });
     },
     delRow: function delRow(_type) {
         this.target.deleteRow(_type);
@@ -2565,8 +2666,8 @@ axboot.gridView = {
                 currentPage: 0,
                 pageSize: 0,
                 totalElements: 0,
-                totalPages: 0
-            }
+                totalPages: 0,
+            },
         });
     },
     setPageData: function setPageData(_page) {
@@ -2574,7 +2675,7 @@ axboot.gridView = {
     },
     getPageData: function getPageData() {
         return this.page;
-    }
+    },
 };
 
 /**
@@ -2584,17 +2685,17 @@ axboot.gridView = {
 axboot.formView = {
     clear: function clear() {
         this.model.setModel(this.getDefaultData());
-        $('[data-ax5formatter]').ax5formatter("formatting");
+        $('[data-ax5formatter]').ax5formatter('formatting');
     },
     validate: function validate() {
         var rs = this.model.validate();
         if (rs.error) {
-            alert(rs.error[0].jquery.attr("title") + '을(를) 입력해주세요.');
+            alert(rs.error[0].jquery.attr('title') + '을(를) 입력해주세요.');
             rs.error[0].jquery.focus();
             return false;
         }
         return true;
-    }
+    },
 };
 
 /**
@@ -2602,7 +2703,7 @@ axboot.formView = {
  * @Object {Object} axboot.formView.defaultData
  */
 axboot.formView.defaultData = {
-    masterCompCd: ""
+    masterCompCd: '',
 };
 
 /**
@@ -2614,7 +2715,7 @@ axboot.extend = function (_obj1, _obj2) {
     return $.extend({}, _obj1, _obj2);
 };
 axboot.viewExtend = function (_obj1, _obj2) {
-    if (typeof _obj2 === "undefined") {
+    if (typeof _obj2 === 'undefined') {
         return $.extend({}, axboot.commonView, _obj1);
     } else {
         return $.extend({}, _obj1, _obj2);
@@ -2666,7 +2767,7 @@ axboot.viewExtend = function (_obj1, _obj2) {
  * });
  * ```
  */
-axboot.actionExtend = function () {
+axboot.actionExtend = (function () {
     return function (_actionThis, _action) {
         var myAction = {};
 
@@ -2676,31 +2777,30 @@ axboot.actionExtend = function () {
                 myAction[k] = _action[k];
             } else if (ax5.util.isFunction(_action[k])) {
                 myAction[k] = k;
-                myAction["__EXEC__" + k] = _action[k];
+                myAction['__EXEC__' + k] = _action[k];
             }
         }
 
         // dispatch 조작하기
-        if ("dispatch" in _action) {
-            myAction["page_dispatch"] = _action["dispatch"];
+        if ('dispatch' in _action) {
+            myAction['page_dispatch'] = _action['dispatch'];
         }
 
-        myAction["exec"] = function (caller, act, data) {
+        myAction['exec'] = function (caller, act, data) {
             if (_action[act]) {
                 return _action[act].call(caller, caller, act, data);
             } else {
-                return "error";
+                return 'error';
             }
         };
 
-        if (!myAction["page_dispatch"]) {
-            myAction["page_dispatch"] = function (caller, act, data) {
-
-                var result = function () {
+        if (!myAction['page_dispatch']) {
+            myAction['page_dispatch'] = function (caller, act, data) {
+                var result = (function () {
                     return caller.ACTIONS ? caller.ACTIONS : window.ACTIONS;
-                }().exec(caller, act, data);
+                })().exec(caller, act, data);
 
-                if (result != "error") {
+                if (result != 'error') {
                     return result;
                 } else {
                     return false;
@@ -2708,7 +2808,7 @@ axboot.actionExtend = function () {
             };
         }
 
-        myAction["dispatch"] = function () {
+        myAction['dispatch'] = function () {
             var fnArgs = [];
 
             fnArgs = ax5.util.toArray(arguments);
@@ -2717,9 +2817,9 @@ axboot.actionExtend = function () {
                 // 첫번째 아규먼트에 _actionThis 삽입
                 fnArgs.splice(0, 0, _actionThis);
             }
-            return myAction["page_dispatch"].apply(_actionThis, fnArgs);
+            return myAction['page_dispatch'].apply(_actionThis, fnArgs);
         };
 
         return myAction;
     };
-}();
+})();
