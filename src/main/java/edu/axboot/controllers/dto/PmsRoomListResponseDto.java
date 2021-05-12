@@ -4,7 +4,8 @@ import edu.axboot.domain.pms.room.PmsRoom;
 import lombok.Getter;
 
 @Getter
-public class PmsRoomListDto {
+public class PmsRoomListRequestDto {
+    private Long id;
     private String roomNum;
     private String roomTypCd;
     private String dndYn;
@@ -12,8 +13,12 @@ public class PmsRoomListDto {
     private String roomSttusCd;
     private String clnSttusd;
     private String svcSttusCd;
+    private boolean __created__;
+    private boolean __modified__;
+    private boolean __deleted__;
 
-    public PmsRoomListDto(PmsRoom entity){
+    public PmsRoomListRequestDto(PmsRoom entity){
+        this.id = entity.getId();
         this.roomNum = entity.getRoomNum();
         this.roomTypCd = entity.getRoomTypCd();
         this.dndYn = entity.getDndYn();
@@ -21,6 +26,9 @@ public class PmsRoomListDto {
         this.roomSttusCd = entity.getRoomSttusCd();
         this.clnSttusd = entity.getClnSttusCd();
         this. svcSttusCd =entity.getSvcSttusCd();
+        this.__created__ = false;
+        this.__modified__ = false;
+        this.__deleted__ = false;
     }
 
 }
