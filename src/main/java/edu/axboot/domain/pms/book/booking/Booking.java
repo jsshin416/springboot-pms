@@ -1,6 +1,7 @@
-package edu.axboot.domain.pms.book;
+package edu.axboot.domain.pms.book.booking;
 
 import com.chequer.axboot.core.annotations.ColumnPosition;
+import edu.axboot.domain.BaseJpaModel;
 import edu.axboot.domain.SimpleJpaModel;
 import lombok.*;
 import org.apache.ibatis.type.Alias;
@@ -8,18 +9,17 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import com.chequer.axboot.core.annotations.Comment;
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigDecimal;
 
+@NoArgsConstructor
 @Setter
 @Getter
 @DynamicInsert
 @DynamicUpdate
 @Entity
-@EqualsAndHashCode(callSuper = true)
 @Table(name = "PMS_CHK")
-@Comment(value = "")
-@Alias("booking")
-public class Booking extends SimpleJpaModel<Long> {
+public class Booking extends BaseJpaModel<Long> {
 
 	@Id
 	@Column(name = "ID", precision = 19, nullable = false)
@@ -140,4 +140,47 @@ public class Booking extends SimpleJpaModel<Long> {
     public Long getId() {
         return id;
     }
+	@Builder
+	public Booking(Long id, String rsvDt, Integer sno, String rsvNum,
+				   Long guestId, String guestNm,
+				   String guestNmEng, String guestTel,
+				   String email, String langCd, String aarDt, String arrTime,
+				   String depDt, String depTime, Integer nightCnt, String roomTypCd,
+				   String roomNum, Integer adultCnt, Integer chldCnt, String saleTypCd,
+				   String sttusCd, String srcCd, String brth, String gender, String payCd, String advnYn,
+				   BigDecimal salePrc, BigDecimal svcPrc,
+				   boolean isCreated,boolean isModified, boolean isDeleted){
+
+		this.id = id;
+		this.rsvDt = rsvDt;
+		this.sno =sno;
+		this.rsvNum= rsvNum;
+		this.guestId =guestId;
+		this.guestNm = guestNm;
+		this.guestNmEng =guestNmEng;
+		this.guestTel = guestTel;
+		this.email =email;
+		this.langCd =langCd;
+		this.arrDt = aarDt;
+		this.arrTime =arrTime;
+		this.depDt = depDt;
+		this.depTime = depTime;
+		this.nightCnt = nightCnt;
+		this.roomTypCd = roomTypCd;
+		this.roomNum = roomNum;
+		this.adultCnt =adultCnt;
+		this.chldCnt = chldCnt;
+		this.saleTypCd = saleTypCd;
+		this.sttusCd = sttusCd;
+		this.srcCd =srcCd;
+		this.brth = brth;
+		this.gender =gender;
+		this.payCd =payCd;
+		this.advnYn =advnYn;
+		this.salePrc =salePrc;
+		this.svcPrc =svcPrc;
+		this.__created__ = isCreated;
+		this.__modified__ = isModified;
+		this.__deleted__ = isDeleted;
+	}
 }

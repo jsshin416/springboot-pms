@@ -4,7 +4,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         var parmaObj = $.extend(caller.searchView.getData(), data, { pageSize: 2 });
         axboot.ajax({
             type: 'GET',
-            url: '/api/v1/pmsroom/dto',
+            url: '/api/v1/pmsroom',
             data: parmaObj,
             callback: function (res) {
                 caller.gridView01.setData(res);
@@ -25,7 +25,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
 
         axboot.ajax({
             type: 'POST',
-            url: '/api/v1/pmsroom/dto',
+            url: '/api/v1/pmsroom',
             data: JSON.stringify(saveList),
             callback: function (res) {
                 ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
@@ -82,17 +82,14 @@ fnObj.pageButtonView = axboot.viewExtend({
 fnObj.searchView = axboot.viewExtend(axboot.searchView, {
     initView: function () {
         this.target = $(document['searchView0']);
-        this.target.attr('onsubmit', 'return false;');
-        this.filter = $('#filter');
-        this.roomTypCd = $('.js-roomTypCd').on('change', function () {
-            ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
-        });
+        this.target.attr('onsubmit', 'return false');
+        this.roomType = $('.js-roomTypCd'); //?? id명으로 바꾸니까 왜 됨?
     },
     getData: function () {
         return {
             pageNumber: this.pageNumber || 0,
             pageSize: this.pageSize || 50,
-            roomTypCd: this.roomTypCd.val(),
+            roomType: this.roomType.val(),
         };
     },
 });
@@ -204,9 +201,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                 },
             },
         });
-        // formatter: function formatter() {
-        //     return parent.COMMON_CODE['ROOM_TYPE'].map[this.value];
-        // };
 
         axboot.buttonClick(this, 'data-grid-view-01-btn', {
             add: function () {

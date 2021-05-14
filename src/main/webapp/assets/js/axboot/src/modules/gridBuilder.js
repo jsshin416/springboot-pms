@@ -155,6 +155,46 @@ axboot.gridBuilder.preDefineColumns = {
             return parent.COMMON_CODE['SVC_STATUS'].map[this.value];
         },
     },
+    saleTypCd: {
+        width: 90,
+        label: '판매유형',
+        align: 'center',
+        formatter: function () {
+            return parent.COMMON_CODE['SALE_TYPE'].map[this.value];
+        },
+    },
+    srcCd: {
+        width: 90,
+        label: '예약경로',
+        align: 'center',
+        formatter: function () {
+            return parent.COMMON_CODE['RESERVATION_ROUTE'].map[this.value];
+        },
+    },
+    payCd: {
+        width: 90,
+        label: '결제방법',
+        align: 'center',
+        formatter: function () {
+            return parent.COMMON_CODE['PAY_METHOD'].map[this.value];
+        },
+    },
+    sttusCd: {
+        width: 90,
+        label: '투숙상태',
+        align: 'center',
+        formatter: function () {
+            return parent.COMMON_CODE['STAY_STATUS'].map[this.value];
+        },
+    },
+    langCd: {
+        width: 90,
+        label: '언어',
+        align: 'center',
+        formatter: function () {
+            return parent.COMMON_CODE['LANG'].map[this.value];
+        },
+    },
 
     sort: { width: 50, label: '정렬', align: 'center' },
     'companyJson.대표자명': { width: 100, label: '대표자명', align: 'center' },

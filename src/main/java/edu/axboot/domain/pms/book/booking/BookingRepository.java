@@ -1,7 +1,7 @@
-package edu.axboot.domain.pms.book;
+package edu.axboot.domain.pms.book.booking;
 
 import com.chequer.axboot.core.domain.base.AXBootJPAQueryDSLRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
+import edu.axboot.domain.pms.book.booking.Booking;
 import org.springframework.stereotype.Repository;
 
 @Repository

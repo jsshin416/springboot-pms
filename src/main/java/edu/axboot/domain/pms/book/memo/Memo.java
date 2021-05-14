@@ -15,10 +15,7 @@ import java.sql.Timestamp;
 @DynamicInsert
 @DynamicUpdate
 @Entity
-@EqualsAndHashCode(callSuper = true)
 @Table(name = "PMS_CHK_MEMO")
-@Comment(value = "")
-@Alias("memo")
 public class Memo extends SimpleJpaModel<Long> {
 
 	@Id

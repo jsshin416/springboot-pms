@@ -1,4 +1,4 @@
-package edu.axboot.domain.pms.room;
+package edu.axboot.domain.pms.info.room;
 
 import com.querydsl.core.BooleanBuilder;
 import edu.axboot.controllers.dto.PmsRoomListResponseDto;

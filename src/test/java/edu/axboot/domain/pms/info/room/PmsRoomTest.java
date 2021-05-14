@@ -1,4 +1,4 @@
-package edu.axboot.domain.pms.room;
+package edu.axboot.domain.pms.info.room;
 
 
 import edu.axboot.AXBootApplication;
@@ -36,7 +36,7 @@ public class PmsRoomTest {
         List<PmsRoomSaveRequestDto> dtos = new ArrayList<PmsRoomSaveRequestDto>();
         dtos.add(PmsRoomSaveRequestDto.builder()
                 .id(null)
-                .roomNum("000")
+                .roomNum("001")
                 .roomTypCd("AA")
                 .dndYn("N")
                 .ebYn("N")

@@ -22,7 +22,7 @@
                 <ax:tbl clazz="ax-search-tbl" minWidth="500px">
                     <ax:tr>
                         <ax:td label='ax.base.room.type' width="300px">
-                            <ax:common-code groupCd="ROOM_TYPE" clazz="js-roomTypCd" emptyText="전체"/>
+                            <ax:common-code groupCd="ROOM_TYPE" id="roomType"  clazz="js-roomTypCd" emptyText="전체"/>
                         </ax:td>
                     </ax:tr>
                 </ax:tbl>

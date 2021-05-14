@@ -1,22 +1,30 @@
-package edu.axboot.domain.pms.book;
+package edu.axboot.domain.pms.book.booking;
 
+import edu.axboot.controllers.dto.BookingSaveRequestDto;
+import edu.axboot.controllers.dto.PmsRoomSaveRequestDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import edu.axboot.domain.BaseService;
-import javax.inject.Inject;
-import com.chequer.axboot.core.parameter.RequestParams;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class BookingService extends BaseService<Booking, Long> {
-    private BookingRepository bookingRepository;
+    private final BookingRepository bookingRepository;
 
-    @Inject
-    public BookingService(BookingRepository bookingRepository) {
-        super(bookingRepository);
-        this.bookingRepository = bookingRepository;
-    }
 
-    public List<Booking> gets(RequestParams<Booking> requestParams) {
-        return findAll();
+    @Transactional
+    public List<Long> save(List<BookingSaveRequestDto> dtos) {
+        List<Long> ids = new ArrayList<Long>();
+        for (BookingSaveRequestDto dto: dtos) {
+            if (dto.is__created__()) {
+                ids.add(bookingRepository.save(dto.toEntity()).getId());
+            }
+        }
+        return ids;
+
     }
 }
