@@ -41,7 +41,7 @@
                                     <ax:td label="*도착일" width="35%">
                                         <div class="input-group" data-ax5picker="date">
                                             <input type="text" name="arrDt" id="arrDt" data-ax-path="arrDt"
-                                                class="js-arrDt form-control" placeholder="YYYY-MM-DD" />
+                                                class="js-arrDt form-control" data-ax5formatter="arrDt" placeholder="YYYY-MM-DD" />
                                             <span class="input-group-addon"><i class="cqc-calendar"></i></span>
                                         </div>
                                     </ax:td>
@@ -114,7 +114,7 @@
                                                         연락처</div>
                                                     <div data-ax-td-wrap>
                                                         <input type="text" name="guestTel" id="guestTel"
-                                                            data-ax-path="guestTel" class="js-guestTel form-control" placeholder="000-000-000" />
+                                                            data-ax-path="guestTel" data-ax5formatter="guestTel" class="js-guestTel form-control" placeholder="000-000-000" />
                                                     </div>
                                                 </div>
                                                 <div data-ax-td style="width:50%">

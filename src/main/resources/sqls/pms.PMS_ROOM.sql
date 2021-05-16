@@ -11,8 +11,8 @@ CREATE TABLE PMS_ROOM (
 	SVC_STTUS_CD  VARCHAR(20)  NULL     COMMENT '서비스 상태 CD', -- 서비스 상태 CD
 	CREATED_AT    TIMESTAMP    NULL     COMMENT '등록일', -- 등록일
 	CREATED_BY    VARCHAR(100) NULL     COMMENT '등록자', -- 등록자
-	UPDATED_AT    TIMESTAMP    NOT NULL COMMENT '변경일', -- 변경일
-	UPDATED_BY    VARCHAR(100) NOT NULL COMMENT '변경자' -- 변경자
+	UPDATED_AT    TIMESTAMP    NULL COMMENT '변경일', -- 변경일
+	UPDATED_BY    VARCHAR(100) NULL COMMENT '변경자' -- 변경자
 );
 
 -- 객실 유니크 인덱스
