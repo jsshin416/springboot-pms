@@ -53,7 +53,7 @@
                                     <ax:td label="*출발일" width="35%">
                                         <div class="input-group" data-ax5picker="date">
                                             <input type="text" name="depDt" id="depDt" data-ax-path="depDt"
-                                                class="js-depDt form-control" placeholder="YYYY-MM-DD" />
+                                                class="js-depDt form-control" data-ax5formatter="depDt" placeholder="YYYY-MM-DD" />
                                             <span class="input-group-addon"><i class="cqc-calendar"></i></span>
                                         </div>
 

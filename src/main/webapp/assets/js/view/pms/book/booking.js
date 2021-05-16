@@ -178,9 +178,7 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
 });
 
 fnObj.formView01 = axboot.viewExtend(axboot.formView, {
-    getDefaultDat: function () {
-        return $.extend({}, axboot.formView.defaultData, {});
-    },
+    getDefaultDat: function () {    },
     initView: function () {
         var _this = this; // fnObj.formView01
 
@@ -285,14 +283,18 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     auto_date: function () {
     $('#arrDt').on("change keyup paste", function(){
     var arr=$(this).val();
-       console.log(arr);
-        
+       console.log(arr);  
     //     // if(this.value.length >=10){
     //     //    this.value.substring(0,10);
     //     //    var arr=$(this).val();
     //     //     console.log(arr);
     //     }
     });
+    $('#nightCnt').on("change keyup paste", function(){
+        var cnt=$(this).val();
+           console.log(cnt);  
+        });
+    
     },
 
    
