@@ -2,8 +2,8 @@ package edu.axboot.domain;
 
 import edu.axboot.domain.code.QCommonCode;
 import edu.axboot.domain.file.QCommonFile;
-import edu.axboot.domain.pms.guest.QPmsGuest;
 import edu.axboot.domain.pms.info.room.QPmsRoom;
+import edu.axboot.domain.pms.info.guest.QGuest;
 import edu.axboot.domain.program.QProgram;
 import edu.axboot.domain.program.menu.QMenu;
 import edu.axboot.domain.user.QUser;
@@ -27,7 +27,9 @@ public class BaseService<T, ID extends Serializable> extends AXBootBaseService<T
     protected QMenu qMenu = QMenu.menu;
     protected QCommonFile qCommonFile = QCommonFile.commonFile;
     protected QPmsRoom qPmsRoom = QPmsRoom.pmsRoom;
-    protected QPmsGuest qPmsGuest = QPmsGuest.pmsGuest;
+    protected QGuest qGuest = QGuest.guest;
+
+
 
     protected AXBootJPAQueryDSLRepository<T, ID> repository;
 

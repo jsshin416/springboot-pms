@@ -1,10 +1,11 @@
 var fnObj = {};
 var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SEARCH: function (caller, act, data) {
+        var paramObj = $.extend(caller.searchView.getData(), data);
         axboot.ajax({
             type: 'GET',
             url: '/api/v1/booking',
-            data: $.extend({}, this.searchView.getData()),
+            data: paramObj,
             callback: function (res) {
                 caller.formView01.clear();
                 caller.gridView01.setData(res);
@@ -47,7 +48,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         axDialog.confirm({ msg: LANG('ax.script.form.clearconfirm') }, function () {
             if (this.key == 'ok') {
                 caller.formView01.clear();
-                $('[data-ax-path="guestNm"]').focus();
+                $('[data-ax-path="arrDt"]').focus();
             }
         });
     },
@@ -85,9 +86,9 @@ fnObj.pageStart = function () {
     this.pageButtonView.initView();
     this.searchView.initView();
     this.gridView01.initView();
-    this.formView01.initEvent();
+    this.formView01.initView();
 
-    ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
+    //ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
 };
 
 fnObj.pageResize = function () {};
@@ -177,7 +178,9 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
 });
 
 fnObj.formView01 = axboot.viewExtend(axboot.formView, {
-    getDefaultDat: function () {},
+    getDefaultData: function () {
+        return {};
+    },
 
     getData: function () {
         var data = this.modelFormatter.getClearData(this.model.get());
@@ -185,9 +188,8 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     },
 
     setData: function (data) {
-        if (typeof data === 'undefined') data = this.getDefaultDat();
+        if (typeof data === 'undefined') data = this.getDefaultData();
         data = $.extend({}, data);
-
         this.model.setModel(data);
         this.modelFormatter.formatting();
     },
@@ -204,7 +206,7 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
 
         // required 이외 벨리데이션 정의
         var pattern;
-        if (item.guestTel && !(pattern = /^([0-9]{3})\-?([0-9]{2})\-?([0-9]{5})$/).test(item.guestTel)) {
+        if (item.guestTel && !(pattern = /^([0-9]{3})\-?([0-9]{4})\-?([0-9]{4})$/).test(item.guestTel)) {
             axDialog.alert('연락처 형식을 확인하세요.'),
                 function () {
                     $('[data-ax-path="guestTel"]').focus();
@@ -230,14 +232,12 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
                 ACTIONS.dispatch(ACTIONS.FORM_CLEAR);
             }, //1번만 실행 하거나 init, eventbinding 나중에 호출 할 수도 있어서 따로 분리
         });
-        $(document.body).ready(function () {
-            $('[data-ax5picker="date"]').ax5picker({
-                direction: 'auto',
-                content: {
-                    type: 'date',
-                },
-            });
-        }); //달력
+        this.target.find('[data-ax5picker="date"]').ax5picker({
+            direction: 'auto',
+            content: {
+                type: 'date',
+            },
+        });
 
         axboot.buttonClick(this, 'data-searchview-btn', {
             modal: function () {
@@ -245,24 +245,28 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
             },
         }); //검색 모달
     },
-    // ch_date: function () {
-    // $(document.body).ready(function () {
-    //     $('[data-ax5picker="date"]').ax5picker({
-    //         direction: 'auto',
-    //         content: {
-    //             type: 'date',
-    //         },
-    //     });
-    // });
-    // this.target.find('[data-ax5picker="date"]').ax5picker({
-    //     direction: 'auto',
-    //     content: {
-    //         type: 'date',
-    //     },
-    // });
-    // },
-    auto_date: function () {},
 
+    auto_date: function () {
+        var arr, n_cnt, dep;
+        $('#js-arrDt').on('change keyup paste', function (arr) {
+            arr = $(this).val();
+            return arr;
+        });
+
+        $('#nightCnt').on('change keyup paste', function () {
+            n_cnt = $(this).val();
+        });
+        $('#depDt').on('change keyup paste', function () {
+            dep = $(this).val();
+        });
+        console.log(arr);
+        if (arr && dep !== 0) {
+            console.log(moment(dep).diff(moment(arr), 'days'));
+        }
+
+        // console.log(moment('dep').diff(moment('arr'), 'days'));
+    },
+    // night_cnt: function () {},
     initView: function () {
         var _this = this; // fnObj.formView01
 
@@ -271,7 +275,8 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
         this.model = new ax5.ui.binder();
         this.model.setModel(this.getDefaultData(), this.target);
         this.modelFormatter = new axboot.modelFormatter(this.model); // 모델 포메터 시작
-
         this.initEvent();
+        this.auto_date();
+        //
     },
 });

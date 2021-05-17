@@ -1,7 +1,6 @@
 package edu.axboot.domain.pms.info.guest;
 
-import com.chequer.axboot.core.annotations.ColumnPosition;
-import edu.axboot.domain.SimpleJpaModel;
+import edu.axboot.domain.BaseJpaModel;
 import lombok.*;
 import org.apache.ibatis.type.Alias;
 import org.hibernate.annotations.DynamicInsert;
@@ -9,17 +8,14 @@ import org.hibernate.annotations.DynamicUpdate;
 import com.chequer.axboot.core.annotations.Comment;
 import javax.persistence.*;
 
-
+@NoArgsConstructor
 @Setter
 @Getter
 @DynamicInsert
 @DynamicUpdate
 @Entity
-@EqualsAndHashCode(callSuper = true)
 @Table(name = "PMS_GUEST")
-@Comment(value = "")
-@Alias("pmsGuest")
-public class PmsGuest extends SimpleJpaModel<Long> {
+public class Guest extends BaseJpaModel<Long> {
 
 	@Id
 	@Column(name = "ID", precision = 19, nullable = false)
@@ -64,4 +60,23 @@ public class PmsGuest extends SimpleJpaModel<Long> {
     public Long getId() {
         return id;
     }
+
+ @Builder
+	public Guest(Long id, String guestNm, String guestNmEng, String guestTel,
+				  String email, String brth, String gender, String langCd,
+				  String rmk,boolean isCreated,boolean isModified, boolean isDeleted ){
+	 this.id = id;
+	 this.guestNm = guestNm;
+	 this.guestNmEng = guestNmEng;
+	 this.guestTel = guestTel;
+	 this.email = email;
+	 this.brth = brth;
+	 this.gender = gender;
+	 this.langCd = langCd;
+	 this.rmk = rmk;
+	 this.__created__ = isCreated;
+	 this.__modified__ = isModified;
+	 this.__deleted__ = isDeleted;
+ }
+
 }

@@ -30,5 +30,8 @@
     "markdown-it": "^8.1.0",
     "node-sass": "*",
     "strip-indent": "^2.0.0"
+  },
+  "dependencies": {
+    "moment": "^2.5.1"
   }
 }
