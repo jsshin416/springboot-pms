@@ -1,4 +1,4 @@
-package edu.axboot.domain.pms.guest;
+package edu.axboot.domain.pms.info.guest;
 
 import com.chequer.axboot.core.annotations.ColumnPosition;
 import edu.axboot.domain.SimpleJpaModel;

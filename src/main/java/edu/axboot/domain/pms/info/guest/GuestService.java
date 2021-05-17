@@ -1,4 +1,4 @@
-package edu.axboot.domain.pms.guest;
+package edu.axboot.domain.pms.info.guest;
 
 import org.springframework.stereotype.Service;
 import edu.axboot.domain.BaseService;

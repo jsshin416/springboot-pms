@@ -1,4 +1,4 @@
-package edu.axboot.domain.pms.guest;
+package edu.axboot.domain.pms.info.guest;
 
 import com.chequer.axboot.core.domain.base.AXBootJPAQueryDSLRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
