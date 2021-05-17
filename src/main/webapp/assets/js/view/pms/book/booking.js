@@ -1,11 +1,10 @@
 var fnObj = {};
 var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SEARCH: function (caller, act, data) {
-        var paramObj= $.extend(caller.searchView.getData(),caller.formView01.auto_date(),data);
         axboot.ajax({
             type: 'GET',
             url: '/api/v1/booking',
-            data: paramObj,
+            data: $.extend({}, this.searchView.getData()),
             callback: function (res) {
                 caller.formView01.clear();
                 caller.gridView01.setData(res);
@@ -178,17 +177,8 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
 });
 
 fnObj.formView01 = axboot.viewExtend(axboot.formView, {
-    getDefaultDat: function () {    },
-    initView: function () {
-        var _this = this; // fnObj.formView01
+    getDefaultDat: function () {},
 
-         _this.target = $('.js-form');
-        
-        this.model = new ax5.ui.binder();
-        this.model.setModel(this.getDefaultData(), this.target);
-        this.modelFormatter = new axboot.modelFormatter(this.model); // 모델 포메터 시작
-         this.initEvent();
-    },
     getData: function () {
         var data = this.modelFormatter.getClearData(this.model.get());
         return $.extend({}, data);
@@ -214,21 +204,14 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
 
         // required 이외 벨리데이션 정의
         var pattern;
-        if (item.guestTel && !(pattern = /^([0-9]{3})\-?([0-9]{4})\-?([0-9]{4})$/).test(item.guestTel)) {
+        if (item.guestTel && !(pattern = /^([0-9]{3})\-?([0-9]{2})\-?([0-9]{5})$/).test(item.guestTel)) {
             axDialog.alert('연락처 형식을 확인하세요.'),
                 function () {
                     $('[data-ax-path="guestTel"]').focus();
                 };
             return false;
         }
-        if (item.arrDt && !(pattern = /^([0-9]{4})\-?([0-9]{2})\-?([0-9]{2})$/).test(item.arrDt)) {
-            axDialog.alert('날짜 형식을 확인하세요.'),
-                function () {
-                    $('[data-ax-path="arrDt"]').focus();
-                };
-            return false;
-        }
-
+        var pattern;
         if (item.email) {
             pattern = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.(?:[A-Za-z0-9]{2,}?)$/i;
             if (!pattern.test(item.email)) {
@@ -247,7 +230,6 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
                 ACTIONS.dispatch(ACTIONS.FORM_CLEAR);
             }, //1번만 실행 하거나 init, eventbinding 나중에 호출 할 수도 있어서 따로 분리
         });
-
         $(document.body).ready(function () {
             $('[data-ax5picker="date"]').ax5picker({
                 direction: 'auto',
@@ -256,13 +238,12 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
                 },
             });
         }); //달력
-       
+
         axboot.buttonClick(this, 'data-searchview-btn', {
             modal: function () {
                 ACTIONS.dispatch(ACTIONS.MODAL_OPEN);
             },
         }); //검색 모달
-    
     },
     // ch_date: function () {
     // $(document.body).ready(function () {
@@ -280,22 +261,17 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     //     },
     // });
     // },
-    auto_date: function () {
-    $('#arrDt').on("change keyup paste", function(){
-    var arr=$(this).val();
-       console.log(arr);  
-    //     // if(this.value.length >=10){
-    //     //    this.value.substring(0,10);
-    //     //    var arr=$(this).val();
-    //     //     console.log(arr);
-    //     }
-    });
-    $('#nightCnt').on("change keyup paste", function(){
-        var cnt=$(this).val();
-           console.log(cnt);  
-        });
-    
-    },
+    auto_date: function () {},
 
-   
+    initView: function () {
+        var _this = this; // fnObj.formView01
+
+        _this.target = $('.js-form');
+
+        this.model = new ax5.ui.binder();
+        this.model.setModel(this.getDefaultData(), this.target);
+        this.modelFormatter = new axboot.modelFormatter(this.model); // 모델 포메터 시작
+
+        this.initEvent();
+    },
 });
