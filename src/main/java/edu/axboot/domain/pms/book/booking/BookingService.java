@@ -1,6 +1,7 @@
 package edu.axboot.domain.pms.book.booking;
 
 import edu.axboot.controllers.dto.BookingSaveRequestDto;
+import edu.axboot.controllers.dto.GuestSaveRequestDto;
 import edu.axboot.controllers.dto.PmsRoomSaveRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ public class BookingService extends BaseService<Booking, Long> {
     private final BookingRepository bookingRepository;
 
 
-    @Transactional
+   /* @Transactional
     public List<Long> save(List<BookingSaveRequestDto> dtos) {
         List<Long> ids = new ArrayList<Long>();
         for (BookingSaveRequestDto dto: dtos) {
@@ -26,5 +27,11 @@ public class BookingService extends BaseService<Booking, Long> {
         }
         return ids;
 
-    }
+    }*/
+   @Transactional
+   public Long save(BookingSaveRequestDto requestDto) {
+       return bookingRepository.save(requestDto.toEntity()).getId();
+
+   }
+
 }

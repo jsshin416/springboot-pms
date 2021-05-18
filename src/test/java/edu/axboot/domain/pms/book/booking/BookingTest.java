@@ -3,6 +3,7 @@ package edu.axboot.domain.pms.book.booking;
 
 import edu.axboot.AXBootApplication;
 import edu.axboot.controllers.dto.BookingSaveRequestDto;
+import junit.framework.TestCase;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,10 +23,10 @@ import static org.junit.Assert.assertTrue;
 public class BookingTest {
     @Autowired
     private  BookingService bookingService;
-
-    public static List<Long> ids;
+    public static long ids =0;
+    //public static List<Long> ids;
     @Test
-    public void test1_예약등록_저장하기() {
+    /*public void test1_예약등록_저장하기() {
         //given
         List<BookingSaveRequestDto> dtos = new ArrayList<BookingSaveRequestDto>();
         dtos.add(BookingSaveRequestDto.builder()
@@ -49,8 +50,31 @@ public class BookingTest {
         ids = bookingService.save(dtos);
         //then
         assertTrue(ids.size() == dtos.size());
-    }
+    }*/
+    public void test1_예약등록_저장하기() {
+        //given
+      BookingSaveRequestDto dtos = BookingSaveRequestDto.builder()
+                .id(null)
+                .arrDt("20210518")
+                .nightCnt(2)
+                .depDt("20210520")
+                .roomTypCd("SB")
+                .saleTypCd("온라인")
+                .sttusCd("전화")
+                .srcCd("소스")
+                .sno(1111)
+                .rsvNum("20210514001")
+                .roomNum("101")
 
+                .__created__(true)
+                .__modified__(false)
+                .__deleted__(false)
+                .build();
+        //when
+        ids = this.bookingService.save(dtos);
+        //then
+        TestCase.assertTrue(ids >0);
+    }
 
 
 }
