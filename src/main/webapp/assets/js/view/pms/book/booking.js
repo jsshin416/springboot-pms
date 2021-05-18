@@ -21,9 +21,6 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         return false;
     },
     PAGE_SAVE: function (caller, act, data) {
-        var saveList = [].concat(caller.gridView01.getData());
-        saveList = saveList.concat(caller.gridView01.getData('deleted'));
-
         if (caller.formView01.validate()) {
             var item = caller.formView01.getData();
             if (!item.id) item.__created__ = true;
@@ -64,8 +61,8 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     MODAL_OPEN: function (caller, act, data) {
         if (!data) data = {};
         axboot.modal.open({
-            width: 780,
-            height: 450,
+            width: 730,
+            height: 600,
             iframe: {
                 param: 'id=' + (data.id || ''),
                 url: 'modal.jsp',
@@ -164,8 +161,7 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
 
         if (_type == 'modified' || _type == 'deleted') {
             list = ax5.util.filter(_list, function () {
-                delete this.deleted;
-                return this.key;
+                return this.id;
             });
         } else {
             list = _list;
@@ -246,27 +242,15 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
         }); //검색 모달
     },
 
-    auto_date: function () {
-        var arr, n_cnt, dep;
-        $('#js-arrDt').on('change keyup paste', function (arr) {
-            arr = $(this).val();
-            return arr;
-        });
-
-        $('#nightCnt').on('change keyup paste', function () {
-            n_cnt = $(this).val();
-        });
-        $('#depDt').on('change keyup paste', function () {
-            dep = $(this).val();
-        });
-        console.log(arr);
-        if (arr && dep !== 0) {
-            console.log(moment(dep).diff(moment(arr), 'days'));
-        }
-
-        // console.log(moment('dep').diff(moment('arr'), 'days'));
+    cnt_night: function (arr, dep) {
+        var night = moment(dep).diff(moment(arr), 'days');
+        $('[data-ax-path="nightCnt"]').val(night).trigger('change');
     },
-    // night_cnt: function () {},
+    cnt_date: function (arr, night) {
+        var dep = moment(arr).add(night, 'days').format('yyyy-MM-DD');
+        $('[data-ax-path="depDt"]').val(dep).trigger('change');
+    },
+
     initView: function () {
         var _this = this; // fnObj.formView01
 
@@ -276,7 +260,19 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
         this.model.setModel(this.getDefaultData(), this.target);
         this.modelFormatter = new axboot.modelFormatter(this.model); // 모델 포메터 시작
         this.initEvent();
-        this.auto_date();
-        //
+
+        var arr, night, dep;
+
+        $('#arrDt').on('change ', function () {
+            arr = $(this).val();
+            $(' #depDt').on('change ', function () {
+                dep = $(this).val();
+                _this.cnt_night(arr, dep);
+            });
+            $(' #nightCnt').on('change ', function () {
+                night = $(this).val();
+                _this.cnt_date(arr, night);
+            });
+        });
     },
 });

@@ -1,7 +1,6 @@
 package edu.axboot.controllers.dto;
 
 import edu.axboot.domain.pms.info.guest.Guest;
-import edu.axboot.domain.pms.info.room.PmsRoom;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,15 +17,12 @@ public class GuestSaveRequestDto {
     private String gender;
     private String langCd;
     private String rmk;
-    private boolean __created__;
-    private boolean __modified__;
-    private boolean __deleted__;
 
 
     @Builder
     public GuestSaveRequestDto(Long id, String guestNm, String guestNmEng, String guestTel,
                                String email, String brth, String gender, String langCd,
-                               String rmk,boolean __created__,boolean __modified__,boolean __deleted__ ) {
+                               String rmk) {
         this.id = id;
         this.guestNm = guestNm;
         this.guestNmEng = guestNmEng;
@@ -36,9 +32,6 @@ public class GuestSaveRequestDto {
         this.gender = gender;
         this.langCd = langCd;
         this.rmk = rmk;
-        this.__created__ = __created__;
-        this.__modified__ = __modified__;
-        this.__deleted__ = __deleted__;
     }
 
         public Guest toEntity() {
@@ -52,10 +45,7 @@ public class GuestSaveRequestDto {
                     .gender(gender)
                     .langCd(langCd)
                     .rmk(rmk)
-                    .isCreated(__created__)
-                    .isModified(__modified__)
-                    .isDeleted(__deleted__)
-                    .build();
+                  .build();
         }
     }
 

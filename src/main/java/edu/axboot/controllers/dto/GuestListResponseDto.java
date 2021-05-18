@@ -14,9 +14,6 @@ public class GuestListResponseDto {
     private String gender;
     private String langCd;
     private String rmk;
-    private boolean __created__;
-    private boolean __modified__;
-    private boolean __deleted__;
 
     public GuestListResponseDto(Guest entity){
         this.id =entity.getId();
@@ -28,9 +25,7 @@ public class GuestListResponseDto {
         this.gender = entity.getGender();
         this.langCd = entity.getLangCd();
         this.rmk = entity.getRmk();
-        this.__created__ = false;
-        this.__modified__ = false;
-        this.__deleted__ = false;
+
     }
 
 }

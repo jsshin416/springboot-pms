@@ -35,103 +35,86 @@
                     </div>
 
                     <ax:split-layout name="ax1" orientation="vertical">
-                        <ax:split-panel width="400" style="padding-right: 10px;">
-
+                        <ax:split-panel width="600" style="padding-right: 10px;">
                             <!-- 목록 -->
                             <div class="ax-button-group" data-fit-height-aside="grid-view-01">
                                 <div class="left">
-                                    <h2><i class="cqc-list"></i>
-                                       투숙객 목록 </h2>
+                                    <h2><i class="cqc-list"></i>투숙객 목록
                                 </div>
+
                             </div>
                             <div data-ax5grid="grid-view-01" data-fit-height-content="grid-view-01"
                                 style="height: 300px;"></div>
-
                         </ax:split-panel>
                         <ax:splitter></ax:splitter>
                         <ax:split-panel width="*" style="padding-left: 10px;" scroll="scroll">
+                            <!-- 폼 -->
+                            <div class="ax-button-group" role="panel-header">
+                                <div class="left">
+                                    <h2><i class="cqc-news"></i>투숙객 정보
+                                    </h2>
+                                </div>
 
-                            <ax:form name="formView01">
+                            </div>
+                            <form name="formView01" class ="js-form">
+                                <ax:tbl clazz="ax-form-tbl" minWidth="500px">
+                                    <ax:tr>
+                                        <ax:td label="이름" width="300px">
+                                            <input type="text" id="guestNm" data-ax-path="guestNm" class="form-control"
+                                                data-ax-validate="required" />
+                                        </ax:td>
+                                        <ax:td label="영문" width="300px">
+                                            <input type="text" id="guestNmEng" data-ax-path="guestNmEng"
+                                                class="form-control" data-ax-validate="required" />
+                                        </ax:td>
+                                    </ax:tr>
+                                    <ax:tr>
+                                        <ax:td label="연락처" width="300px">
+                                            <input type="text" id="guestTel" data-ax-path="guestTel"
+                                                class="form-control" />
+                                        </ax:td>
+                                        <ax:td label="이메일" width="300px">
+                                            <input type="text" id="email" data-ax-path="email" class="form-control" />
+                                        </ax:td>
+                                    </ax:tr>
+                                    <ax:tr>
+                                        <ax:td label="언어" width="300px">
+                                            <ax:common-code groupCd="LANG" id="langCd" dataPath="langCd"
+                                                clazz="js-langCd  " emptyText="전체" />
+                                        </ax:td>
+                                        <ax:td label="생년월일" width="40%">
+                                            <div class="input-group" data-ax5picker="date">
+                                                <input type="text" name="brth" id="brth" data-ax-path="brth"
+                                                    class="js-brth form-control" placeholder="YYYY-MM-DD" />
+                                                <span class="input-group-addon"><i class="cqc-calendar"></i></span></div>
+                                        </ax:td>
+                                        <span>
+                                            <label><input type="radio" id = "gender" data-ax-path="gender" name="gender" value="M">남
+                                            </label>
+                                            <label><input type="radio" id ="gender" data-ax-path="gender" name="gender" value="F">여
+                                            </label>
+                                        </span>
 
-                                <ax:split-panel width="*" style="padding-left: 10px;" scroll="scroll">
-                                    <!-- 폼 -->
-                                    <div class="ax-button-group" role="panel-header">
-                                        <div class="left">
-                                            <h2><i class="cqc-news"></i>
-                                                 투숙객 정보
-                                            </h2>
-                                        </div>
+                                    </ax:tr>
+                                    <ax:tr>
+                                        <ax:td label="비고" width="100%">
+                                            <textarea id="rmk" data-ax-path="rmk" class="form-control"></textarea>
+                                        </ax:td>
+                                    </ax:tr>
+                                </ax:tbl>
+
+                                <div class="H5"></div>
+                                <div class="ax-button-group">
+                                    <div class="left">
+                                        <h2>
+                                            <i class="cqc-list"></i>투숙객 이력
+                                        </h2>
                                     </div>
-                                    <ax:form name="formView01">
-                                        <ax:tbl clazz="ax-form-tbl" minWidth="500px">
-                                            <ax:tr>
-                                                <ax:td label="이름" width="300px">
-                                                    <input type="text" id= "guestNm" data-ax-path="guestNm" class="form-control" />
-                                                </ax:td>
-                                                <ax:td label="영문" width="300px">
-                                                    <input type="text" id ="guestNmEng" data-ax-path="guestNmEng" class="form-control" />
-                                                </ax:td>
-                                            </ax:tr>
-                                          
-                                            <ax:tr>
-                                                <ax:td label="연락처" width="300px">
-                                                    <input type="text" id="guestTel" data-ax-path="guestTel" class="form-control" data-ax5formatter="money" />
-                                                </ax:td>
-                                                <ax:td label="이메일" width="300px">
-                                                    <input type="text" id="email" data-ax-path="email" class="form-control" data-ax5formatter="money" />
-                                                </ax:td>
-                                            </ax:tr>
-                                            <ax:tr>
-                                                <ax:td label="언어" width="300px">
-                                                    <ax:common-code groupCd="LANG" id="langCd" dataPath="langCd"
-                                                    clazz="js-langCd  " emptyText="전체" />
-        
-                                                </ax:td>
-                                        
-                                                <ax:td label="생년월일" width ="300px">
-                                                    <div data-ax-td>
-                                                        <div class="input-group" data-ax5picker="date">
-                                                            <input type="text" name="brth" id="brth"
-                                                                data-ax-path="brth" class="js-brth form-control"
-                                                                placeholder="YYYY-MM-DD" />
-                                                            <span class="input-group-addon"><i
-                                                                    class="cqc-calendar"></i></span>
-                                                               <div> 남 <input type="radio" name="gender" value="남" checked>
-                                                            여 <input type="radio" name="gender" value="여"></div>
-                                                        </div>
-                                                      
-                                                    </div>
-                                                   
-                                             </ax:td>
-                                            </ax:tr>
-                                            <ax:tr>
-                                                <ax:td label="ax.admin.sample.form.etc5"width="100%">
-                                                    <textarea   id="rmk" data-ax-path="rmk" class="form-control"></textarea>
-                                                </ax:td>
-                                            </ax:tr>
-                                        </ax:tbl>
-                    
-                                        <div class="H5"></div>
-                                        <div class="ax-button-group">
-                                            <div class="left">
-                                                <h3>
-                                                    <i class="cqc-list"></i>
-                                                   투숙객 이력</h3>
-                                            </div>
-                                           
-                                        </div>
-                    
-                                        <div data-ax5grid="grid-view-02" style="height: 300px;"></div>
-                    
-                                    </ax:form>
-                                </ax:split-panel>
+                                </div>
+                                <div data-ax5grid="grid-view-02" style="height: 300px;"></div>
 
-                            </ax:form>
-
+                            </form>
                         </ax:split-panel>
-
-
                     </ax:split-layout>
-
                 </jsp:body>
             </ax:layout>
