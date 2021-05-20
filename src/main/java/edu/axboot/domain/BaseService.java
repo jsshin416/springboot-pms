@@ -33,6 +33,7 @@ public class BaseService<T, ID extends Serializable> extends AXBootBaseService<T
 
 
 
+
     protected AXBootJPAQueryDSLRepository<T, ID> repository;
 
     public BaseService() {

@@ -19,38 +19,38 @@
             <ax:form name="searchView0">
                 <ax:tbl clazz="ax-search-tbl" minWidth="500px">
                     <ax:tr>
-                        <ax:td label='검색어' width="300px">
+                        <ax:td label='검색어' width="350px">
                             <input type="text" class="form-control" />
                         </ax:td>
-                        <ax:td label='예약번호' width="300px">
-                            <input type="text" class="form-control" />
+                        <ax:td label='예약번호' width="350px">
+                            <input type="text" class="js-rsvNum form-control" />
                         </ax:td>
-                        <ax:td label='예약일' width="300px">
+                        <ax:td label='예약일' width="350px">
                             <div class="input-group" data-ax5picker="date">
-                                <input type="text" class="form-control" placeholder="yyyy/mm/dd">
+                                <input type="text" class="js-rsvDt form-control" placeholder="YYYY-MM-DD" data-ax5formatter="date">
                                 <span class="input-group-addon">~</span>
-                                <input type="text" class="form-control" placeholder="yyyy/mm/dd">
+                                <input type="text" class="js-rsvDt form-control" placeholder="YYYY-MM-DD" data-ax5formatter="date">
                                 <span class="input-group-addon"><i class="cqc-calendar"></i></span>
                             </div>                       
                          </ax:td>
                     </ax:tr>
                     <ax:tr>
-                        <ax:td label='객실타입' width="300px">
+                        <ax:td label='객실타입' width="350px">
                             <ax:common-code groupCd="ROOM_TYPE" id="roomType" dataPath="roomTypCd"
                             clazz="js-roomTypCd " emptyText="전체" />
-    </ax:td>
-                        <ax:td label='도착일' width="300px">
+                    </ax:td>
+                        <ax:td label='도착일' width="350px">
                             <div class="input-group" data-ax5picker="date">
-                                <input type="text" class="form-control" placeholder="yyyy/mm/dd">
+                                <input type="text" class="js-arrDt form-control" placeholder="YYYY-MM-DD" data-ax5formatter="date">
                                 <span class="input-group-addon">~</span>
-                                <input type="text" class="form-control" placeholder="yyyy/mm/dd">
+                                <input type="text" class="js-arrDt form-control" placeholder="YYYY-MM-DD" data-ax5formatter="date">
                                 <span class="input-group-addon"><i class="cqc-calendar"></i></span>
                             </div>                             </ax:td>
-                        <ax:td label='출발일' width="300px">
+                        <ax:td label='출발일' width="350px">
                             <div class="input-group" data-ax5picker="date">
-                                <input type="text" class="form-control" placeholder="yyyy/mm/dd">
+                                <input type="text" class="js-depDt form-control"placeholder="YYYY-MM-DD" data-ax5formatter="date">
                                 <span class="input-group-addon">~</span>
-                                <input type="text" class="form-control" placeholder="yyyy/mm/dd">
+                                <input type="text" class="js-depDt form-control"placeholder="YYYY-MM-DD" data-ax5formatter="date">
                                 <span class="input-group-addon"><i class="cqc-calendar"></i></span>
                             </div>                             </ax:td>
                     </ax:tr>
@@ -84,7 +84,7 @@
                 
                     <div class="right" style="width:200px">
                         <ax:common-code groupCd="STAY_STATUS" id="sttusCd" dataPath="sttusCd"  clazz="js-sttusCd " /> 
-                        <button   button type="button" class="btn btn-default" data-grid-view-01-btn="clear"><i class="cqc-circle-with-plus"></i> 상태변경</button>
+                        <button   button type="button" class="btn btn-default" data-grid-view-01-btn="modal"><i class="cqc-circle-with-plus"></i> 상태변경</button>
                     </div>
                 </div>
                 <div data-ax5grid="grid-view-01" data-fit-height-content="grid-view-01" style="height: 300px;"></div>

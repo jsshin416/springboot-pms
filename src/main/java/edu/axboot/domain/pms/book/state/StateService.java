@@ -1,56 +1,45 @@
 package edu.axboot.domain.pms.book.state;
 
+import com.querydsl.core.BooleanBuilder;
 import edu.axboot.controllers.dto.BookingSaveRequestDto;
+import edu.axboot.controllers.dto.PmsRoomListResponseDto;
+import edu.axboot.controllers.dto.StateListResponseDto;
 import edu.axboot.domain.BaseService;
 import edu.axboot.domain.pms.book.booking.Booking;
 import edu.axboot.domain.pms.book.booking.BookingRepository;
+import edu.axboot.domain.pms.info.room.PmsRoom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class StateService extends BaseService<Booking, Long> {
-    private final BookingRepository bookingRepository;
+    //private final BookingRepository bookingRepository;
+    private final StateRepository stateRepository;
 
 
-   /* @Transactional
-    public List<Long> save(List<BookingSaveRequestDto> dtos) {
-        List<Long> ids = new ArrayList<Long>();
-        for (BookingSaveRequestDto dto: dtos) {
-            if (dto.is__created__()) {
-                ids.add(bookingRepository.save(dto.toEntity()).getId());
-            }
+
+
+    public List<StateListResponseDto> findByL(String rsvDt) {
+        BooleanBuilder builder = new BooleanBuilder();
+        if(isNotEmpty(rsvDt)){
+            builder.and(qBooking.rsvDt.eq(rsvDt));
         }
-        return ids;
-
-    }*/
-   @Transactional
-   public Long save(BookingSaveRequestDto requestDto) {
-       return bookingRepository.save(requestDto.toEntity()).getId();
-
-   }
-
-    /*@Transactional
-    public long save(BookingSaveRequestDto saveDto) {
-        long id = 0;
-        String rsvDt = LocalDate.now().toString();
-        Booking todayLastChk = select().select(
-                Projections.fields(Booking.class, qBooking.sno))
+        List<Booking> entitis = select()
                 .from(qBooking)
-                .where(qBooking.rsvDt.eq(rsvDt))
-                .orderBy(qBooking.sno.desc())
-                .fetchFirst();
-        int sno = 1;
-        if (todayLastChk != null) {
-            sno = todayLastChk.getSno() + 1;
-        }
-        Booking booking = saveDto.toEntity();
-        Booking.예약번호생성(rsvDt, sno);
-//        id = bookingRepository.save(chk).getId();
-        //TODO 투숙객 처리
-        //TODO 투숙메모 처리
-        return id;
-    }*/
+                .where(builder)
+                .orderBy(qBooking.rsvDt.asc())
+                .fetch();
+
+        return entitis.stream()
+                .map(StateListResponseDto::new)//
+                .collect(Collectors.toList());
+    }
+
+
 
 }

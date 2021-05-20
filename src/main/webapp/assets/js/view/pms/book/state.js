@@ -3,7 +3,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SEARCH: function (caller, act, data) {
         axboot.ajax({
             type: 'GET',
-            url: ['samples', 'parent'],
+            url: "/api/v1/state",
             data: caller.searchView.getData(),
             callback: function (res) {
                 caller.gridView01.setData(res);
@@ -19,12 +19,12 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         return false;
     },
     PAGE_SAVE: function (caller, act, data) {
-        var saveList = [].concat(caller.gridView01.getData('modified'));
+        var saveList = [].concat(caller.gridView01.getData(''));
         saveList = saveList.concat(caller.gridView01.getData('deleted'));
 
         axboot.ajax({
-            type: 'PUT',
-            url: ['samples', 'parent'],
+            type: 'POST',
+            url: "/api/v1/state",
             data: JSON.stringify(saveList),
             callback: function (res) {
                 ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
@@ -32,13 +32,27 @@ var ACTIONS = axboot.actionExtend(fnObj, {
             },
         });
     },
-    ITEM_CLICK: function (caller, act, data) {},
-    ITEM_ADD: function (caller, act, data) {
-        caller.gridView01.addRow();
+    ITEM_CLICK: function (caller, act, data) {
+        caller.formView01.setData(data);
     },
-    ITEM_DEL: function (caller, act, data) {
-        caller.gridView01.delRow('selected');
-    },
+    MODAL_OPEN: function (caller, act, data) {
+        if (!data) data = {};
+        axboot.modal.open({
+            width: 730,
+            height: 600,
+            iframe: {
+                param: 'id=' + (data.id || ''),
+                url: 'state_modal.jsp',
+            },
+            header: { title: '투숙객 조회' },
+            callback: function (data) {
+                if (data && data.dirty) {
+                    ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
+                }
+                this.close();
+            },
+        });
+    },   
     dispatch: function (caller, act, data) {
         var result = ACTIONS.exec(caller, act, data);
         if (result != 'error') {
@@ -48,6 +62,12 @@ var ACTIONS = axboot.actionExtend(fnObj, {
             return false;
         }
     },
+    EXCEL_DOWN: function (caller, act, data) {
+        var frm = $('.js-form').get(0);
+        frm.action = '/api/v1/guest/exceldown';
+        frm.enctype = 'application/x-www-form-urlencoded';
+        frm.submit();
+    },
 });
 
 // fnObj 기본 함수 스타트와 리사이즈
@@ -55,7 +75,7 @@ fnObj.pageStart = function () {
     this.pageButtonView.initView();
     this.searchView.initView();
     this.gridView01.initView();
-    this.formView01.initView();
+    
 
     ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
 };
@@ -83,14 +103,36 @@ fnObj.pageButtonView = axboot.viewExtend({
 fnObj.searchView = axboot.viewExtend(axboot.searchView, {
     initView: function () {
         this.target = $(document['searchView0']);
-        this.target.attr('onsubmit', 'return ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);');
+        this.target.attr('onsubmit', 'return false');
         this.filter = $('#filter');
+        this.target.on('keydown.search', 'input, .form-control', function (e) {
+            if (e.keyCode === 13) {
+                ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
+            }
+        });
+        this.rsvNum=$('.js-rsvNum');
+        this.rsvDt =$('.js-rsvDt');
+        this.roomTypCd = $('.js-roomTypCd');
+        this.arrDt =$('.js-arrDt');
+        this.depDt =$('.js-depDt');
+        this.target.find('[data-ax5picker="date"]').ax5picker({
+            direction: "auto",
+            content: {
+                type: 'date'
+            }
+        });
     },
     getData: function () {
         return {
             pageNumber: this.pageNumber,
             pageSize: this.pageSize,
             filter: this.filter.val(),
+            rsvNum: this.rsvNum.val(),
+            rsvDt: this.rsvDt.val(),
+            roomTypCd: this.roomTypCd.val(),
+            arrDt: this.arrDt.val(),
+            depDt: this.depDt.val(),
+           
         };
     },
 });
@@ -108,12 +150,17 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
             multipleSelect: true,
             target: $('[data-ax5grid="grid-view-01"]'),
             columns: [
-                { key: 'key', label: 'KEY', width: 160, align: 'left', editor: 'text' },
-                { key: 'value', label: 'VALUE', width: 350, align: 'left', editor: 'text' },
-                { key: 'etc1', label: 'ETC1', width: 100, align: 'center', editor: 'text' },
-                { key: 'etc2', label: 'ETC2', width: 100, align: 'center', editor: 'text' },
-                { key: 'etc3', label: 'ETC3', width: 100, align: 'center', editor: 'text' },
-                { key: 'etc4', label: 'ETC4', width: 100, align: 'center', editor: 'text' },
+                { key: 'rsvNum', label: '예약번호', width: 160, align: 'center', editor: 'readonly' },
+                { key: 'rsvDt', label: '예약일', width: 160, align: 'center', editor: 'readonly' },
+                { key: 'guestNm', label: '투숙객', width: 100, align: 'center', editor: 'readonly' },
+                { key: 'roomTypCd', label: '객실타입', width: 100, align: 'center', editor: 'readonly' },
+                { key: 'roomNum', label: '객실번호', width: 100, align: 'center', editor: 'readonly' },
+                { key: 'arrDt', label: '도착일', width: 100, align: 'center', editor: 'readonly' },
+                { key: 'depDt', label: '출발일', width: 100, align: 'center', editor: 'readonly' },
+                { key: 'srcCd', label: '예약경로', width: 100, align: 'center', editor: 'readonly' },
+                { key: 'saleTypCd', label: '판매유형', width: 100, align: 'center', editor: 'readonly' },
+                { key: 'sttusCd', label: '상태', width: 100, align: 'center', editor: 'readonly' },
+
             ],
             body: {
                 onClick: function () {
@@ -123,13 +170,11 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
         });
 
         axboot.buttonClick(this, 'data-grid-view-01-btn', {
-            add: function () {
-                ACTIONS.dispatch(ACTIONS.ITEM_ADD);
-            },
-            delete: function () {
-                ACTIONS.dispatch(ACTIONS.ITEM_DEL);
+            modal: function () {
+                ACTIONS.dispatch(ACTIONS.MODAL_OPEN);
             },
         });
+
     },
     getData: function (_type) {
         var list = [];
@@ -137,118 +182,13 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
 
         if (_type == 'modified' || _type == 'deleted') {
             list = ax5.util.filter(_list, function () {
-                delete this.deleted;
-                return this.key;
+                return this.id;
             });
         } else {
             list = _list;
         }
         return list;
     },
-    addRow: function () {
-        this.target.addRow({ __created__: true }, 'last');
-    },
+   
 });
-fnObj.formView01 = axboot.viewExtend(axboot.formView, {
-    getDefaultData: function () {
-        return {};
-    },
 
-    getData: function () {
-        var data = this.modelFormatter.getClearData(this.model.get());
-        return $.extend({}, data);
-    },
-
-    setData: function (data) {
-        if (typeof data === 'undefined') data = this.getDefaultData();
-        data = $.extend({}, data);
-        this.model.setModel(data);
-        this.modelFormatter.formatting();
-    },
-    validate: function () {
-        var item = this.model.get();
-
-        var rs = this.model.validate();
-        if (rs.error) {
-            axDialog.alert(LANG('ax.script.form.validate', rs.error[0].jquery.attr('title')), function () {
-                rs.error[0].jquery.focus();
-            });
-            return false;
-        }
-
-        // required 이외 벨리데이션 정의
-        var pattern;
-        if (item.guestTel && !(pattern = /^([0-9]{3})\-?([0-9]{4})\-?([0-9]{4})$/).test(item.guestTel)) {
-            axDialog.alert('연락처 형식을 확인하세요.'),
-                function () {
-                    $('[data-ax-path="guestTel"]').focus();
-                };
-            return false;
-        }
-        var pattern;
-        if (item.email) {
-            pattern = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.(?:[A-Za-z0-9]{2,}?)$/i;
-            if (!pattern.test(item.email)) {
-                axDialog.alert('이메일 형식을 확인하세요.', function () {
-                    $('[data-ax-path="email"]').focus();
-                });
-                return false;
-            }
-        }
-
-        return true;
-    },
-    initEvent: function () {
-        axboot.buttonClick(this, 'data-form-view-01-btn', {
-            'form-clear': function () {
-                ACTIONS.dispatch(ACTIONS.FORM_CLEAR);
-            }, //1번만 실행 하거나 init, eventbinding 나중에 호출 할 수도 있어서 따로 분리
-        });
-        this.target.find('[data-ax5picker="date"]').ax5picker({
-            direction: 'auto',
-            content: {
-                type: 'date',
-            },
-        });
-
-        axboot.buttonClick(this, 'data-searchview-btn', {
-            modal: function () {
-                ACTIONS.dispatch(ACTIONS.MODAL_OPEN);
-            },
-        }); //검색 모달
-    },
-
-    cnt_night: function (arr, dep) {
-        var night = moment(dep).diff(moment(arr), 'days');
-        $('[data-ax-path="nightCnt"]').val(night).trigger('change');
-    },
-    cnt_date: function (arr, night) {
-        var dep = moment(arr).add(night, 'days').format('yyyy-MM-DD');
-        $('[data-ax-path="depDt"]').val(dep).trigger('change');
-    },
-
-    initView: function () {
-        var _this = this; // fnObj.formView01
-
-        _this.target = $('.js-form');
-
-        this.model = new ax5.ui.binder();
-        this.model.setModel(this.getDefaultData(), this.target);
-        this.modelFormatter = new axboot.modelFormatter(this.model); // 모델 포메터 시작
-        this.initEvent();
-
-        var arr, night, dep;
-
-        $('#arrDt').on('change ', function () {
-            arr = $(this).val();
-            $(' #depDt').on('change ', function () {
-                dep = $(this).val();
-                _this.cnt_night(arr, dep);
-            });
-            $(' #nightCnt').on('change ', function () {
-                night = $(this).val();
-                _this.cnt_date(arr, night);
-            });
-        });
-    },
-});

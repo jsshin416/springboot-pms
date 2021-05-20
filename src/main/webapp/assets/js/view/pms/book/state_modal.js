@@ -9,7 +9,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SEARCH: function (caller, act, data) {
         axboot.ajax({
             type: 'GET',
-            url: '/api/v1/guest/',
+            url: '/api/v1/booking/',
             callback: function (res) {
                 caller.formView01.clear();
                 caller.gridView01.setData(res);
@@ -23,16 +23,23 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         });
         return false;
     },
-
+    PAGE_SAVE: function (caller, act, data) {
+        if (caller.formView01.validate()) {
+            var item = caller.formView01.getData();
+            if (!item.id) item.__created__ = true;
+            axboot.ajax({
+                type: 'POST',
+                url: '/api/v1/booking',
+                data: JSON.stringify(item),
+                callback: function (res) {
+                    ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
+                    axToast.push('저장 되었습니다');
+                },
+            });
+        }
+    },
     ITEM_CLICK: function (caller, act, data) {
-        var id = data.id;
-        axboot.ajax({
-            type: 'GET',
-            url: '/api/v1/guest/' + id,
-            callback: function (res) {
-                caller.formView01.setData(res);
-            },
-        });
+        caller.formView01.setData(data);
         //ACTIONS.dispatch(ACTIONS.PAGE_CHOICE);
     },
     PAGE_CHOICE: function (caller, act, data) {
