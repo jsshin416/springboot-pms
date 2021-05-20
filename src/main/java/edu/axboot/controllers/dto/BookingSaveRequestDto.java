@@ -7,7 +7,6 @@ import edu.axboot.domain.pms.book.booking.BookingService;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import edu.axboot.domain.pms.book.booking.QBooking;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
@@ -64,7 +63,7 @@ public class BookingSaveRequestDto {
 
 //        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 //        String format_time1 = format1.format(System.currentTimeMillis());
-    String RSV_01;
+
         this.id = id;
         this.rsvDt = rsvDt;
         this.sno = sno;
@@ -85,7 +84,7 @@ public class BookingSaveRequestDto {
         this.adultCnt = adultCnt;
         this.chldCnt = chldCnt;
         this.saleTypCd = saleTypCd;
-        this.sttusCd = "RSV_01";
+        this.sttusCd = sttusCd;
         this.srcCd = srcCd;
         this.brth = brth;
         this.gender = gender;
@@ -120,7 +119,7 @@ public class BookingSaveRequestDto {
                 .adultCnt(adultCnt)
                 .chldCnt(chldCnt)
                 .saleTypCd(saleTypCd)
-                .sttusCd(RSV_01)
+                .sttusCd(sttusCd)
                 .srcCd(srcCd)
                 .brth(brth)
                 .gender(gender)

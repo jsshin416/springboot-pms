@@ -17,11 +17,13 @@
                 <jsp:body>
                     <div data-fit-height-aside="form-view-01">
                         <div class="ax-button-group">
-                            <div>
-                                <div class="left" name=rsvNum>
-                                    <h4> 예약번호: </h4>
+                          
+                                <div class="left">
+                                  
+                                        <h2><i class="cqc-list"></i> 예약번호 
+                                            <input type="text" name="rsvNum" id="rsvNum" data-ax-path="rsvNum"  class="js-rsvNum " style="background-color:transparent;border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;" readonly/>                                      
+                                        </h2>
                                 </div>
-                            </div>
                             <div class="right">
                                 <a style="padding-right:10px;">*표시는 필수항목 체크 부분</a>
                                 <button type="button" class="btn btn-default" data-page-btn="save">저장</button>
@@ -68,7 +70,6 @@
                                         <ax:td label="성인수" width="30%">
                                             <input type="text" name="adultCnt" id="adultCnt" data-ax-path="adultCnt"
                                                 class="js-adultCnt form-control" />
-
                                         </ax:td>
                                         <ax:td label="아동수" width="35%">
                                             <input type="text" name="chldCnt" id="chldCnt" data-ax-path="chldCnt"
