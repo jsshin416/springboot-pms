@@ -32,14 +32,14 @@
                             </div>
                         </div>
 
-                        <ax:split-panel width="*" style="padding-right: 5px;" scroll="scroll">
+                        <div style="overflow: scroll;width:*; height:500px;">
                             <form name="formView01" class="js-form">
                                 <ax:tbl clazz="ax-form-tbl" minWidth="500px">
                                     <ax:tr labelWidth="120px">
                                         <ax:td label="*도착일" width="35%">
                                             <div class="input-group" data-ax5picker="date">
                                                 <input type="text" name="arrDt" id="arrDt" data-ax-path="arrDt"
-                                                    class="js-arrDt form-control" data-ax5formatter="arrDt"
+                                                    class="js-arrDt form-control" data-ax5formatter="date"
                                                     placeholder="YYYY-MM-DD" />
                                                 <span class="input-group-addon"><i class="cqc-calendar"></i></span>
                                             </div>
@@ -52,7 +52,7 @@
                                         <ax:td label="*출발일" width="35%">
                                             <div class="input-group" data-ax5picker="date">
                                                 <input type="text" name="depDt" id="depDt" data-ax-path="depDt"
-                                                    class="js-depDt form-control" data-ax5formatter="depDt"
+                                                    class="js-depDt form-control" data-ax5formatter="date"
                                                     placeholder="YYYY-MM-DD" />
                                                 <span class="input-group-addon"><i class="cqc-calendar"></i></span>
                                             </div>
@@ -144,7 +144,7 @@
                                                     <ax:td label="생년월일" width="40% ">
                                                         <div class="input-group" data-ax5picker="date">
                                                             <input type="text" name="brth" id="brth" data-ax-path="brth"
-                                                                class="js-brth form-control" placeholder="YYYY-MM-DD" />
+                                                                class="js-brth form-control" placeholder="YYYY-MM-DD"  data-ax5formatter="date"/>
                                                             <span class="input-group-addon"><i
                                                                     class="cqc-calendar"></i></span>
                                                         </div>
@@ -216,7 +216,7 @@
                                                         <div data-ax-td-wrap>
                                                             <input type="text" name="salePrc" id="salePrc"
                                                                 data-ax-path="salePrc"
-                                                                class="js-salePrc form-control" />
+                                                                class="js-salePrc form-control" data-ax5formatter="money"/>
                                                         </div>
                                                     </div>
                                                     <div data-ax-td style="width:50%">
@@ -225,7 +225,7 @@
                                                             서비스 금액</div>
                                                         <div data-ax-td-wrap>
                                                             <input type="text" name="svcPrc" id="svcPrc"
-                                                                data-ax-path="svcPrc" class="js-svcPrc form-control" />
+                                                                data-ax-path="svcPrc" class="js-svcPrc form-control" data-ax5formatter="money"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -263,7 +263,7 @@
                                             </div>
                                 </ax:tbl>
                             </form>
-                        </ax:split-panel>
+                       </div>
                     </div>
                     </div>
 

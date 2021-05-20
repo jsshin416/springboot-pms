@@ -135,8 +135,8 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
             multipleSelect: true,
             target: $('[data-ax5grid="grid-view-01"]'),
             columns: [
-                { key: 'memoDtti', label: '작성일', width: 160, align: 'left', editor: 'text' },
-                { key: 'memoCn', label: '메모', width: 350, align: 'left', editor: 'text' },
+                { key: 'memoDtti', label: '작성일', width: 300, align: 'left', editor: 'text' },
+                { key: 'memoCn', label: '메모', width: 750, align: 'left', editor: 'text' },
             ],
             body: {
                 onClick: function () {

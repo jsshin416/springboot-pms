@@ -4,6 +4,7 @@ import com.chequer.axboot.core.annotations.ColumnPosition;
 import edu.axboot.domain.BaseJpaModel;
 import edu.axboot.domain.SimpleJpaModel;
 import lombok.*;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.type.Alias;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -136,18 +137,19 @@ public class Booking extends BaseJpaModel<Long> {
 	private BigDecimal svcPrc;
 
 
-    @Override
+
+	@Override
     public Long getId() {
         return id;
     }
 	@Builder
-	public Booking(Long id, String rsvDt, Integer sno, String rsvNum,
+	public Booking(Long id,String rsvDt, Integer sno, String rsvNum,
 				   Long guestId, String guestNm,
 				   String guestNmEng, String guestTel,
 				   String email, String langCd, String aarDt, String arrTime,
 				   String depDt, String depTime, Integer nightCnt, String roomTypCd,
 				   String roomNum, Integer adultCnt, Integer chldCnt, String saleTypCd,
-				   String sttusCd, String srcCd, String brth, String gender, String payCd, String advnYn,
+				   String srcCd, String brth, String gender, String payCd, String advnYn,
 				   BigDecimal salePrc, BigDecimal svcPrc,
 				   boolean isCreated,boolean isModified, boolean isDeleted){
 
@@ -171,7 +173,6 @@ public class Booking extends BaseJpaModel<Long> {
 		this.adultCnt =adultCnt;
 		this.chldCnt = chldCnt;
 		this.saleTypCd = saleTypCd;
-		this.sttusCd = sttusCd;
 		this.srcCd =srcCd;
 		this.brth = brth;
 		this.gender =gender;
@@ -182,5 +183,10 @@ public class Booking extends BaseJpaModel<Long> {
 		this.__created__ = isCreated;
 		this.__modified__ = isModified;
 		this.__deleted__ = isDeleted;
+	}
+	public void 예약번호생성(String rsvDt, int sno) {
+		this.rsvDt = rsvDt;
+		this.sno = sno;
+		this.rsvNum = "R" + rsvDt.replaceAll("-", "") + StringUtils.leftPad(Integer.toString(sno), 3);
 	}
 }

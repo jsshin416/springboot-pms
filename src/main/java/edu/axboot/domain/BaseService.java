@@ -2,6 +2,7 @@ package edu.axboot.domain;
 
 import edu.axboot.domain.code.QCommonCode;
 import edu.axboot.domain.file.QCommonFile;
+import edu.axboot.domain.pms.book.booking.QBooking;
 import edu.axboot.domain.pms.info.room.QPmsRoom;
 import edu.axboot.domain.pms.info.guest.QGuest;
 import edu.axboot.domain.program.QProgram;
@@ -28,6 +29,7 @@ public class BaseService<T, ID extends Serializable> extends AXBootBaseService<T
     protected QCommonFile qCommonFile = QCommonFile.commonFile;
     protected QPmsRoom qPmsRoom = QPmsRoom.pmsRoom;
     protected QGuest qGuest = QGuest.guest;
+    protected QBooking qBooking = QBooking.booking;
 
 
 

@@ -20,13 +20,13 @@
                             <ax:tbl clazz="ax-search-tbl" minWidth="500px">
                                 <ax:tr>
                                     <ax:td label='이름' width="300px">
-                                        <input type="text" class="form-control" />
+                                        <input type="text" class="js-guestNm form-control" />
                                     </ax:td>
                                     <ax:td label='전화번호' width="300px">
-                                        <input type="text" class="form-control" />
+                                        <input type="text" class="js-guestTel form-control" />
                                     </ax:td>
                                     <ax:td label='이메일' width="300px">
-                                        <input type="text" class="form-control" />
+                                        <input type="text" class="js-email form-control" />
                                     </ax:td>
                                 </ax:tr>
                             </ax:tbl>
@@ -60,21 +60,20 @@
                                 <ax:tbl clazz="ax-form-tbl" minWidth="500px">
                                     <ax:tr>
                                         <ax:td label="이름" width="300px">
-                                            <input type="text" id="guestNm" data-ax-path="guestNm" class="form-control"
-                                                data-ax-validate="required" />
+                                            <input type="text" id="guestNm" data-ax-path="guestNm" class="js-guestNm form-control" />
                                         </ax:td>
                                         <ax:td label="영문" width="300px">
                                             <input type="text" id="guestNmEng" data-ax-path="guestNmEng"
-                                                class="form-control" data-ax-validate="required" />
+                                                class="js-guestNmEng form-control"/>
                                         </ax:td>
                                     </ax:tr>
                                     <ax:tr>
                                         <ax:td label="연락처" width="300px">
                                             <input type="text" id="guestTel" data-ax-path="guestTel"
-                                                class="form-control" />
+                                                title="연락처" class="js-guestTel form-control"/>
                                         </ax:td>
                                         <ax:td label="이메일" width="300px">
-                                            <input type="text" id="email" data-ax-path="email" class="form-control" />
+                                            <input type="text" id="email" data-ax-path="email" title="이메일" class="email form-control" />
                                         </ax:td>
                                     </ax:tr>
                                     <ax:tr>
@@ -85,7 +84,7 @@
                                         <ax:td label="생년월일" width="40%">
                                             <div class="input-group" data-ax5picker="date">
                                                 <input type="text" name="brth" id="brth" data-ax-path="brth"
-                                                    class="js-brth form-control" placeholder="YYYY-MM-DD" />
+                                                    class="js-brth form-control" placeholder="YYYY-MM-DD"  data-ax5formatter="date" />
                                                 <span class="input-group-addon"><i class="cqc-calendar"></i></span></div>
                                         </ax:td>
                                         <span>

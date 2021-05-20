@@ -60,10 +60,9 @@ public class BookingTest {
                 .depDt("20210520")
                 .roomTypCd("SB")
                 .saleTypCd("온라인")
-                .sttusCd("전화")
                 .srcCd("소스")
-                .sno(1111)
-                .rsvNum("20210514001")
+//                .sno(1111)
+//                .rsvNum("20210514001")
                 .roomNum("101")
 
                 .__created__(true)

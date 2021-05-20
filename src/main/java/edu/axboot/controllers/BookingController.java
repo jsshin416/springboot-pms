@@ -33,4 +33,7 @@ public class BookingController extends BaseController {
         bookingService.save(request);
         return ok();
     }
+
+
+
 }

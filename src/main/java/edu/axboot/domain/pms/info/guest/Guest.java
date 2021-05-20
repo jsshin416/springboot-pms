@@ -1,12 +1,17 @@
 package edu.axboot.domain.pms.info.guest;
 
 import edu.axboot.domain.BaseJpaModel;
+import edu.axboot.domain.pms.book.booking.Booking;
 import lombok.*;
 import org.apache.ibatis.type.Alias;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import com.chequer.axboot.core.annotations.Comment;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @Setter
@@ -55,6 +60,10 @@ public class Guest extends BaseJpaModel<Long> {
 	@Comment(value = "비고")
 	private String rmk;
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@NotFound(action = NotFoundAction.IGNORE)
+	@JoinColumn(name = "GUEST_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+	private List<Booking> bookingList;
 
     @Override
     public Long getId() {
@@ -78,21 +87,14 @@ public class Guest extends BaseJpaModel<Long> {
 	 this.__modified__ = isModified;
 	 this.__deleted__ = isDeleted;
  }
-	public void update(Long id, String guestNm, String guestNmEng, String guestTel,
-					   String email, String brth, String gender, String langCd,
-					   String rmk,boolean isCreated,boolean isModified, boolean isDeleted) {
-		this.id = id;
-		this.guestNm = guestNm;
-		this.guestNmEng = guestNmEng;
+	public void update( String guestTel,
+					   String email, String rmk) {
 		this.guestTel = guestTel;
 		this.email = email;
-		this.brth = brth;
-		this.gender = gender;
-		this.langCd = langCd;
 		this.rmk = rmk;
-		this.__created__ = isCreated;
-		this.__modified__ = isModified;
-		this.__deleted__ = isDeleted;
+
 	}
+
+
 
 }

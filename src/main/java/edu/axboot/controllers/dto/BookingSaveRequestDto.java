@@ -1,12 +1,20 @@
 package edu.axboot.controllers.dto;
 
+import com.querydsl.core.types.Projections;
 import edu.axboot.domain.pms.book.booking.Booking;
+import edu.axboot.domain.pms.book.booking.BookingRepository;
+import edu.axboot.domain.pms.book.booking.BookingService;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import edu.axboot.domain.pms.book.booking.QBooking;
 
+import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+
+import static com.querydsl.jpa.JPAExpressions.select;
 
 @Getter
 @NoArgsConstructor
@@ -31,7 +39,7 @@ public class BookingSaveRequestDto {
     private Integer adultCnt;
     private Integer chldCnt;
     private String saleTypCd;
-    private String sttusCd;
+    //private String sttusCd;
     private String srcCd;
     private String brth;
     private String gender;
@@ -50,52 +58,51 @@ public class BookingSaveRequestDto {
                                  String email, String langCd, String arrDt, String arrTime,
                                  String depDt, String depTime, Integer nightCnt, String roomTypCd,
                                  String roomNum, Integer adultCnt, Integer chldCnt, String saleTypCd,
-                                 String sttusCd, String srcCd, String brth, String gender, String payCd, String advnYn,
+                               String srcCd, String brth, String gender, String payCd, String advnYn,
                                  BigDecimal salePrc, BigDecimal svcPrc,
-                                 boolean __created__,boolean __modified__, boolean __deleted__) {
+                                 boolean __created__, boolean __modified__, boolean __deleted__) {
 
-        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-        String format_time1 = format1.format(System.currentTimeMillis());
+//        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+//        String format_time1 = format1.format(System.currentTimeMillis());
 
         this.id = id;
-        this.rsvDt = format_time1;
-        this.sno =sno;
-        this.rsvNum= rsvNum;
-        this.guestId =guestId;
+        this.rsvDt = rsvDt;
+        this.sno = sno;
+        this.rsvNum = rsvNum;
+        this.guestId = guestId;
         this.guestNm = guestNm;
-        this.guestNmEng =guestNmEng;
+        this.guestNmEng = guestNmEng;
         this.guestTel = guestTel;
-        this.email =email;
-        this.langCd =langCd;
+        this.email = email;
+        this.langCd = langCd;
         this.arrDt = arrDt;
-        this.arrTime =arrTime;
+        this.arrTime = arrTime;
         this.depDt = depDt;
         this.depTime = depTime;
         this.nightCnt = nightCnt;
         this.roomTypCd = roomTypCd;
         this.roomNum = roomNum;
-        this.adultCnt =adultCnt;
+        this.adultCnt = adultCnt;
         this.chldCnt = chldCnt;
         this.saleTypCd = saleTypCd;
-        this.sttusCd = sttusCd;
-        this.srcCd =srcCd;
+        this.srcCd = srcCd;
         this.brth = brth;
-        this.gender =gender;
-        this.payCd =payCd;
-        this.advnYn =advnYn;
-        this.salePrc =salePrc;
-        this.svcPrc =svcPrc;
+        this.gender = gender;
+        this.payCd = payCd;
+        this.advnYn = advnYn;
+        this.salePrc = salePrc;
+        this.svcPrc = svcPrc;
         this.__created__ = __created__;
-        this.__modified__=__modified__;
-        this.__deleted__ =__deleted__;
+        this.__modified__ = __modified__;
+        this.__deleted__ = __deleted__;
     }
 
-    public Booking toEntity(){
+    public Booking toEntity() {
         return Booking.builder()
                 .id(id)
                 .rsvDt(rsvDt)
                 .sno(sno)
-                .rsvNum( rsvNum)
+                .rsvNum(rsvNum)
                 .guestId(guestId)
                 .guestNm(guestNm)
                 .guestNmEng(guestNmEng)
@@ -112,7 +119,6 @@ public class BookingSaveRequestDto {
                 .adultCnt(adultCnt)
                 .chldCnt(chldCnt)
                 .saleTypCd(saleTypCd)
-                .sttusCd(sttusCd)
                 .srcCd(srcCd)
                 .brth(brth)
                 .gender(gender)
@@ -127,4 +133,6 @@ public class BookingSaveRequestDto {
     }
 
 
+
 }
+

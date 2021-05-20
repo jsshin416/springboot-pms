@@ -1,23 +1,16 @@
-package edu.axboot.domain.pms.book.booking;
+package edu.axboot.domain.pms.book.state;
 
-import com.querydsl.core.types.Projections;
 import edu.axboot.controllers.dto.BookingSaveRequestDto;
-import edu.axboot.controllers.dto.GuestSaveRequestDto;
-import edu.axboot.controllers.dto.PmsRoomSaveRequestDto;
+import edu.axboot.domain.BaseService;
+import edu.axboot.domain.pms.book.booking.Booking;
+import edu.axboot.domain.pms.book.booking.BookingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import edu.axboot.domain.BaseService;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.querydsl.jpa.JPAExpressions.select;
 
 @RequiredArgsConstructor
 @Service
-public class BookingService extends BaseService<Booking, Long> {
+public class StateService extends BaseService<Booking, Long> {
     private final BookingRepository bookingRepository;
 
 
@@ -32,12 +25,13 @@ public class BookingService extends BaseService<Booking, Long> {
         return ids;
 
     }*/
-//   @Transactional
-//   public Long save(BookingSaveRequestDto requestDto) {
-//       return bookingRepository.save(requestDto.toEntity()).getId();
-//
-//   }
    @Transactional
+   public Long save(BookingSaveRequestDto requestDto) {
+       return bookingRepository.save(requestDto.toEntity()).getId();
+
+   }
+
+    /*@Transactional
     public long save(BookingSaveRequestDto saveDto) {
         long id = 0;
         String rsvDt = LocalDate.now().toString();
@@ -51,14 +45,12 @@ public class BookingService extends BaseService<Booking, Long> {
         if (todayLastChk != null) {
             sno = todayLastChk.getSno() + 1;
         }
-        Booking Booking = saveDto.toEntity();
+        Booking booking = saveDto.toEntity();
         Booking.예약번호생성(rsvDt, sno);
-        id = bookingRepository.save(Booking).getId();
+//        id = bookingRepository.save(chk).getId();
         //TODO 투숙객 처리
         //TODO 투숙메모 처리
         return id;
-    }
-
-
+    }*/
 
 }
