@@ -149,7 +149,7 @@ public class Booking extends BaseJpaModel<Long> {
 				   String email, String langCd, String aarDt, String arrTime,
 				   String depDt, String depTime, Integer nightCnt, String roomTypCd,
 				   String roomNum, Integer adultCnt, Integer chldCnt, String saleTypCd,
-				   String srcCd, String brth, String gender, String payCd, String advnYn,
+				   String sttusCd, String srcCd, String brth, String gender, String payCd, String advnYn,
 				   BigDecimal salePrc, BigDecimal svcPrc,
 				   boolean isCreated,boolean isModified, boolean isDeleted){
 
@@ -173,6 +173,7 @@ public class Booking extends BaseJpaModel<Long> {
 		this.adultCnt =adultCnt;
 		this.chldCnt = chldCnt;
 		this.saleTypCd = saleTypCd;
+		this.sttusCd =sttusCd;
 		this.srcCd =srcCd;
 		this.brth = brth;
 		this.gender =gender;

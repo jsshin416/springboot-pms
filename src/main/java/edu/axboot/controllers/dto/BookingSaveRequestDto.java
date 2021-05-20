@@ -39,7 +39,7 @@ public class BookingSaveRequestDto {
     private Integer adultCnt;
     private Integer chldCnt;
     private String saleTypCd;
-    //private String sttusCd;
+    private String sttusCd;
     private String srcCd;
     private String brth;
     private String gender;
@@ -58,13 +58,13 @@ public class BookingSaveRequestDto {
                                  String email, String langCd, String arrDt, String arrTime,
                                  String depDt, String depTime, Integer nightCnt, String roomTypCd,
                                  String roomNum, Integer adultCnt, Integer chldCnt, String saleTypCd,
-                               String srcCd, String brth, String gender, String payCd, String advnYn,
+                               String sttusCd,String srcCd, String brth, String gender, String payCd, String advnYn,
                                  BigDecimal salePrc, BigDecimal svcPrc,
                                  boolean __created__, boolean __modified__, boolean __deleted__) {
 
 //        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 //        String format_time1 = format1.format(System.currentTimeMillis());
-
+    String RSV_01;
         this.id = id;
         this.rsvDt = rsvDt;
         this.sno = sno;
@@ -85,6 +85,7 @@ public class BookingSaveRequestDto {
         this.adultCnt = adultCnt;
         this.chldCnt = chldCnt;
         this.saleTypCd = saleTypCd;
+        this.sttusCd = "RSV_01";
         this.srcCd = srcCd;
         this.brth = brth;
         this.gender = gender;
@@ -119,6 +120,7 @@ public class BookingSaveRequestDto {
                 .adultCnt(adultCnt)
                 .chldCnt(chldCnt)
                 .saleTypCd(saleTypCd)
+                .sttusCd(RSV_01)
                 .srcCd(srcCd)
                 .brth(brth)
                 .gender(gender)

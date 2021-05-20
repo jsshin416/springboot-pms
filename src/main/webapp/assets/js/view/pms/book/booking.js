@@ -17,7 +17,6 @@ var ACTIONS = axboot.actionExtend(fnObj, {
                 },
             },
         });
-
         return false;
     },
     PAGE_SAVE: function (caller, act, data) {
