@@ -73,7 +73,7 @@ public class Guest extends BaseJpaModel<Long> {
  @Builder
 	public Guest(Long id, String guestNm, String guestNmEng, String guestTel,
 				  String email, String brth, String gender, String langCd,
-				  String rmk,boolean isCreated,boolean isModified, boolean isDeleted ){
+				  String rmk ){
 	 this.id = id;
 	 this.guestNm = guestNm;
 	 this.guestNmEng = guestNmEng;
@@ -83,9 +83,7 @@ public class Guest extends BaseJpaModel<Long> {
 	 this.gender = gender;
 	 this.langCd = langCd;
 	 this.rmk = rmk;
-	 this.__created__ = isCreated;
-	 this.__modified__ = isModified;
-	 this.__deleted__ = isDeleted;
+
  }
 	public void update( String guestTel,
 					   String email, String rmk) {

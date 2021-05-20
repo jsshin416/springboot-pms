@@ -33,7 +33,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
                 caller.formView01.setData(res);
             },
         });
-        //ACTIONS.dispatch(ACTIONS.PAGE_CHOICE);
+        ACTIONS.dispatch(ACTIONS.PAGE_CHOICE);
     },
     PAGE_CHOICE: function (caller, act, data) {
         var list = caller.gridView01.getData('selected');
