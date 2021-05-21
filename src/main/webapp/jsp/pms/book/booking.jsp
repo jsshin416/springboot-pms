@@ -67,11 +67,11 @@
                                         </ax:td>
                                         <ax:td label="성인수" width="30%">
                                             <input type="text" name="adultCnt" id="adultCnt" data-ax-path="adultCnt"
-                                                class="js-adultCnt form-control" />
+                                               min=1 class="js-adultCnt form-control" />
                                         </ax:td>
                                         <ax:td label="아동수" width="35%">
                                             <input type="text" name="chldCnt" id="chldCnt" data-ax-path="chldCnt"
-                                                class="js-chldCnt form-control" />
+                                                min=0 class="js-chldCnt form-control" />
 
                                         </ax:td>
                                     </ax:tr>
@@ -245,11 +245,9 @@
                                                                     투숙메모 </h2>
                                                             </div>
                                                             <div class="right">
-                                                                <button type="button" class="btn btn-default"
-                                                                    data-grid-view-01-btn="add"><i
+                                                                <button type="button" class="btn btn-default"  data-grid-view-01-btn="add"><i
                                                                         class="cqc-circle-with-plus"></i> 추가</button>
-                                                                <button type="button" class="btn btn-default"
-                                                                    data-grid-view-01-btn="delete"><i
+                                                                <button type="button" class="btn btn-default" data-grid-view-01-btn="delete"><i
                                                                         class="cqc-circle-with-minus"></i> 삭제</button>
                                                             </div>
                                                         </div>

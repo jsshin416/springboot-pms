@@ -56,15 +56,7 @@
                     </ax:tr>
                     <ax:tr>
                         <ax:td label='상태' width="1000px">
-                            <input type="checkbox" name="empty"  data-ax-path="empty" value="Y"  /> 전체
-                            <input type="checkbox" name="RSV_01" data-ax-path="RSV_01" value="Y"  /> 예약
-                            <input type="checkbox" name="RSV_02"  data-ax-path="RSV_02" value="Y"  /> 예약대기
-                            <input type="checkbox" name="RSV_03"  data-ax-path="RSV_03" value="Y" /> 예약취소
-                            <input type="checkbox" name="RSV_04"  data-ax-path="RSV_04" value="Y"  /> 예약확정
-                            <input type="checkbox" name="RSV_05"  data-ax-path="RSV_05" value="Y"  /> 노쇼
-                            <input type="checkbox" name="CHK_01"  data-ax-path="CHK_01" value="Y"  /> 체크인
-                            <input type="checkbox" name="CHK_02"  data-ax-path="CHK_02" value="Y"  /> 체크아웃
-                            <input type="checkbox" name="CHK_03" data-ax-path="CHK_03" value="Y" /> 체크인취소       
+                            <ax:common-code groupCd="STAY_STATUS" dataPath="sttusCd" clazz="js-sttusCd "  type ="checkbox"/>
                          </ax:td>
                     </ax:tr>
                 </ax:tbl>

@@ -41,7 +41,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
             url: '/api/v1/guest/' + id,
             callback: function (res) {
                 caller.formView01.setData(res);
-                // caller.gridView02.setData(res.chkList);
+                caller.gridView02.setData(res.bookingList || []);
             },
         });
     },
@@ -92,7 +92,9 @@ fnObj.pageButtonView = axboot.viewExtend({
             save: function () {
                 ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
             },
-            excel: function () {},
+            excel: function () {
+                ACTIONS.dispatch(ACTIONS.EXCEL_DOWN);
+            },
         });
     },
 });

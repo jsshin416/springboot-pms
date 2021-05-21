@@ -1,9 +1,9 @@
 package edu.axboot.domain.pms.book.booking;
 
 import com.querydsl.core.types.Projections;
-import edu.axboot.controllers.dto.BookingSaveRequestDto;
-import edu.axboot.controllers.dto.GuestSaveRequestDto;
-import edu.axboot.controllers.dto.PmsRoomSaveRequestDto;
+import edu.axboot.controllers.dto.*;
+import edu.axboot.domain.pms.book.memo.Memo;
+import edu.axboot.domain.pms.book.memo.MemoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import edu.axboot.domain.BaseService;
@@ -19,6 +19,7 @@ import static com.querydsl.jpa.JPAExpressions.select;
 @Service
 public class BookingService extends BaseService<Booking, Long> {
     private final BookingRepository bookingRepository;
+    private final MemoRepository memoRepository;
 
 
    /* @Transactional
@@ -55,6 +56,7 @@ public class BookingService extends BaseService<Booking, Long> {
         Booking.예약번호생성(rsvDt, sno);
         id = bookingRepository.save(Booking).getId();
         //TODO 투숙객 처리
+
         //TODO 투숙메모 처리
         return id;
     }

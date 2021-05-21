@@ -4,6 +4,7 @@ import com.querydsl.core.types.Projections;
 import edu.axboot.domain.pms.book.booking.Booking;
 import edu.axboot.domain.pms.book.booking.BookingRepository;
 import edu.axboot.domain.pms.book.booking.BookingService;
+import edu.axboot.domain.pms.book.memo.Memo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.List;
 
 import static com.querydsl.jpa.JPAExpressions.select;
 
@@ -49,6 +51,7 @@ public class BookingSaveRequestDto {
     private boolean __created__;
     private boolean __modified__;
     private boolean __deleted__;
+    private List<Memo> memoList;
 
     @Builder
     public BookingSaveRequestDto(Long id, String rsvDt, Integer sno, String rsvNum,
@@ -59,10 +62,10 @@ public class BookingSaveRequestDto {
                                  String roomNum, Integer adultCnt, Integer chldCnt, String saleTypCd,
                                String sttusCd,String srcCd, String brth, String gender, String payCd, String advnYn,
                                  BigDecimal salePrc, BigDecimal svcPrc,
-                                 boolean __created__, boolean __modified__, boolean __deleted__) {
+                                 boolean __created__, boolean __modified__, boolean __deleted__,
+                                 List<Memo>memoList) {
 
-//        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-//        String format_time1 = format1.format(System.currentTimeMillis());
+
 
         this.id = id;
         this.rsvDt = rsvDt;
@@ -95,6 +98,7 @@ public class BookingSaveRequestDto {
         this.__created__ = __created__;
         this.__modified__ = __modified__;
         this.__deleted__ = __deleted__;
+        this.memoList = memoList;
     }
 
     public Booking toEntity() {
@@ -130,6 +134,7 @@ public class BookingSaveRequestDto {
                 .isCreated(__created__)
                 .isModified(__modified__)
                 .isDeleted(__deleted__)
+                .memoList(memoList)
                 .build();
     }
 

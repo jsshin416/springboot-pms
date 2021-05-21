@@ -46,7 +46,6 @@ public class GuestController extends BaseController {
     public ApiResponse save(@RequestBody GuestSaveRequestDto request){
         guestService.save(request);
         return ok();
-
     }
     @RequestMapping(method = {RequestMethod.PUT}, produces = APPLICATION_JSON)
     public ApiResponse update(@RequestBody GuestSaveRequestDto requestDto) {

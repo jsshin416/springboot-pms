@@ -52,4 +52,15 @@ public class Memo extends SimpleJpaModel<Long> {
     public Long getId() {
         return id;
     }
+
+    @Builder
+	public Memo(Long id, String rsvNum, Integer sno, String memoCn, Timestamp memoDtti, String memoMan, String delYn){
+    	this.id =id;
+    	this.rsvNum = rsvNum;
+    	this.sno =sno;
+    	this.memoCn =memoCn;
+    	this.memoDtti = memoDtti;
+    	this.memoMan =memoMan;
+    	this.delYn =delYn;
+	}
 }

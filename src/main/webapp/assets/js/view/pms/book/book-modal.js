@@ -33,13 +33,15 @@ var ACTIONS = axboot.actionExtend(fnObj, {
                 caller.formView01.setData(res);
             },
         });
-        //ACTIONS.dispatch(ACTIONS.PAGE_CHOICE);
     },
     PAGE_CHOICE: function (caller, act, data) {
-        var list = caller.gridView01.getData('selected');
-        if (list.length > 0) {
+        if (!data) {
+            var list = caller.gridView01.getData('selected');
+            if (list.length > 0) data = list[0];
+        }
+        if (data) {
             if (parent && parent.axboot && parent.axboot.modal) {
-                parent.axboot.modal.callback(list[0]);
+                parent.axboot.modal.callback(data);
             }
         } else {
             alert(LANG('ax.script.requireselect'));

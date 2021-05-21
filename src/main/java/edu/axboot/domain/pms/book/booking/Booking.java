@@ -3,15 +3,22 @@ package edu.axboot.domain.pms.book.booking;
 import com.chequer.axboot.core.annotations.ColumnPosition;
 import edu.axboot.domain.BaseJpaModel;
 import edu.axboot.domain.SimpleJpaModel;
+import edu.axboot.domain.pms.book.memo.Memo;
+import edu.axboot.domain.pms.info.guest.Guest;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.type.Alias;
+import org.bouncycastle.pqc.math.linearalgebra.IntUtils;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import com.chequer.axboot.core.annotations.Comment;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigDecimal;
+import java.util.List;
 
 @NoArgsConstructor
 @Setter
@@ -164,6 +171,16 @@ public class Booking extends BaseJpaModel<Long> {
 	@ColumnPosition(28)
 	private BigDecimal svcPrc;
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@NotFound(action = NotFoundAction.IGNORE)
+	@JoinColumn(name = "RSV_NUM", referencedColumnName = "ID", insertable = false, updatable = false)
+	private List<Memo> memoList;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@NotFound(action = NotFoundAction.IGNORE)
+	@JoinColumn(name = "GUEST_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+	private List<Guest> guestList;
+
 
 
 	@Override
@@ -179,13 +196,14 @@ public class Booking extends BaseJpaModel<Long> {
 				   String roomNum, Integer adultCnt, Integer chldCnt, String saleTypCd,
 				   String sttusCd, String srcCd, String brth, String gender, String payCd, String advnYn,
 				   BigDecimal salePrc, BigDecimal svcPrc,
-				   boolean isCreated,boolean isModified, boolean isDeleted){
+				   boolean isCreated,boolean isModified, boolean isDeleted,
+				   List<Memo>memoList){
 
 		this.id = id;
 		this.rsvDt = rsvDt;
 		this.sno =sno;
 		this.rsvNum= rsvNum;
-		this.guestId =guestId;
+		this.guestId =id;
 		this.guestNm = guestNm;
 		this.guestNmEng =guestNmEng;
 		this.guestTel = guestTel;
@@ -212,6 +230,7 @@ public class Booking extends BaseJpaModel<Long> {
 		this.__created__ = isCreated;
 		this.__modified__ = isModified;
 		this.__deleted__ = isDeleted;
+		this.memoList = memoList;
 	}
 	public void 예약번호생성(String rsvDt, int sno) {
 		this.rsvDt = rsvDt;

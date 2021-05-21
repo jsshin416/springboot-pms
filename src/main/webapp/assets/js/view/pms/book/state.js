@@ -3,7 +3,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SEARCH: function (caller, act, data) {
         axboot.ajax({
             type: 'GET',
-            url: "/api/v1/state",
+            url: '/api/v1/state',
             data: caller.searchView.getData(),
             callback: function (res) {
                 caller.gridView01.setData(res);
@@ -24,7 +24,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
 
         axboot.ajax({
             type: 'POST',
-            url: "/api/v1/state",
+            url: '/api/v1/state',
             data: JSON.stringify(saveList),
             callback: function (res) {
                 ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
@@ -52,7 +52,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
                 this.close();
             },
         });
-    },   
+    },
     dispatch: function (caller, act, data) {
         var result = ACTIONS.exec(caller, act, data);
         if (result != 'error') {
@@ -75,7 +75,6 @@ fnObj.pageStart = function () {
     this.pageButtonView.initView();
     this.searchView.initView();
     this.gridView01.initView();
-    
 
     ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
 };
@@ -110,16 +109,16 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
                 ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
             }
         });
-        this.rsvNum=$('.js-rsvNum');
-        this.rsvDt =$('.js-rsvDt');
+        this.rsvNum = $('.js-rsvNum');
+        this.rsvDt = $('.js-rsvDt');
         this.roomTypCd = $('.js-roomTypCd');
-        this.arrDt =$('.js-arrDt');
-        this.depDt =$('.js-depDt');
+        this.arrDt = $('.js-arrDt');
+        this.depDt = $('.js-depDt');
         this.target.find('[data-ax5picker="date"]').ax5picker({
-            direction: "auto",
+            direction: 'auto',
             content: {
-                type: 'date'
-            }
+                type: 'date',
+            },
         });
     },
     getData: function () {
@@ -132,7 +131,6 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
             roomTypCd: this.roomTypCd.val(),
             arrDt: this.arrDt.val(),
             depDt: this.depDt.val(),
-           
         };
     },
 });
@@ -160,7 +158,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                 { key: 'srcCd', label: '예약경로', width: 100, align: 'center', editor: 'readonly' },
                 { key: 'saleTypCd', label: '판매유형', width: 100, align: 'center', editor: 'readonly' },
                 { key: 'sttusCd', label: '상태', width: 100, align: 'center', editor: 'readonly' },
-
             ],
             body: {
                 onClick: function () {
@@ -174,7 +171,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                 ACTIONS.dispatch(ACTIONS.MODAL_OPEN);
             },
         });
-
     },
     getData: function (_type) {
         var list = [];
@@ -189,6 +185,4 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
         }
         return list;
     },
-   
 });
-
