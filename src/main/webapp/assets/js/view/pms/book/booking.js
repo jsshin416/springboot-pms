@@ -1,14 +1,16 @@
 var fnObj = {};
 var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SEARCH: function (caller, act, data) {
-        var paramObj = $.extend(caller.searchView.getData(), data);
+        var paramObj = $.extend(caller.searchView.getData(),data);
         axboot.ajax({
             type: 'GET',
             url: '/api/v1/booking',
             data: paramObj,
             callback: function (res) {
                 caller.formView01.clear();
-                caller.gridView01.setData(res);
+                caller.gridView01.clear();
+                //caller.gridView01.setData(res);
+                
             },
             options: {
                 // axboot.ajax 함수에 2번째 인자는 필수가 아닙니다. ajax의 옵션을 전달하고자 할때 사용합니다.
@@ -20,11 +22,11 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         return false;
     },
     PAGE_SAVE: function (caller, act, data) {
-        var saveList = [].concat(caller.gridView01.getData());
-        saveList = saveList.concat(caller.gridView01.getData('deleted'));
-
         if (caller.formView01.validate()) {
             var item = caller.formView01.getData();
+            // var parentData = caller.formView01.getData();
+            // var childList = [].concat(caller.gridView01.getData(""));
+            // childList = childList.concat(caller.gridView01.getData("deleted"));
             if (!item.id) item.__created__ = true;
             axboot.ajax({
                 type: 'POST',
@@ -35,6 +37,13 @@ var ACTIONS = axboot.actionExtend(fnObj, {
                     axToast.push('저장 되었습니다');
                 },
             });
+            // childList.forEach(function(n){
+            //     n.parentKey = parentData.key;
+            // });
+
+            // axboot.promise()
+            // .then: ""
+
         }
     },
     ITEM_CLICK: function (caller, act, data) {
@@ -71,7 +80,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
             height: 600,
             iframe: {
                 param: 'id=' + (data.id || ''),
-                url: 'book-modal.jsp',
+                url: 'guest-modal.jsp',
             },
             header: { title: '투숙객 조회' },
             callback: function (data) {
@@ -105,78 +114,34 @@ fnObj.pageButtonView = axboot.viewExtend({
     },
 });
 
-/**
- * gridView
- */
-fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
+fnObj.searchView = axboot.viewExtend(axboot.searchView, {
     initView: function () {
-        var _this = this;
-
-        this.target = axboot.gridBuilder({
-            showRowSelector: true,
-            frozenColumnIndex: 0,
-            multipleSelect: true,
-            target: $('[data-ax5grid="grid-view-01"]'),
-            columns: [
-                {
-                    key: 'memoDtti',
-                    label: '작성일',
-                    width: 300,
-                    align: 'center',
-                    editor: 'text',
-                    formatter: function () {
-                        return moment().format('YYYY-MM-DD');
-                    },
-                },
-                { key: 'memoCn', label: '메모', width: 750, align: 'center', editor: 'text' },
-            ],
-            body: {
-                onClick: function () {
-                    this.self.select(this.dindex, { selectedClear: true });
-                    ACTIONS.dispatch(ACTIONS.ITEM_CLICK, this.item);
-                },
-            },
-        });
-
-        axboot.buttonClick(this, 'data-grid-view-01-btn', {
-            add: function () {
-                ACTIONS.dispatch(ACTIONS.ITEM_ADD);
-            },
-            delete: function () {
-                ACTIONS.dispatch(ACTIONS.ITEM_DEL);
-            },
-        });
+        this.target = $(document["searchView0"]);
+        this.target.attr("onsubmit", "return false);");
+        this.filter = $("#filter");
     },
-    getData: function (_type) {
-        var list = [];
-        var _list = this.target.getList(_type);
-
-        if (_type == 'modified' || _type == 'deleted') {
-            list = ax5.util.filter(_list, function () {
-                return this.id;
-            });
-        } else {
-            list = _list;
+    getData: function () {
+        return {
+            pageNumber: this.pageNumber,
+            pageSize: this.pageSize,
+          
         }
-        return list;
-    },
-    addRow: function () {
-        //var today = moment.format('yyyy-MM-DD hh:mm');
-        this.target.addRow({ __created__: true }, 'last');
-    },
+    }
 });
 
 fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     setGuest: function (data) {
+        this.model.set('guestId', data.guesId || '');
         this.model.set('guestNm', data.guestNm || '');
         this.model.set('guestNmEng', data.guestNmEng || '');
         this.model.set('guestTel', data.guestTel || '');
         this.model.set('email', data.email || '');
         this.model.set('gender', data.gender || '');
         this.model.set('brth', data.brth || '');
+        this.model.set('langCd', data.langCd || '');
     },
     getDefaultData: function () {
-        return {};
+        return {adultCnt:'1' ,chldCnt:'0'};
     },
 
     getData: function () {
@@ -299,5 +264,67 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
         this.depDt = $('.js-depDt');
         this.nightCnt = $('.js-nightCnt');
         this.dateCnt();
+    },
+});
+
+
+/**
+ * gridView
+ */
+ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
+    initView: function () {
+        var _this = this;
+
+        this.target = axboot.gridBuilder({
+            showRowSelector: true,
+            frozenColumnIndex: 0,
+            multipleSelect: true,
+            target: $('[data-ax5grid="grid-view-01"]'),
+            columns: [
+                {
+                    key: 'memoDtti',
+                    label: '작성일',
+                    width: 300,
+                    align: 'center',
+                    editor: 'text',
+                    formatter: function () {
+                        return moment().format('YYYY-MM-DD');
+                    },
+                },
+                { key: 'memoCn', label: '메모', width: 750, align: 'center', editor: 'text' },
+            ],
+            body: {
+                onClick: function () {
+                    this.self.select(this.dindex, { selectedClear: true });
+                    ACTIONS.dispatch(ACTIONS.ITEM_CLICK, this.item);
+                },
+            },
+        });
+
+        axboot.buttonClick(this, 'data-grid-view-01-btn', {
+            add: function () {
+                ACTIONS.dispatch(ACTIONS.ITEM_ADD);
+            },
+            delete: function () {
+                ACTIONS.dispatch(ACTIONS.ITEM_DEL);
+            },
+        });
+    },
+    getData: function (_type) {
+        var list = [];
+        var _list = this.target.getList(_type);
+
+        if (_type == 'modified' || _type == 'deleted') {
+            list = ax5.util.filter(_list, function () {
+                return this.id;
+            });
+        } else {
+            list = _list;
+        }
+        return list;
+    },
+    addRow: function () {
+        //var today = moment.format('yyyy-MM-DD hh:mm');
+        this.target.addRow({ __created__: true }, 'last');
     },
 });

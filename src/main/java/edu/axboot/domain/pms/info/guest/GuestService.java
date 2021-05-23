@@ -1,6 +1,7 @@
 package edu.axboot.domain.pms.info.guest;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Projections;
 import edu.axboot.controllers.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,15 +29,18 @@ public class GuestService extends BaseService<Guest, Long> {
     public List<GuestListResponseDto> findByL(String guestNm,String guestTel, String email) {
         BooleanBuilder builder = new BooleanBuilder();
         if(isNotEmpty(guestNm)){
-            builder.and(qGuest.guestNm.eq(guestNm));
+            builder.and(qGuest.guestNm.like("%"+guestNm+"%"));
         }
         if(isNotEmpty(guestTel)){
-            builder.and(qGuest.guestTel.eq(guestTel));
+            builder.and(qGuest.guestTel.like("%"+guestTel+"%"));
         }
         if(isNotEmpty(email)){
-            builder.and(qGuest.email.eq(email));
+            builder.and(qGuest.email.like("%"+email+"%"));
         }
-        List<Guest> entitis = select()
+        List<Guest> entitis = select().select(
+                Projections.fields(Guest.class, qGuest.id, qGuest.guestNm,
+                        qGuest.guestTel,qGuest.email,
+                        qGuest.gender,qGuest.brth, qGuest.langCd))
                 .from(qGuest)
                 .where(builder)
                 .orderBy(qGuest.guestNm.asc())

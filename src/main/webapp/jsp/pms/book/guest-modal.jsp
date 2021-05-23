@@ -2,7 +2,12 @@
     <%@ page contentType="text/html; charset=UTF-8" %>
         <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
             <%@ taglib prefix="ax" tagdir="/WEB-INF/tags" %>
-
+            <%
+            RequestUtils requestUtils = RequestUtils.of(request);
+            request.setAttribute("guestNm", requestUtils.getString("guestNm"));
+            request.setAttribute("guestTel", requestUtils.getString("guestTel"));
+            request.setAttribute("modalView", requestUtils.getString("modalView"));
+        %>
                 <ax:set key="page_auto_height" value="true" />
 
                 <ax:layout name="modal">

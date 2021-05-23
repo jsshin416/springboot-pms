@@ -5,6 +5,7 @@ import edu.axboot.domain.pms.book.booking.Booking;
 import edu.axboot.domain.pms.book.booking.BookingRepository;
 import edu.axboot.domain.pms.book.booking.BookingService;
 import edu.axboot.domain.pms.book.memo.Memo;
+import edu.axboot.domain.pms.info.guest.Guest;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.querydsl.jpa.JPAExpressions.select;
@@ -51,7 +53,8 @@ public class BookingSaveRequestDto {
     private boolean __created__;
     private boolean __modified__;
     private boolean __deleted__;
-    private List<Memo> memoList;
+    private List<Memo> memoList = new ArrayList<Memo>();
+    //private List<Guest> guestList;
 
     @Builder
     public BookingSaveRequestDto(Long id, String rsvDt, Integer sno, String rsvNum,
@@ -99,6 +102,7 @@ public class BookingSaveRequestDto {
         this.__modified__ = __modified__;
         this.__deleted__ = __deleted__;
         this.memoList = memoList;
+        //this.guestList =guestList;
     }
 
     public Booking toEntity() {
@@ -136,6 +140,8 @@ public class BookingSaveRequestDto {
                 .isDeleted(__deleted__)
                 .memoList(memoList)
                 .build();
+
+
     }
 
 

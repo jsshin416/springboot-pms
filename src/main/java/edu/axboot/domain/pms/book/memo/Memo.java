@@ -2,6 +2,7 @@ package edu.axboot.domain.pms.book.memo;
 
 import com.chequer.axboot.core.annotations.ColumnPosition;
 import edu.axboot.domain.SimpleJpaModel;
+import edu.axboot.domain.pms.book.booking.Booking;
 import lombok.*;
 import org.apache.ibatis.type.Alias;
 import org.hibernate.annotations.DynamicInsert;
@@ -48,7 +49,7 @@ public class Memo extends SimpleJpaModel<Long> {
 	private String delYn;
 
 
-    @Override
+	@Override
     public Long getId() {
         return id;
     }

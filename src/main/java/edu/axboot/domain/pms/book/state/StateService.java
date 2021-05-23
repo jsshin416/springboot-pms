@@ -2,11 +2,13 @@ package edu.axboot.domain.pms.book.state;
 
 import com.querydsl.core.BooleanBuilder;
 import edu.axboot.controllers.dto.BookingSaveRequestDto;
+import edu.axboot.controllers.dto.GuestResponseDto;
 import edu.axboot.controllers.dto.PmsRoomListResponseDto;
 import edu.axboot.controllers.dto.StateListResponseDto;
 import edu.axboot.domain.BaseService;
 import edu.axboot.domain.pms.book.booking.Booking;
 import edu.axboot.domain.pms.book.booking.BookingRepository;
+import edu.axboot.domain.pms.info.guest.Guest;
 import edu.axboot.domain.pms.info.room.PmsRoom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +25,7 @@ public class StateService extends BaseService<Booking, Long> {
 
 
 
-
+    @Transactional(readOnly = true)
     public List<StateListResponseDto> findByL(String rsvDt) {
         BooleanBuilder builder = new BooleanBuilder();
         if(isNotEmpty(rsvDt)){
@@ -41,5 +43,13 @@ public class StateService extends BaseService<Booking, Long> {
     }
 
 
+    public StateListResponseDto findById(Long id) {
+        Booking state = stateRepository.findOne(id);
 
-}
+        if (state == null) {
+            throw new IllegalArgumentException("해당 투숙객 정보가 없습니다. id=" + id);
+        }
+
+        return new StateListResponseDto(state);
+    }
+    }

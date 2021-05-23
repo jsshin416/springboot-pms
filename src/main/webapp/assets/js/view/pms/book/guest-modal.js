@@ -7,7 +7,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         }
     },
     PAGE_SEARCH: function (caller, act, data) {
-        axboot.ajax({
+        axboot.ajax({ 
             type: 'GET',
             url: '/api/v1/guest/',
             callback: function (res) {
@@ -50,6 +50,17 @@ var ACTIONS = axboot.actionExtend(fnObj, {
 });
 
 var CODE = {};
+
+fnObj.getModal = function () {
+    var modalView;
+    if (parent && modalParams.modalView && (modalView = parent[axboot.def.pageFunctionName][modalParams.modalView])) {
+        return modalView;
+    } else if (opener && modalParams.modalView && (modalView = opener[axboot.def.pageFunctionName][modalParams.modalView])) {
+        return modalView;
+    } else if (parent && parent.axboot && parent.axboot.modal) {
+        return parent.axboot.modal;
+    }
+};
 
 // fnObj 기본 함수 스타트와 리사이즈
 fnObj.pageStart = function () {

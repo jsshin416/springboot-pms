@@ -35,16 +35,27 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     ITEM_CLICK: function (caller, act, data) {
         caller.formView01.setData(data);
     },
-    MODAL_OPEN: function (caller, act, data) {
+    PAGE_CHOICE: function (caller, act, data) {
+        var list = caller.gridView01.getData('selected');
+        if (list.length > 0) {
+            if (parent && parent.axboot && parent.axboot.modal) {
+                parent.axboot.modal.callback(list[0]);
+               
+            }
+        } else {
+            alert(LANG('ax.script.requireselect'));
+        }
+    },
+    STATE_MODAL: function (caller, act, data) {
         if (!data) data = {};
         axboot.modal.open({
             width: 730,
             height: 600,
             iframe: {
                 param: 'id=' + (data.id || ''),
-                url: 'state_modal.jsp',
+                url: 'state-modal.jsp',
             },
-            header: { title: '투숙객 조회' },
+            header: { title: '예약 조회' },
             callback: function (data) {
                 if (data && data.dirty) {
                     ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
@@ -114,6 +125,7 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
         this.roomTypCd = $('.js-roomTypCd');
         this.arrDt = $('.js-arrDt');
         this.depDt = $('.js-depDt');
+        this.sttusCd =this.target.find('[dataPath="sttusCd"]');
         this.target.find('[data-ax5picker="date"]').ax5picker({
             direction: 'auto',
             content: {
@@ -131,6 +143,7 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
             roomTypCd: this.roomTypCd.val(),
             arrDt: this.arrDt.val(),
             depDt: this.depDt.val(),
+
         };
     },
 });
@@ -163,12 +176,15 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                 onClick: function () {
                     this.self.select(this.dindex, { selectedClear: true });
                 },
+                onDBLClick: function(){
+                    ACTIONS.dispatch(ACTIONS.STATE_MODAL, this.item);
+                }
             },
         });
 
         axboot.buttonClick(this, 'data-grid-view-01-btn', {
-            modal: function () {
-                ACTIONS.dispatch(ACTIONS.MODAL_OPEN);
+            sstus: function () {
+                ACTIONS.dispatch();
             },
         });
     },

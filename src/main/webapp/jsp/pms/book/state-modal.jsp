@@ -6,7 +6,7 @@
 
             <ax:set key="page_auto_height" value="true" />
 
-            <ax:layout name="base">
+            <ax:layout name="modal">
                 <jsp:attribute name="script">
                     <ax:script-lang key="ax.script" />
                     <script type="text/javascript" src="<c:url value='/assets/js/view/pms/book/state-modal.js' />"></script>
@@ -18,17 +18,13 @@
                     <div data-fit-height-aside="form-view-01">
                         <div class="ax-button-group">
                                 <div class="left">
-                                        <h2><i class="cqc-list"></i> 예약번호 
+                                        <h3> 예약번호: 
                                             <input type="text" name="rsvNum" id="rsvNum" data-ax-path="rsvNum"  class="js-rsvNum " style="background-color:transparent;border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;" readonly/>                                      
-                                        </h2>
+                                        </h3>
                                 </div>
                             <div class="right">
                                 <a style="padding-right:10px;">*표시는 필수항목 체크 부분</a>
                                 <button type="button" class="btn btn-default" data-page-btn="save">저장</button>
-                                <button type="button" class="btn btn-default" data-form-view-01-btn="form-clear">
-                                    <i class="cqc-erase"></i>
-                                    <ax:lang id="ax.admin.clear" />
-                                </button>
                             </div>
                         </div>
 

@@ -173,13 +173,13 @@ public class Booking extends BaseJpaModel<Long> {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@NotFound(action = NotFoundAction.IGNORE)
-	@JoinColumn(name = "RSV_NUM", referencedColumnName = "ID", insertable = false, updatable = false)
+	@JoinColumn(name = "RSV_NUM", referencedColumnName = "RSV_NUM", insertable = false, updatable = false)
 	private List<Memo> memoList;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@NotFound(action = NotFoundAction.IGNORE)
 	@JoinColumn(name = "GUEST_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-	private List<Guest> guestList;
+	private List<Guest> guestList;*/
 
 
 
@@ -231,10 +231,17 @@ public class Booking extends BaseJpaModel<Long> {
 		this.__modified__ = isModified;
 		this.__deleted__ = isDeleted;
 		this.memoList = memoList;
+		//this.guestList =guestList;
 	}
+
 	public void 예약번호생성(String rsvDt, int sno) {
 		this.rsvDt = rsvDt;
 		this.sno = sno;
-		this.rsvNum = "R" + rsvDt.replaceAll("-", "") + StringUtils.leftPad(Integer.toString(sno), 3);
+		this.rsvNum = "R" + rsvDt.replaceAll("-", "") + StringUtils.leftPad(Integer.toString(sno),3);
+	}
+
+	public void addMemo(Memo memo){
+		this.memoList.add(memo);
+		memo.setRsvNum(Booking.builder().rsvNum);
 	}
 }

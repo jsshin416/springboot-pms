@@ -12,7 +12,13 @@
     </jsp:attribute>
     <jsp:body>
 
-        <ax:page-buttons></ax:page-buttons>
+        <div data-page-buttons="">
+            <div class="button-warp">
+                    <button type="button" class="btn btn-default" data-page-btn="search"><i class="cqc-magnifier"></i> 검색 </button>
+                    <button type="button" class="btn btn-default" data-form-view-01-btn="form-clear"> 검색선택 초기화</button>
+                    <button type="button" class="btn btn-default" data-page-btn="excel"><i class="cqc-file-excel-o"></i> 엑셀 다운로드</button>
+            </div>
+        </div>
 
 
         <div role="page-header">
@@ -75,8 +81,8 @@
                     </div>
                 
                     <div class="right" style="width:200px">
-                        <ax:common-code groupCd="STAY_STATUS" id="sttusCd" dataPath="sttusCd"  clazz="js-sttusCd " /> 
-                        <button   button type="button" class="btn btn-default" data-grid-view-01-btn="modal"><i class="cqc-circle-with-plus"></i> 상태변경</button>
+            <ax:common-code groupCd="STAY_STATUS" id="sttusCd" dataPath="sttusCd"  clazz="js-sttusCd " /> 
+            <button button="" type="button" class="btn btn-default" data-grid-view-01-btn="sstus"><i class="cqc-circle-with-plus"></i> 상태변경</button>
                     </div>
                 </div>
                 <div data-ax5grid="grid-view-01" data-fit-height-content="grid-view-01" style="height: 300px;"></div>

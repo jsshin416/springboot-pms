@@ -2,6 +2,7 @@ package edu.axboot.controllers;
 
 import com.chequer.axboot.core.controllers.BaseController;
 import edu.axboot.controllers.dto.BookingSaveRequestDto;
+import edu.axboot.domain.pms.book.memo.Memo;
 import edu.axboot.domain.pms.book.memo.MemoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import edu.axboot.domain.pms.book.booking.BookingService;
 
 import javax.inject.Inject;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -20,24 +22,15 @@ public class BookingController extends BaseController {
 
     @Inject
     private final BookingService bookingService;
-    //private final GuestService guestService;
-    //private final MemoService memoService;
-
 
     @RequestMapping(method = RequestMethod.POST, produces = APPLICATION_JSON)
     public ApiResponse save(@RequestBody BookingSaveRequestDto request){
         bookingService.save(request);
         return ok();
     }
-
-    /*@RequestMapping(method = RequestMethod.POST, produces = APPLICATION_JSON)
-    public ApiResponse save(@RequestBody GuestSaveRequestDto request){
-        guestService.save(request);
-        return ok();
-    }*/
-    /*@RequestMapping(method = RequestMethod.POST, produces = APPLICATION_JSON)
-    public ApiResponse memoSave(@RequestBody MemoSaveRequestDto request){
-        memoService.save(request);
+ /*@RequestMapping(method = RequestMethod.POST, produces = APPLICATION_JSON)
+    public ApiResponse save(@RequestBody List<BookingSaveRequestDto> request){
+        bookingService.save(request);
         return ok();
     }*/
 
