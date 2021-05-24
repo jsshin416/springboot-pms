@@ -10,7 +10,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         if (!modalParams.id) return false;
         axboot.ajax({
             type: 'GET',
-            url: '/api/v1/state/'+modalParams.id,
+            url: '/api/v1/booking/' + modalParams.id,
             callback: function (res) {
                 caller.formView01.setData(res);
                 caller.gridView01.setData(res);
@@ -85,9 +85,6 @@ fnObj.pageButtonView = axboot.viewExtend({
     },
 });
 
-
-
-
 fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     setGuest: function (data) {
         this.model.set('guestId', data.guesId || '');
@@ -100,7 +97,7 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
         this.model.set('langCd', data.langCd || '');
     },
     getDefaultData: function () {
-        return {adultCnt:'1' ,chldCnt:'0'};
+        return { adultCnt: '1', chldCnt: '0' };
     },
 
     getData: function () {
@@ -226,11 +223,10 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     },
 });
 
-
 /**
  * gridView
  */
- fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
+fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
     initView: function () {
         var _this = this;
 

@@ -1,6 +1,7 @@
 package edu.axboot.domain.pms.book.booking;
 
 import com.chequer.axboot.core.annotations.ColumnPosition;
+import edu.axboot.controllers.dto.MemoSaveRequestDto;
 import edu.axboot.domain.BaseJpaModel;
 import edu.axboot.domain.SimpleJpaModel;
 import edu.axboot.domain.pms.book.memo.Memo;
@@ -176,11 +177,6 @@ public class Booking extends BaseJpaModel<Long> {
 	@JoinColumn(name = "RSV_NUM", referencedColumnName = "RSV_NUM", insertable = false, updatable = false)
 	private List<Memo> memoList;
 
-	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@NotFound(action = NotFoundAction.IGNORE)
-	@JoinColumn(name = "GUEST_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-	private List<Guest> guestList;*/
-
 
 
 	@Override
@@ -196,14 +192,13 @@ public class Booking extends BaseJpaModel<Long> {
 				   String roomNum, Integer adultCnt, Integer chldCnt, String saleTypCd,
 				   String sttusCd, String srcCd, String brth, String gender, String payCd, String advnYn,
 				   BigDecimal salePrc, BigDecimal svcPrc,
-				   boolean isCreated,boolean isModified, boolean isDeleted,
-				   List<Memo>memoList){
+				   boolean isCreated,boolean isModified, boolean isDeleted){
 
 		this.id = id;
 		this.rsvDt = rsvDt;
 		this.sno =sno;
 		this.rsvNum= rsvNum;
-		this.guestId =id;
+		this.guestId =guestId;
 		this.guestNm = guestNm;
 		this.guestNmEng =guestNmEng;
 		this.guestTel = guestTel;
@@ -219,7 +214,7 @@ public class Booking extends BaseJpaModel<Long> {
 		this.adultCnt =adultCnt;
 		this.chldCnt = chldCnt;
 		this.saleTypCd = saleTypCd;
-		this.sttusCd ="RSV_01";
+		this.sttusCd =sttusCd;
 		this.srcCd =srcCd;
 		this.brth = brth;
 		this.gender =gender;
@@ -230,18 +225,47 @@ public class Booking extends BaseJpaModel<Long> {
 		this.__created__ = isCreated;
 		this.__modified__ = isModified;
 		this.__deleted__ = isDeleted;
-		this.memoList = memoList;
-		//this.guestList =guestList;
+
 	}
 
 	public void 예약번호생성(String rsvDt, int sno) {
 		this.rsvDt = rsvDt;
 		this.sno = sno;
-		this.rsvNum = "R" + rsvDt.replaceAll("-", "") + StringUtils.leftPad(Integer.toString(sno),3);
+		this.rsvNum = "R" + rsvDt.replaceAll("-", "") + StringUtils.leftPad(Integer.toString(sno),3,'0');
+		this.sttusCd ="RSV_01";
 	}
 
-	public void addMemo(Memo memo){
-		this.memoList.add(memo);
-		memo.setRsvNum(Booking.builder().rsvNum);
+	public void 투숙번호갱신(Long guestId){
+		this.guestId =guestId;
+	}
+	public void 예약수정 (Long guestId, String arrDt, Integer nightCnt, String depDt,
+					  String roomTypCd, Integer adultCnt,Integer chldCnt,
+					  String guestNm,String guestNmEng, String guestTel,
+					  String email, String langCd, String brth, String gender,
+					  String saleTypCd, String srcCd,String payCd, String advnYn,
+					  BigDecimal salePrc, BigDecimal svcPrc){
+		this.guestId =guestId;
+		this.guestNm = guestNm;
+		this.guestNmEng =guestNmEng;
+		this.guestTel = guestTel;
+		this.email =email;
+		this.langCd =langCd;
+		this.arrDt = arrDt;
+		this.depDt = depDt;
+		this.nightCnt = nightCnt;
+		this.roomTypCd = roomTypCd;
+		this.adultCnt =adultCnt;
+		this.chldCnt = chldCnt;
+		this.saleTypCd = saleTypCd;
+		this.srcCd =srcCd;
+		this.brth = brth;
+		this.gender =gender;
+		this.payCd =payCd;
+		this.advnYn =advnYn;
+		this.salePrc =salePrc;
+		this.svcPrc =svcPrc;
+	}
+	public  void 예약상태변경(String sttusCd){
+		this.sttusCd = sttusCd;
 	}
 }

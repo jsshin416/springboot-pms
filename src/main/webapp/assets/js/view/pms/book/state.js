@@ -3,7 +3,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SEARCH: function (caller, act, data) {
         axboot.ajax({
             type: 'GET',
-            url: '/api/v1/state',
+            url: '/api/v1/booking',
             data: caller.searchView.getData(),
             callback: function (res) {
                 caller.gridView01.setData(res);
@@ -24,7 +24,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
 
         axboot.ajax({
             type: 'POST',
-            url: '/api/v1/state',
+            url: '/api/v1/booking',
             data: JSON.stringify(saveList),
             callback: function (res) {
                 ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
@@ -35,17 +35,16 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     ITEM_CLICK: function (caller, act, data) {
         caller.formView01.setData(data);
     },
-    PAGE_CHOICE: function (caller, act, data) {
-        var list = caller.gridView01.getData('selected');
-        if (list.length > 0) {
-            if (parent && parent.axboot && parent.axboot.modal) {
-                parent.axboot.modal.callback(list[0]);
-               
-            }
-        } else {
-            alert(LANG('ax.script.requireselect'));
-        }
-    },
+    // PAGE_CHOICE: function (caller, act, data) {
+    //     var list = caller.gridView01.getData('selected');
+    //     if (list.length > 0) {
+    //         if (parent && parent.axboot && parent.axboot.modal) {
+    //             parent.axboot.modal.callback(list[0]);
+    //         }
+    //     } else {
+    //         alert(LANG('ax.script.requireselect'));
+    //     }
+    // },
     STATE_MODAL: function (caller, act, data) {
         if (!data) data = {};
         axboot.modal.open({
@@ -125,7 +124,7 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
         this.roomTypCd = $('.js-roomTypCd');
         this.arrDt = $('.js-arrDt');
         this.depDt = $('.js-depDt');
-        this.sttusCd =this.target.find('[dataPath="sttusCd"]');
+        this.sttusCd = this.target.find('[dataPath="sttusCd"]');
         this.target.find('[data-ax5picker="date"]').ax5picker({
             direction: 'auto',
             content: {
@@ -143,7 +142,6 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
             roomTypCd: this.roomTypCd.val(),
             arrDt: this.arrDt.val(),
             depDt: this.depDt.val(),
-
         };
     },
 });
@@ -164,21 +162,61 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                 { key: 'rsvNum', label: '예약번호', width: 160, align: 'center', editor: 'readonly' },
                 { key: 'rsvDt', label: '예약일', width: 160, align: 'center', editor: 'readonly' },
                 { key: 'guestNm', label: '투숙객', width: 100, align: 'center', editor: 'readonly' },
-                { key: 'roomTypCd', label: '객실타입', width: 100, align: 'center', editor: 'readonly' },
+                {
+                    key: 'roomTypCd',
+                    label: '객실타입',
+                    width: 100,
+                    align: 'center',
+                    formatter: function () {
+                        if (!this.value) return '';
+                        return parent.COMMON_CODE['ROOM_TYPE'].map[this.value];
+                    },
+                    editor: 'readonly',
+                },
                 { key: 'roomNum', label: '객실번호', width: 100, align: 'center', editor: 'readonly' },
                 { key: 'arrDt', label: '도착일', width: 100, align: 'center', editor: 'readonly' },
                 { key: 'depDt', label: '출발일', width: 100, align: 'center', editor: 'readonly' },
-                { key: 'srcCd', label: '예약경로', width: 100, align: 'center', editor: 'readonly' },
-                { key: 'saleTypCd', label: '판매유형', width: 100, align: 'center', editor: 'readonly' },
-                { key: 'sttusCd', label: '상태', width: 100, align: 'center', editor: 'readonly' },
+                {
+                    key: 'srcCd',
+                    label: '예약경로',
+                    width: 100,
+                    align: 'center',
+                    formatter: function () {
+                        if (!this.value) return '';
+                        return parent.COMMON_CODE['RESERVATION_ROUTE'].map[this.value];
+                    },
+                    editor: 'readonly',
+                },
+                {
+                    key: 'saleTypCd',
+                    label: '판매유형',
+                    width: 100,
+                    align: 'center',
+                    formatter: function () {
+                        if (!this.value) return '';
+                        return parent.COMMON_CODE['SALE_TYPE'].map[this.value];
+                    },
+                    editor: 'readonly',
+                },
+                {
+                    key: 'sttusCd',
+                    label: '상태',
+                    width: 100,
+                    align: 'center',
+                    formatter: function () {
+                        if (!this.value) return '';
+                        return parent.COMMON_CODE['STAY_STATUS'].map[this.value];
+                    },
+                    editor: 'readonly',
+                },
             ],
             body: {
                 onClick: function () {
                     this.self.select(this.dindex, { selectedClear: true });
                 },
-                onDBLClick: function(){
+                onDBLClick: function () {
                     ACTIONS.dispatch(ACTIONS.STATE_MODAL, this.item);
-                }
+                },
             },
         });
 

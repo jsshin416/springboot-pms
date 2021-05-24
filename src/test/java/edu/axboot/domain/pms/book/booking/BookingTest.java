@@ -24,33 +24,7 @@ public class BookingTest {
     @Autowired
     private  BookingService bookingService;
     public static long ids =0;
-    //public static List<Long> ids;
     @Test
-    /*public void test1_예약등록_저장하기() {
-        //given
-        List<BookingSaveRequestDto> dtos = new ArrayList<BookingSaveRequestDto>();
-        dtos.add(BookingSaveRequestDto.builder()
-                .id(null)
-                .arrDt("2021051")
-                .nightCnt(2)
-                .depDt("20210515")
-                .roomTypCd("EE")
-                .saleTypCd("온라인")
-                .sttusCd("전화")
-                .srcCd("소스")
-                .sno(1111)
-                .rsvNum("20210514001")
-                .roomNum("101")
-
-                .__created__(true)
-                .__modified__(false)
-                .__deleted__(false)
-                .build());
-        //when
-        ids = bookingService.save(dtos);
-        //then
-        assertTrue(ids.size() == dtos.size());
-    }*/
     public void test1_예약등록_저장하기() {
         //given
       BookingSaveRequestDto dtos = BookingSaveRequestDto.builder()
@@ -61,19 +35,21 @@ public class BookingTest {
                 .roomTypCd("SB")
                 .saleTypCd("온라인")
                 .srcCd("소스")
-//                .sno(1111)
-//                .rsvNum("20210514001")
-                .roomNum("101")
-
-                .__created__(true)
-                .__modified__(false)
-                .__deleted__(false)
                 .build();
         //when
         ids = this.bookingService.save(dtos);
         //then
         TestCase.assertTrue(ids >0);
     }
+
+    // public void test2_메모_저장하기(){}
+    // public void test3_예약목록_가져오기(){}
+
+   // public void test2_예약등록_수정하기(){}
+   // public void test4_메모_수정하기(){}
+
+
+
 
 
 }

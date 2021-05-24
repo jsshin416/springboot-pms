@@ -13,7 +13,7 @@
                 <ax:layout name="modal">
                     <jsp:attribute name="script">
                         <ax:script-lang key="ax.script" />
-                        <script type="text/javascript" src="<c:url value='/assets/js/view/pms/book/book-modal.js' />"></script>
+                        <script type="text/javascript" src="<c:url value='/assets/js/view/pms/book/guest-modal.js' />"></script>
                             <ax:script-lang key="ax.script" var="LANG" />
                         <ax:script-lang key="ax.base" var="COL" />
                     </jsp:attribute>

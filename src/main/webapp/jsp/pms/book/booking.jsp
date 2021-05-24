@@ -101,11 +101,11 @@
                                                         <div data-ax-td-label
                                                             style="width:120px; background-color: #fff; background-image: none;">
                                                             영문</div>
-                                                        <div data-ax-td-wrap>
-                                                            <input type="text" naem="guestNmEng" id="guestNmEng"
-                                                                data-ax-path="guestNmEng"
-                                                                class="js-guestNmEng form-control" />
-                                                        </div>
+                                                            <div data-ax-td-wrap>
+                                                                <input type="text" name="guestNmEng" id="guestNmEng"
+                                                                    data-ax-path="guestNmEng"
+                                                                    class="js-guestNmEng form-control" />
+                                                            </div>
                                                     </div>
                                                 </div>
                                                 <div data-ax-tr>
@@ -140,14 +140,19 @@
                                                                 dataPath="langCd" clazz="js-langCd" emptyText="전체" />
                                                         </div>
                                                     </div>
-                                                    <ax:td label="생년월일" width="40% ">
-                                                        <div class="input-group" data-ax5picker="date">
-                                                            <input type="text" name="brth" id="brth" data-ax-path="brth"
-                                                                class="js-brth form-control" placeholder="YYYY-MM-DD"  data-ax5formatter="date"/>
-                                                            <span class="input-group-addon"><i
-                                                                    class="cqc-calendar"></i></span>
+                                                    <div data-ax-td style="width:40%">
+                                                        <div data-ax-td-label
+                                                            style="width:120px; background-color: #fff; background-image: none;">
+                                                            생년월일</div>
+                                                        <div data-ax-td-wrap>
+                                                            <div class="input-group" data-ax5picker="date">
+                                                                <input type="text" name="brth" id="brth" data-ax-path="brth"
+                                                                    class="js-brth form-control" placeholder="YYYY-MM-DD"  data-ax5formatter="date"/>
+                                                                <span class="input-group-addon"><i
+                                                                        class="cqc-calendar"></i></span>
+                                                            </div>
                                                         </div>
-                                                    </ax:td>
+                                                    </div>
                                                     <span>
                                                         <label><input type="radio" data-ax-path="gender" name="gender"
                                                                 value="M">남

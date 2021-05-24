@@ -1,7 +1,7 @@
 var fnObj = {};
 var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SEARCH: function (caller, act, data) {
-        var paramObj = $.extend(caller.searchView.getData(),data);
+        var paramObj = $.extend(caller.searchView.getData(), data);
         axboot.ajax({
             type: 'GET',
             url: '/api/v1/booking',
@@ -10,7 +10,6 @@ var ACTIONS = axboot.actionExtend(fnObj, {
                 caller.formView01.clear();
                 caller.gridView01.clear();
                 //caller.gridView01.setData(res);
-                
             },
             options: {
                 // axboot.ajax 함수에 2번째 인자는 필수가 아닙니다. ajax의 옵션을 전달하고자 할때 사용합니다.
@@ -24,9 +23,9 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SAVE: function (caller, act, data) {
         if (caller.formView01.validate()) {
             var item = caller.formView01.getData();
-            // var parentData = caller.formView01.getData();
-            // var childList = [].concat(caller.gridView01.getData(""));
-            // childList = childList.concat(caller.gridView01.getData("deleted"));
+            var memos = [].concat(caller.gridView01.getData());
+            memos = memos.concat(caller.gridView01.getData('deleted'));
+            item.memoList = memos;
             if (!item.id) item.__created__ = true;
             axboot.ajax({
                 type: 'POST',
@@ -43,7 +42,6 @@ var ACTIONS = axboot.actionExtend(fnObj, {
 
             // axboot.promise()
             // .then: ""
-
         }
     },
     ITEM_CLICK: function (caller, act, data) {
@@ -116,17 +114,16 @@ fnObj.pageButtonView = axboot.viewExtend({
 
 fnObj.searchView = axboot.viewExtend(axboot.searchView, {
     initView: function () {
-        this.target = $(document["searchView0"]);
-        this.target.attr("onsubmit", "return false);");
-        this.filter = $("#filter");
+        this.target = $(document['searchView0']);
+        this.target.attr('onsubmit', 'return false);');
+        this.filter = $('#filter');
     },
     getData: function () {
         return {
             pageNumber: this.pageNumber,
             pageSize: this.pageSize,
-          
-        }
-    }
+        };
+    },
 });
 
 fnObj.formView01 = axboot.viewExtend(axboot.formView, {
@@ -141,7 +138,7 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
         this.model.set('langCd', data.langCd || '');
     },
     getDefaultData: function () {
-        return {adultCnt:'1' ,chldCnt:'0'};
+        return { adultCnt: '1', chldCnt: '0' };
     },
 
     getData: function () {
@@ -152,6 +149,7 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     setData: function (data) {
         if (typeof data === 'undefined') data = this.getDefaultData();
         data = $.extend({}, data);
+        console.log(data);
         this.model.setModel(data);
         this.modelFormatter.formatting();
     },
@@ -267,16 +265,14 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     },
 });
 
-
 /**
  * gridView
  */
- fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
+fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
     initView: function () {
         var _this = this;
 
         this.target = axboot.gridBuilder({
-            showRowSelector: true,
             frozenColumnIndex: 0,
             multipleSelect: true,
             target: $('[data-ax5grid="grid-view-01"]'),
@@ -293,12 +289,6 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
                 },
                 { key: 'memoCn', label: '메모', width: 750, align: 'center', editor: 'text' },
             ],
-            body: {
-                onClick: function () {
-                    this.self.select(this.dindex, { selectedClear: true });
-                    ACTIONS.dispatch(ACTIONS.ITEM_CLICK, this.item);
-                },
-            },
         });
 
         axboot.buttonClick(this, 'data-grid-view-01-btn', {

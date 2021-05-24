@@ -1,10 +1,7 @@
 package edu.axboot.domain.pms.book.memo;
 
-import com.chequer.axboot.core.annotations.ColumnPosition;
-import edu.axboot.domain.SimpleJpaModel;
-import edu.axboot.domain.pms.book.booking.Booking;
+import edu.axboot.domain.BaseJpaModel;
 import lombok.*;
-import org.apache.ibatis.type.Alias;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import com.chequer.axboot.core.annotations.Comment;
@@ -17,7 +14,7 @@ import java.sql.Timestamp;
 @DynamicUpdate
 @Entity
 @Table(name = "PMS_CHK_MEMO")
-public class Memo extends SimpleJpaModel<Long> {
+public class Memo extends BaseJpaModel<Long> {
 
 	@Id
 	@Column(name = "ID", precision = 19, nullable = false)
@@ -55,7 +52,8 @@ public class Memo extends SimpleJpaModel<Long> {
     }
 
     @Builder
-	public Memo(Long id, String rsvNum, Integer sno, String memoCn, Timestamp memoDtti, String memoMan, String delYn){
+	public Memo(Long id, String rsvNum, Integer sno, String memoCn, Timestamp memoDtti, String memoMan, String delYn,
+				boolean isCreated, boolean isModified, boolean isDeleted){
     	this.id =id;
     	this.rsvNum = rsvNum;
     	this.sno =sno;
@@ -63,5 +61,14 @@ public class Memo extends SimpleJpaModel<Long> {
     	this.memoDtti = memoDtti;
     	this.memoMan =memoMan;
     	this.delYn =delYn;
+		this.__created__ = isCreated();
+		this.__modified__ =isModified();
+		this.__deleted__ = isDeleted();
+	}
+	public void update(String memoCn){
+		this.memoCn = memoCn;
+	}
+	public void delete(){
+		this.delYn ="Y";
 	}
 }
