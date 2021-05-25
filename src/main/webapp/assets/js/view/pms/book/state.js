@@ -216,6 +216,7 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                 },
                 onDBLClick: function () {
                     ACTIONS.dispatch(ACTIONS.STATE_MODAL, this.item);
+                    console.log(this.item);
                 },
             },
         });
