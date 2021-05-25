@@ -39,7 +39,7 @@ public class GuestService extends BaseService<Guest, Long> {
         }
         List<Guest> entitis = select().select(
                 Projections.fields(Guest.class, qGuest.id, qGuest.guestNm,
-                        qGuest.guestTel,qGuest.email,
+                        qGuest.guestNmEng, qGuest.guestTel,qGuest.email,
                         qGuest.gender,qGuest.brth, qGuest.langCd))
                 .from(qGuest)
                 .where(builder)
@@ -47,7 +47,7 @@ public class GuestService extends BaseService<Guest, Long> {
                 .fetch();
 
         return entitis.stream()
-                .map(GuestListResponseDto::new)//
+                .map(GuestListResponseDto::new)
                 .collect(Collectors.toList());
     }
 

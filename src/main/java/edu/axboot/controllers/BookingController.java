@@ -3,8 +3,6 @@ package edu.axboot.controllers;
 import com.chequer.axboot.core.api.response.Responses;
 import com.chequer.axboot.core.controllers.BaseController;
 import edu.axboot.controllers.dto.*;
-import edu.axboot.domain.pms.book.memo.Memo;
-import edu.axboot.domain.pms.book.memo.MemoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import com.chequer.axboot.core.api.response.ApiResponse;

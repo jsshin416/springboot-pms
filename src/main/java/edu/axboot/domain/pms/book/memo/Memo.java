@@ -1,17 +1,23 @@
 package edu.axboot.domain.pms.book.memo;
 
 import edu.axboot.domain.BaseJpaModel;
+import edu.axboot.domain.pms.book.booking.Booking;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import com.chequer.axboot.core.annotations.Comment;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Setter
 @Getter
 @DynamicInsert
 @DynamicUpdate
+@NoArgsConstructor
 @Entity
 @Table(name = "PMS_CHK_MEMO")
 public class Memo extends BaseJpaModel<Long> {
@@ -19,6 +25,7 @@ public class Memo extends BaseJpaModel<Long> {
 	@Id
 	@Column(name = "ID", precision = 19, nullable = false)
 	@Comment(value = "ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "RSV_NUM", length = 20)
@@ -46,6 +53,8 @@ public class Memo extends BaseJpaModel<Long> {
 	private String delYn;
 
 
+
+
 	@Override
     public Long getId() {
         return id;
@@ -61,9 +70,9 @@ public class Memo extends BaseJpaModel<Long> {
     	this.memoDtti = memoDtti;
     	this.memoMan =memoMan;
     	this.delYn =delYn;
-		this.__created__ = isCreated();
-		this.__modified__ =isModified();
-		this.__deleted__ = isDeleted();
+		this.__created__ = isCreated;
+		this.__modified__ =isModified;
+		this.__deleted__ = isDeleted;
 	}
 	public void update(String memoCn){
 		this.memoCn = memoCn;

@@ -3,9 +3,11 @@ package edu.axboot.controllers.dto;
 import edu.axboot.domain.pms.book.memo.Memo;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 
 @Getter
+@NoArgsConstructor
 public class MemoSaveRequestDto {
     private Long id;
     private String memoCn;

@@ -2,21 +2,25 @@ package edu.axboot.controllers.dto;
 
 import edu.axboot.domain.pms.book.booking.Booking;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Getter
+@NoArgsConstructor
 public class BookingListResponseDto {
     private Long id;
+    private String rsvNum;
+    private String rsvDt;
     private String guestNm;
     private String arrDt;
     private String depDt;
     private Integer nightCnt;
     private String roomTypCd;
     private String roomNum;
+    private String srcCd;
     private String saleTypCd;
     private String sttusCd;
-    private String srcCd;
     private boolean __created__;
     private boolean __modified__;
     private boolean __deleted__;
@@ -24,6 +28,8 @@ public class BookingListResponseDto {
 
     public BookingListResponseDto(Booking entity){
         this.id = entity.getId();
+        this.rsvNum = entity.getRsvNum();
+        this.rsvDt = entity.getRsvDt();
         this.guestNm  = entity.getGuestNm();
         this.arrDt =entity.getArrDt();
         this.depDt = entity.getDepDt();

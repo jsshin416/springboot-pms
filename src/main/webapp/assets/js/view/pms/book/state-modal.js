@@ -12,8 +12,8 @@ var ACTIONS = axboot.actionExtend(fnObj, {
             type: 'GET',
             url: '/api/v1/booking/' + modalParams.id,
             callback: function (res) {
-                caller.formView01.setData(res);
-                caller.gridView01.setData(res);
+                caller.formView01.setData(res.bookingList || []);
+                caller.gridView01.setData(res.memoList || []);
             },
         });
     },
@@ -86,6 +86,7 @@ fnObj.pageButtonView = axboot.viewExtend({
 });
 
 fnObj.formView01 = axboot.viewExtend(axboot.formView, {
+    bookingSet: function (data) {},
     setGuest: function (data) {
         this.model.set('guestId', data.guesId || '');
         this.model.set('guestNm', data.guestNm || '');

@@ -7,9 +7,9 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         }
     },
     PAGE_SEARCH: function (caller, act, data) {
-        axboot.ajax({ 
+        axboot.ajax({
             type: 'GET',
-            url: '/api/v1/guest/',
+            url: '/api/v1/guest',
             callback: function (res) {
                 caller.formView01.clear();
                 caller.gridView01.setData(res);

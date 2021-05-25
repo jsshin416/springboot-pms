@@ -36,12 +36,6 @@ var ACTIONS = axboot.actionExtend(fnObj, {
                     axToast.push('저장 되었습니다');
                 },
             });
-            // childList.forEach(function(n){
-            //     n.parentKey = parentData.key;
-            // });
-
-            // axboot.promise()
-            // .then: ""
         }
     },
     ITEM_CLICK: function (caller, act, data) {
@@ -115,7 +109,7 @@ fnObj.pageButtonView = axboot.viewExtend({
 fnObj.searchView = axboot.viewExtend(axboot.searchView, {
     initView: function () {
         this.target = $(document['searchView0']);
-        this.target.attr('onsubmit', 'return false);');
+        this.target.attr('onsubmit', 'return false');
         this.filter = $('#filter');
     },
     getData: function () {
@@ -128,7 +122,7 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
 
 fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     setGuest: function (data) {
-        this.model.set('guestId', data.guesId || '');
+        this.model.set('guestId', data.id || '');
         this.model.set('guestNm', data.guestNm || '');
         this.model.set('guestNmEng', data.guestNmEng || '');
         this.model.set('guestTel', data.guestTel || '');
@@ -149,7 +143,6 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     setData: function (data) {
         if (typeof data === 'undefined') data = this.getDefaultData();
         data = $.extend({}, data);
-        console.log(data);
         this.model.setModel(data);
         this.modelFormatter.formatting();
     },

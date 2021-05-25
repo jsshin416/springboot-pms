@@ -17,11 +17,14 @@
                 <jsp:body>
                     <div data-fit-height-aside="form-view-01">
                         <div class="ax-button-group">
-                                <div class="left">
-                                        <h2><i class="cqc-list"></i> 예약번호 
-                                            <input type="text" name="rsvNum" id="rsvNum" data-ax-path="rsvNum"  class="js-rsvNum " style="background-color:transparent;border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;" readonly/>                                      
-                                        </h2>
-                                </div>
+                            <div class="left">
+                                <h2><i class="cqc-list"></i> 예약번호
+                                    <input type="text" name="rsvNum" id="rsvNum" data-ax-path="rsvNum"
+                                        class="js-rsvNum "
+                                        style="background-color:transparent;border:none;border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;"
+                                        readonly />
+                                </h2>
+                            </div>
                             <div class="right">
                                 <a style="padding-right:10px;">*표시는 필수항목 체크 부분</a>
                                 <button type="button" class="btn btn-default" data-page-btn="save">저장</button>
@@ -32,49 +35,70 @@
                             </div>
                         </div>
 
-                        <div style="overflow: scroll;width:*; height:500px;">
+                        <div style="overflow: scroll; width:*; height:500px;">
                             <form name="formView01" class="js-form">
                                 <ax:tbl clazz="ax-form-tbl" minWidth="500px">
-                                    <ax:tr labelWidth="120px">
-                                        <ax:td label="*도착일" width="35%">
-                                            <div class="input-group" data-ax5picker="date">
-                                                <input type="text" name="arrDt" id="arrDt" data-ax-path="arrDt"
-                                                    class="js-arrDt form-control" data-ax5formatter="date"
-                                                    placeholder="YYYY-MM-DD" />
-                                                <span class="input-group-addon"><i class="cqc-calendar"></i></span>
+                                    <div data-ax-tr>
+
+                                        <div data-ax-td style="width:35%">
+                                            <div data-ax-td-label style="width:120px"><span class="def-ask-s" style="color: red;">*</span>도착일</div>
+                                            <div data-ax-td-wrap>
+
+                                                <div class="input-group" data-ax5picker="date">
+                                                    <input type="text" name="arrDt" id="arrDt" data-ax-path="arrDt"
+                                                        class="js-arrDt form-control" data-ax5formatter="date"
+                                                        placeholder="YYYY-MM-DD">
+                                                    <span class="input-group-addon"><i class="cqc-calendar"></i></span>
+                                                </div>
+
                                             </div>
-                                        </ax:td>
-                                        <ax:td label="*숙박수" width="30%">
-                                            <input type="text" name="nightCnt" id="nightCnt" data-ax-path="nightCnt"
-                                                class="js-nightCnt form-control" />
+                                        </div>
+                                        <div data-ax-td style="width:30%">
+                                            <div data-ax-td-label style="width:120px"><span class="def-ask-s" style="color: red;">*</span>숙박수</div>
+                                            <div data-ax-td-wrap>
+                                                <input type="text" name="nightCnt" id="nightCnt" data-ax-path="nightCnt"
+                                                    class="js-nightCnt form-control">
 
-                                        </ax:td>
-                                        <ax:td label="*출발일" width="35%">
-                                            <div class="input-group" data-ax5picker="date">
-                                                <input type="text" name="depDt" id="depDt" data-ax-path="depDt"
-                                                    class="js-depDt form-control" data-ax5formatter="date"
-                                                    placeholder="YYYY-MM-DD" />
-                                                <span class="input-group-addon"><i class="cqc-calendar"></i></span>
                                             </div>
+                                        </div>
 
-                                        </ax:td>
-                                    </ax:tr>
+                                        <div data-ax-td style="width:35%">
+                                            <div data-ax-td-label style="width:120px"> <span class="def-ask-s" style="color: red;">*</span>출발일</div>
+                                            <div data-ax-td-wrap>
+                                                <div class="input-group" data-ax5picker="date">
+                                                    <input type="text" name="depDt" id="depDt" data-ax-path="depDt"
+                                                        class="js-depDt form-control" data-ax5formatter="date"
+                                                        placeholder="YYYY-MM-DD">
+                                                    <span class="input-group-addon"><i class="cqc-calendar"></i></span>
+                                                </div>
 
-                                    <ax:tr labelWidth="120px">
-                                        <ax:td label="객실타입" width="35%">
-                                            <ax:common-code groupCd="ROOM_TYPE" id="roomType" dataPath="roomTypCd"
-                                                clazz="js-roomTypCd " emptyText="전체" />
-                                        </ax:td>
-                                        <ax:td label="성인수" width="30%">
-                                            <input type="text" name="adultCnt" id="adultCnt" data-ax-path="adultCnt"
-                                               min=1 class="js-adultCnt form-control" />
-                                        </ax:td>
-                                        <ax:td label="아동수" width="35%">
-                                            <input type="text" name="chldCnt" id="chldCnt" data-ax-path="chldCnt"
-                                                min=0 class="js-chldCnt form-control" />
 
-                                        </ax:td>
-                                    </ax:tr>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div data-ax-tr >
+                                        <div data-ax-td style="width:35%">
+                                            <div data-ax-td-label style="width:120px"><span class="def-ask-s" style="color: red;">*</span>객실타입</div>
+                                            <div data-ax-td-wrap>
+                                                <ax:common-code groupCd="ROOM_TYPE" id="roomType" dataPath="roomTypCd" clazz="js-roomTypCd "
+                                                    emptyText="전체" />
+                                            </div>
+                                        </div>
+                                        <div data-ax-td style="width:30%">
+                                            <div data-ax-td-label style="width:120px"><span class="def-ask-s" style="color: red;">*</span>성인수</div>
+                                            <div data-ax-td-wrap>
+                                                <input type="text" name="adultCnt" id="adultCnt" data-ax-path="adultCnt" min="1"
+                                                    class="js-adultCnt form-control">
+                                            </div>
+                                        </div>
+                                        <div data-ax-td style="width:35%">
+                                            <div data-ax-td-label style="width:120px"><span class="def-ask-s" style="color: red;">*</span>아동수</div>
+                                            <div data-ax-td-wrap>
+                                                <input type="text" name="chldCnt" id="chldCnt" data-ax-path="chldCnt" min="0"
+                                                    class="js-chldCnt form-control">
+                                            </div>
+                                        </div>
+                                    </div>
 
 
                                     <div data-ax-tr>
@@ -85,7 +109,7 @@
                                                     <i class="cqc-magnifier"></i>검색
                                                 </button>
                                             </div>
-                                            <div data-ax-td-wrap>
+                                            <div data-ax-td-wrap id = "guestId">
                                                 <div data-ax-tr>
                                                     <div data-ax-td style="width:50%">
                                                         <div data-ax-td-label
@@ -101,11 +125,10 @@
                                                         <div data-ax-td-label
                                                             style="width:120px; background-color: #fff; background-image: none;">
                                                             영문</div>
-                                                            <div data-ax-td-wrap>
-                                                                <input type="text" name="guestNmEng" id="guestNmEng"
-                                                                    data-ax-path="guestNmEng"
-                                                                    class="js-guestNmEng form-control" />
-                                                            </div>
+                                                        <div data-ax-td-wrap>
+                                                            <input type="text" name="guestNmEng" id="guestNmEng"
+                                                            data-ax-path="guestNmEng" class="js-guestNmEng form-control" />
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div data-ax-tr>
@@ -146,8 +169,9 @@
                                                             생년월일</div>
                                                         <div data-ax-td-wrap>
                                                             <div class="input-group" data-ax5picker="date">
-                                                                <input type="text" name="brth" id="brth" data-ax-path="brth"
-                                                                    class="js-brth form-control" placeholder="YYYY-MM-DD"  data-ax5formatter="date"/>
+                                                                <input type="text" name="brth" id="brth"
+                                                                    data-ax-path="brth" class="js-brth form-control"
+                                                                    placeholder="YYYY-MM-DD" data-ax5formatter="date" />
                                                                 <span class="input-group-addon"><i
                                                                         class="cqc-calendar"></i></span>
                                                             </div>
@@ -175,7 +199,7 @@
                                                     <div data-ax-td style="width:50%">
                                                         <div data-ax-td-label
                                                             style="width:120px; background-color: #fff; background-image: none;">
-                                                            판매유형</div>
+                                                            <span class="def-ask-s" style="color: red;">*</span>판매유형</div>
                                                         <div data-ax-td-wrap>
                                                             <ax:common-code groupCd="SALE_TYPE" id="saleTypCd"
                                                                 dataPath="saleTypCd" clazz="js-saleTypCd"
@@ -185,7 +209,7 @@
                                                     <div data-ax-td style="width:50%">
                                                         <div data-ax-td-label
                                                             style="width:120px; background-color: #fff; background-image: none;">
-                                                            예약경로</div>
+                                                            <span class="def-ask-s" style="color: red;">*</span>예약경로</div>
                                                         <div data-ax-td-wrap>
                                                             <ax:common-code groupCd="RESERVATION_ROUTE" id="srcCd"
                                                                 dataPath="srcCd" clazz="js-srcCd" emptyText="전체" />
@@ -205,7 +229,7 @@
                                                     <div data-ax-td style="width:50%">
                                                         <div data-ax-td-label
                                                             style="width:120px; background-color: #fff; background-image: none;">
-                                                            선수금 여부</div>
+                                                            <span class="def-ask-s" style="color: red;">*</span>선수금 여부</div>
                                                         <div data-ax-td-wrap>
                                                             <input type="checkbox" name="advnYn" id="advnYn"
                                                                 data-ax-path="advnYn" value="Y" class="js-advnYn" />
@@ -219,8 +243,8 @@
                                                             결제금액</div>
                                                         <div data-ax-td-wrap>
                                                             <input type="text" name="salePrc" id="salePrc"
-                                                                data-ax-path="salePrc"
-                                                                class="js-salePrc form-control" data-ax5formatter="money"/>
+                                                                data-ax-path="salePrc" class="js-salePrc form-control"
+                                                                data-ax5formatter="money" />
                                                         </div>
                                                     </div>
                                                     <div data-ax-td style="width:50%">
@@ -229,7 +253,8 @@
                                                             서비스 금액</div>
                                                         <div data-ax-td-wrap>
                                                             <input type="text" name="svcPrc" id="svcPrc"
-                                                                data-ax-path="svcPrc" class="js-svcPrc form-control" data-ax5formatter="money"/>
+                                                                data-ax-path="svcPrc" class="js-svcPrc form-control"
+                                                                data-ax5formatter="money" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -250,9 +275,11 @@
                                                                     투숙메모 </h2>
                                                             </div>
                                                             <div class="right">
-                                                                <button type="button" class="btn btn-default"  data-grid-view-01-btn="add"><i
+                                                                <button type="button" class="btn btn-default"
+                                                                    data-grid-view-01-btn="add"><i
                                                                         class="cqc-circle-with-plus"></i> 추가</button>
-                                                                <button type="button" class="btn btn-default" data-grid-view-01-btn="delete"><i
+                                                                <button type="button" class="btn btn-default"
+                                                                    data-grid-view-01-btn="delete"><i
                                                                         class="cqc-circle-with-minus"></i> 삭제</button>
                                                             </div>
                                                         </div>
@@ -265,7 +292,7 @@
                                             </div>
                                 </ax:tbl>
                             </form>
-                       </div>
+                        </div>
                     </div>
                     </div>
 

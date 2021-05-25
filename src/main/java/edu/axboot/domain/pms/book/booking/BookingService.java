@@ -35,42 +35,50 @@ public class BookingService extends BaseService<Booking, Long> {
     @Transactional      //TODO 투숙객 처리
     public long save(BookingSaveRequestDto saveDto) {
         long id = 0;
-        Guest guest = Guest.builder()
-                .id(saveDto.getGuestId())
-                .guestNm(saveDto.getGuestNm())
-                .guestNmEng(saveDto.getGuestNmEng())
-                .guestTel(saveDto.getGuestTel())
-                .email(saveDto.getEmail())
-                .brth(saveDto.getBrth())
-                .gender(saveDto.getGender())
-                .langCd(saveDto.getLangCd())
-                .build();
+        Guest guest = null;
+        if (saveDto.getGuestNm() != null) {
+            guest = Guest.builder()
+                    .id(saveDto.getGuestId())
+                    .guestNm(saveDto.getGuestNm())
+                    .guestNmEng(saveDto.getGuestNmEng())
+                    .guestTel(saveDto.getGuestTel())
+                    .email(saveDto.getEmail())
+                    .brth(saveDto.getBrth())
+                    .gender(saveDto.getGender())
+                    .langCd(saveDto.getLangCd())
+                    .build();
+            Long guestId = guestRepository.save(guest).getId();//투숙객 저장
 
-        Long guestId = guestRepository.save(guest).getId();//투숙객 저장
+            Booking booking = null;
+            if (saveDto.getId() == null) {
+                booking = saveDto.toEntity();
+                booking.투숙번호갱신(guestId);
+                id = 신규예약저장(booking);
+            } else {
+                booking = bookingRepository.findOne(saveDto.getId());
+                booking.투숙번호갱신(guestId);
+                booking.예약수정(guestId, saveDto.getArrDt(), saveDto.getNightCnt(), saveDto.getDepDt(),
+                        saveDto.getRoomTypCd(), saveDto.getAdultCnt(), saveDto.getChldCnt(),
+                        saveDto.getGuestNm(), saveDto.getGuestNmEng(), saveDto.getGuestTel(),
+                        saveDto.getEmail(), saveDto.getLangCd(), saveDto.getBrth(), saveDto.getGender(),
+                        saveDto.getSaleTypCd(), saveDto.getSrcCd(), saveDto.getPayCd(),
+                        saveDto.getAdvnYn(), saveDto.getSalePrc(), saveDto.getSvcPrc());
+                id = saveDto.getId();
+            }
 
-        Booking booking =null;
-        if(saveDto.getId() == null){
-            booking = saveDto.toEntity();
-            booking.투숙번호갱신(guestId);
-            id = 신규예약저장(booking);
-        }else{
-            booking = bookingRepository.findOne(saveDto.getId());
-            booking.투숙번호갱신(guestId);
-            booking.예약수정(guestId,saveDto.getArrDt(),saveDto.getNightCnt(),saveDto.getDepDt(),
-                    saveDto.getRoomTypCd(), saveDto.getAdultCnt(),saveDto.getChldCnt(),
-                    saveDto.getGuestNm(),saveDto.getGuestNmEng(), saveDto.getGuestTel(),
-                    saveDto.getEmail(),saveDto.getLangCd(),saveDto.getBrth(),saveDto.getGender(),
-                    saveDto.getSaleTypCd(),saveDto.getSrcCd(),saveDto.getPayCd(),
-                    saveDto.getAdvnYn(),saveDto.getSalePrc(), saveDto.getSvcPrc());
-        id = saveDto.getId();
+            //투숙메모 처리
+            if (saveDto.getMemoList() != null) {
+                this.saveMemo(booking.getRsvNum(), saveDto.getMemoList());
+            }
+        }else {
+            guest = Guest.builder()
+                    .id(saveDto.getGuestId())
+                    .build();
+            Long guestId = guestRepository.save(guest).getId();//투숙객 저장
         }
-        //투숙메모 처리
-        this.saveMemo(booking.getRsvNum(), saveDto.getMemoList());
         return id;
-
     }
-
-    private long 신규예약저장(Booking booking) {
+    private Long 신규예약저장(Booking booking) {
         String rsvDt = LocalDate.now().toString();
         Booking todayLastChk = select().select(
                 Projections.fields(Booking.class, qBooking.sno))
@@ -127,7 +135,7 @@ public class BookingService extends BaseService<Booking, Long> {
             builder.and(builder2);
         }
         if(isNotEmpty(rsvNum)){
-            builder.and(qBooking.roomNum.like("%"+rsvNum+"%"));
+            builder.and(qBooking.rsvNum.like("%"+rsvNum+"%"));
         }
         if(isNotEmpty(roomTypCd)){
             builder.and(qBooking.roomTypCd.like("%"+roomTypCd+"%"));
@@ -154,25 +162,31 @@ public class BookingService extends BaseService<Booking, Long> {
                 builder.and(qBooking.depDt.goe(depStDate));
             }
         }
-        if(sttusCds.size() >0){
-            BooleanBuilder builder2 = new BooleanBuilder();
-            for(String sttusCd: sttusCds){
-                builder2.or(qBooking.sttusCd.eq(sttusCd));
+
+        if(sttusCds !=null){
+            if(sttusCds.size() >0){
+                BooleanBuilder builder2 = new BooleanBuilder();
+                for(String sttusCd: sttusCds){
+                    builder2.or(qBooking.sttusCd.eq(sttusCd));
+                }
+                builder.and(builder2);
             }
-            builder.and(builder2);
         }
+
 
         List<Booking> entitis = select().select(
                 Projections.fields(Booking.class,
-                        qBooking.id, qBooking.rsvNum, qBooking.rsvDt,qBooking.arrDt, qBooking.depDt, qBooking.nightCnt,
-                        qBooking.roomTypCd, qBooking.roomNum, qBooking.saleTypCd, qBooking.srcCd, qBooking.sttusCd, qBooking.guestNm))
+                        qBooking.id, qBooking.rsvNum, qBooking.rsvDt,
+                        qBooking.guestNm, qBooking.roomTypCd, qBooking.roomNum,
+                        qBooking.arrDt,qBooking.depDt, qBooking.nightCnt,
+                        qBooking.srcCd,qBooking.saleTypCd, qBooking.sttusCd))
                 .from(qBooking)
                 .where(builder)
                 .orderBy(qBooking.rsvNum.asc())
                 .fetch();
 
         return entitis.stream()
-                .map(BookingListResponseDto::new)//
+                .map(BookingListResponseDto::new)
                 .collect(Collectors.toList());
     }
 

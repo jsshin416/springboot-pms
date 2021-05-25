@@ -3,12 +3,14 @@ package edu.axboot.controllers.dto;
 import edu.axboot.domain.pms.book.booking.Booking;
 import edu.axboot.domain.pms.book.memo.Memo;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 public class BookingResponseDto {
     private Long id;
     private String arrDt;
