@@ -3,7 +3,7 @@ var fnObj = {};
 var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_CLOSE: function (caller, act, data) {
         if (parent) {
-            parent.axboot.modal.close();
+            parent.axboot.modal.close(data);
         }
     },
     PAGE_SEARCH: function (caller, act, data) {
@@ -12,7 +12,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
             type: 'GET',
             url: '/api/v1/booking/' + modalParams.id,
             callback: function (res) {
-                caller.formView01.setData(res.bookingList || []);
+                caller.formView01.setData(res);
                 caller.gridView01.setData(res.memoList || []);
             },
         });
@@ -20,6 +20,9 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SAVE: function (caller, act, data) {
         if (caller.formView01.validate()) {
             var item = caller.formView01.getData();
+            var memos = [].concat(caller.gridView01.getData());
+            memos = memos.concat(caller.gridView01.getData('deleted'));
+            item.memoList = memos;
             if (!item.id) item.__created__ = true;
             axboot.ajax({
                 type: 'POST',
@@ -28,9 +31,6 @@ var ACTIONS = axboot.actionExtend(fnObj, {
                 callback: function (res) {
                     ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
                     axToast.push('저장 되었습니다');
-                    if (parent && parent.axboot && parent.axboot.modal) {
-                        parent.axboot.modal.callback({ dirty: true });
-                    }
                 },
             });
         }
@@ -46,26 +46,35 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     ITEM_CLICK: function (caller, act, data) {
         caller.formView01.setData(data);
     },
+    ITEM_ADD: function (caller, act, data) {
+        caller.gridView01.addRow();
+    },
+    ITEM_DEL: function (caller, act, data) {
+        caller.gridView01.delRow('selected');
+    },
+    FORM_CLEAR: function (caller, act, data) {
+        axDialog.confirm({ msg: LANG('ax.script.form.clearconfirm') }, function () {
+            if (this.key == 'ok') {
+                caller.formView01.clear();
+                caller.gridView01.clear();
+                $('[data-ax-path="arrDt"]').focus();
+            }
+        });
+    },
+    GUEST_MODAL:function(caller, act, data){
+        
+    }
 });
 
 var CODE = {};
 
-fnObj.getModal = function () {
-    var modalView;
-    if (parent && modalParams.modalView && (modalView = parent[axboot.def.pageFunctionName][modalParams.modalView])) {
-        return modalView;
-    } else if (opener && modalParams.modalView && (modalView = opener[axboot.def.pageFunctionName][modalParams.modalView])) {
-        return modalView;
-    } else if (parent && parent.axboot && parent.axboot.modal) {
-        return parent.axboot.modal;
-    }
-};
 // fnObj 기본 함수 스타트와 리사이즈
 fnObj.pageStart = function () {
     var _this = this;
     _this.pageButtonView.initView();
     _this.gridView01.initView();
     _this.formView01.initView();
+    _this.guestView01.initView();
 
     ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
 };
@@ -75,20 +84,48 @@ fnObj.pageResize = function () {};
 fnObj.pageButtonView = axboot.viewExtend({
     initView: function () {
         axboot.buttonClick(this, 'data-page-btn', {
-            choice: function () {
-                ACTIONS.dispatch(ACTIONS.PAGE_CHOICE);
+            save: function () {
+                ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
             },
             close: function () {
                 ACTIONS.dispatch(ACTIONS.PAGE_CLOSE);
             },
+            guestModal: function(){
+                ACTIONS.dispatch(ACTIONS.PAGE_CLOSE);
+            }
         });
     },
 });
+fnObj.guestView01 =axboot.viewExtend(axboot.formView, {
+    open:function(data){
+        if (!data) data = {};
+        axboot.modal.open({
+            width: 730,
+            height: 600,
+            iframe: {
+                param: 'id=' + (data.id || ''),
+                url: 'guest-modal.jsp',
+            },
+            header: { title: '투숙객 조회' },
+            callback: function (data) {
+                if (data) {
+                    caller.formView01.setGuest(data);
+                }
+                this.close();
+            },
+        });
+    },
+    close: function(data){
+        if (parent) {
+            parent.axboot.modal.close(data);
+        }
+    },
+
+},
 
 fnObj.formView01 = axboot.viewExtend(axboot.formView, {
-    bookingSet: function (data) {},
     setGuest: function (data) {
-        this.model.set('guestId', data.guesId || '');
+        this.model.set('guestId', data.id || '');
         this.model.set('guestNm', data.guestNm || '');
         this.model.set('guestNmEng', data.guestNmEng || '');
         this.model.set('guestTel', data.guestTel || '');
@@ -107,8 +144,10 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     },
 
     setData: function (data) {
-        if (typeof data === 'undefined') data = this.getDefaultData();
+        var _this = this;
         data = $.extend({}, data);
+        $('.js-rsvNum').text('예약번호:' + data.rsvNum);
+        // _this.model.set('.js-rsvNum', data.rsvNum);
         this.model.setModel(data);
         this.modelFormatter.formatting();
     },
@@ -161,7 +200,7 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
 
         axboot.buttonClick(this, 'data-searchview-btn', {
             modal: function () {
-                ACTIONS.dispatch(ACTIONS.MODAL_OPEN);
+                ACTIONS.dispatch(ACTIONS.GUEST_MODAL);
             },
         }); //검색 모달
     },
@@ -232,7 +271,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
         var _this = this;
 
         this.target = axboot.gridBuilder({
-            showRowSelector: true,
             frozenColumnIndex: 0,
             multipleSelect: true,
             target: $('[data-ax5grid="grid-view-01"]'),
@@ -240,21 +278,15 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                 {
                     key: 'memoDtti',
                     label: '작성일',
-                    width: 300,
+                    width: 150,
                     align: 'center',
                     editor: 'text',
                     formatter: function () {
                         return moment().format('YYYY-MM-DD');
                     },
                 },
-                { key: 'memoCn', label: '메모', width: 750, align: 'center', editor: 'text' },
+                { key: 'memoCn', label: '메모', width: 900, align: 'center', editor: 'text' },
             ],
-            body: {
-                onClick: function () {
-                    this.self.select(this.dindex, { selectedClear: true });
-                    ACTIONS.dispatch(ACTIONS.ITEM_CLICK, this.item);
-                },
-            },
         });
 
         axboot.buttonClick(this, 'data-grid-view-01-btn', {

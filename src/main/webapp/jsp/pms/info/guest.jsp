@@ -12,7 +12,13 @@
                 </jsp:attribute>
                 <jsp:body>
 
-                    <ax:page-buttons></ax:page-buttons>
+                    <div data-page-buttons="">
+                        <div class="button-warp">
+                                <button type="button" class="btn btn-default" data-page-btn="search"><i class="cqc-magnifier"></i> 검색 </button>
+                                <button type="button" class="btn btn-default" data-page-btn="save"> 저장</button>
+                                <button type="button" class="btn btn-default" data-page-btn="excel"><i class="cqc-file-excel-o"></i> 엑셀 다운로드</button>
+                        </div>
+                    </div>
 
 
                     <div role="page-header">

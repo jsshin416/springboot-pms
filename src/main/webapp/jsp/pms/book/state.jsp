@@ -76,13 +76,13 @@
                 <!-- 목록 -->
                 <div class="ax-button-group" data-fit-height-aside="grid-view-01">
                     <div class="left">
-                        <h2><i class="cqc-list"></i>
-                            예약목록 </h2>
+                        <h2><i class="cqc-list"></i>예약목록 </h2>
                     </div>
-                
                     <div class="right" style="width:200px">
-            <ax:common-code groupCd="STAY_STATUS" id="sttusCd" dataPath="sttusCd"  clazz="js-sttusCd " /> 
-            <button button="" type="button" class="btn btn-default" data-grid-view-01-btn="sstus"><i class="cqc-circle-with-plus"></i> 상태변경</button>
+                        <div style="display: inline-block">
+                        <ax:common-code groupCd="STAY_STATUS" id="sttusCd" dataPath="sttusCd"  clazz="js-sttusCd " /> 
+                       </div>
+                        <button type="button" class="btn btn-default" data-grid-view-01-btn="sstus"><i class="cqc-circle-with-plus"></i> 상태변경</button>
                     </div>
                 </div>
                 <div data-ax5grid="grid-view-01" data-fit-height-content="grid-view-01" style="height: 300px;"></div>

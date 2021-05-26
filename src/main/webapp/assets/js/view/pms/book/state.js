@@ -1,10 +1,11 @@
 var fnObj = {};
 var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SEARCH: function (caller, act, data) {
+        var paramObj = $.extend(caller.searchView.getData(), data);
         axboot.ajax({
             type: 'GET',
             url: '/api/v1/booking',
-            data: caller.searchView.getData(),
+            data: paramObj,
             callback: function (res) {
                 caller.gridView01.setData(res);
             },
@@ -35,21 +36,11 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     ITEM_CLICK: function (caller, act, data) {
         caller.formView01.setData(data);
     },
-    // PAGE_CHOICE: function (caller, act, data) {
-    //     var list = caller.gridView01.getData('selected');
-    //     if (list.length > 0) {
-    //         if (parent && parent.axboot && parent.axboot.modal) {
-    //             parent.axboot.modal.callback(list[0]);
-    //         }
-    //     } else {
-    //         alert(LANG('ax.script.requireselect'));
-    //     }
-    // },
     STATE_MODAL: function (caller, act, data) {
         if (!data) data = {};
         axboot.modal.open({
-            width: 730,
-            height: 600,
+            width: 1100,
+            height: 800,
             iframe: {
                 param: 'id=' + (data.id || ''),
                 url: 'state-modal.jsp',
@@ -74,7 +65,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     },
     EXCEL_DOWN: function (caller, act, data) {
         var frm = $('.js-form').get(0);
-        frm.action = '/api/v1/guest/exceldown';
+        frm.action = '/api/v1/booking/exceldown';
         frm.enctype = 'application/x-www-form-urlencoded';
         frm.submit();
     },
@@ -159,9 +150,9 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
             multipleSelect: true,
             target: $('[data-ax5grid="grid-view-01"]'),
             columns: [
-                { key: 'rsvNum', label: '예약번호', width: 160, align: 'center', editor: 'readonly' },
-                { key: 'rsvDt', label: '예약일', width: 160, align: 'center', editor: 'readonly' },
-                { key: 'guestNm', label: '투숙객', width: 100, align: 'center', editor: 'readonly' },
+                { key: 'rsvNum', label: '예약번호', width: 160, align: 'center' },
+                { key: 'rsvDt', label: '예약일', width: 160, align: 'center' },
+                { key: 'guestNm', label: '투숙객', width: 100, align: 'center' },
                 {
                     key: 'roomTypCd',
                     label: '객실타입',
@@ -171,11 +162,10 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                         if (!this.value) return '';
                         return parent.COMMON_CODE['ROOM_TYPE'].map[this.value];
                     },
-                    editor: 'readonly',
                 },
-                { key: 'roomNum', label: '객실번호', width: 100, align: 'center', editor: 'readonly' },
-                { key: 'arrDt', label: '도착일', width: 100, align: 'center', editor: 'readonly' },
-                { key: 'depDt', label: '출발일', width: 100, align: 'center', editor: 'readonly' },
+                { key: 'roomNum', label: '객실번호', width: 100, align: 'center' },
+                { key: 'arrDt', label: '도착일', width: 100, align: 'center' },
+                { key: 'depDt', label: '출발일', width: 100, align: 'center' },
                 {
                     key: 'srcCd',
                     label: '예약경로',
@@ -185,7 +175,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                         if (!this.value) return '';
                         return parent.COMMON_CODE['RESERVATION_ROUTE'].map[this.value];
                     },
-                    editor: 'readonly',
                 },
                 {
                     key: 'saleTypCd',
@@ -196,7 +185,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                         if (!this.value) return '';
                         return parent.COMMON_CODE['SALE_TYPE'].map[this.value];
                     },
-                    editor: 'readonly',
                 },
                 {
                     key: 'sttusCd',
@@ -207,7 +195,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                         if (!this.value) return '';
                         return parent.COMMON_CODE['STAY_STATUS'].map[this.value];
                     },
-                    editor: 'readonly',
                 },
             ],
             body: {
@@ -216,7 +203,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                 },
                 onDBLClick: function () {
                     ACTIONS.dispatch(ACTIONS.STATE_MODAL, this.item);
-                    console.log(this.item);
                 },
             },
         });
@@ -230,14 +216,5 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
     getData: function (_type) {
         var list = [];
         var _list = this.target.getList(_type);
-
-        if (_type == 'modified' || _type == 'deleted') {
-            list = ax5.util.filter(_list, function () {
-                return this.id;
-            });
-        } else {
-            list = _list;
-        }
-        return list;
     },
 });

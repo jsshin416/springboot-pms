@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class BookingResponseDto {
     private Long id;
+    private String rsvNum;
     private String arrDt;
     private Integer nightCnt;
     private String depDt;
@@ -39,6 +40,7 @@ public class BookingResponseDto {
 
     public BookingResponseDto(Booking entity){
         this.id = entity.getId();
+        this.rsvNum = entity.getRsvNum();
         this.guestNm  = entity.getGuestNm();
         this.arrDt =entity.getArrDt();
         this.depDt = entity.getDepDt();

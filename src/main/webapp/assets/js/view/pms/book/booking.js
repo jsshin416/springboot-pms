@@ -1,23 +1,22 @@
 var fnObj = {};
 var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SEARCH: function (caller, act, data) {
-        var paramObj = $.extend(caller.searchView.getData(), data);
-        axboot.ajax({
-            type: 'GET',
-            url: '/api/v1/booking',
-            data: paramObj,
-            callback: function (res) {
-                caller.formView01.clear();
-                caller.gridView01.clear();
-                //caller.gridView01.setData(res);
-            },
-            options: {
-                // axboot.ajax 함수에 2번째 인자는 필수가 아닙니다. ajax의 옵션을 전달하고자 할때 사용합니다.
-                onError: function (err) {
-                    console.log(err);
+        if (data) {
+            axboot.ajax({
+                type: 'GET',
+                url: '/api/v1/booking/' + data,
+                callback: function (res) {
+                    caller.formView01.clear();
+                    caller.formView01.setData(res);
                 },
-            },
-        });
+                options: {
+                    // axboot.ajax 함수에 2번째 인자는 필수가 아닙니다. ajax의 옵션을 전달하고자 할때 사용합니다.
+                    onError: function (err) {
+                        console.log(err);
+                    },
+                },
+            });
+        }
         return false;
     },
     PAGE_SAVE: function (caller, act, data) {
@@ -32,8 +31,8 @@ var ACTIONS = axboot.actionExtend(fnObj, {
                 url: '/api/v1/booking',
                 data: JSON.stringify(item),
                 callback: function (res) {
-                    ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
-                    axToast.push('저장 되었습니다');
+                    ACTIONS.dispatch(ACTIONS.PAGE_SEARCH, res.map.chkId);
+                    axToast.push(res.map.message);
                 },
             });
         }
@@ -51,6 +50,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         axDialog.confirm({ msg: LANG('ax.script.form.clearconfirm') }, function () {
             if (this.key == 'ok') {
                 caller.formView01.clear();
+                caller.gridView01.clear();
                 $('[data-ax-path="arrDt"]').focus();
             }
         });
@@ -141,8 +141,12 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     },
 
     setData: function (data) {
-        if (typeof data === 'undefined') data = this.getDefaultData();
+        var _this = this;
         data = $.extend({}, data);
+        if (data.rsvNum) {
+            $('.js-rsvNum').text('예약번호:' + data.rsvNum);
+            // _this.model.set('.js-rsvNum', data.rsvNum);
+        }
         this.model.setModel(data);
         this.modelFormatter.formatting();
     },
