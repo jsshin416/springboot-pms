@@ -124,8 +124,8 @@ public class BookingService extends BaseService<Booking, Long> {
         }
     }
     @Transactional(readOnly = true)
-    public List<BookingListResponseDto> findByL(String filter, String rsvNum, String roomTypCd, String rsvStDate, String rsvEndDate,
-                                                String arrStDate, String arrEndDate,String depStDate, String depEndDate, List<String> sttusCds) {
+    public List<BookingListResponseDto> findByL(String filter, String rsvNum, String roomTypCd, String rsvStDt, String rsvEndDt,
+                                                String arrStDt, String arrEndDt,String depStDt, String depEndDt, List<String> sttusCds) {
         BooleanBuilder builder = new BooleanBuilder();
         if(isNotEmpty(filter)){
             BooleanBuilder builder2 = new BooleanBuilder();
@@ -140,26 +140,26 @@ public class BookingService extends BaseService<Booking, Long> {
         if(isNotEmpty(roomTypCd)){
             builder.and(qBooking.roomTypCd.like("%"+roomTypCd+"%"));
         }
-        if(isNotEmpty(rsvStDate)) {
-            if(isNotEmpty(rsvEndDate)){
-                builder.and(qBooking.rsvDt.between(rsvStDate,rsvEndDate));
+        if(isNotEmpty(rsvStDt)) {
+            if(isNotEmpty(rsvEndDt)){
+                builder.and(qBooking.rsvDt.between(rsvStDt,rsvEndDt));
             }else{
-                builder.and(qBooking.rsvDt.goe(rsvStDate));
+                builder.and(qBooking.rsvDt.goe(rsvStDt));
             }
         }
-        if(isNotEmpty(arrStDate)) {
-            if(isNotEmpty(arrEndDate)){
-                builder.and(qBooking.arrDt.between(arrStDate,arrEndDate));
+        if(isNotEmpty(arrStDt)) {
+            if(isNotEmpty(arrEndDt)){
+                builder.and(qBooking.arrDt.between(arrStDt,arrEndDt));
             }else{
-                builder.and(qBooking.arrDt.goe(arrStDate));
+                builder.and(qBooking.arrDt.goe(arrStDt));
             }
 
         }
-        if(isNotEmpty(depStDate)) {
-            if(isNotEmpty(depEndDate)){
-                builder.and(qBooking.depDt.between(depStDate,depEndDate));
+        if(isNotEmpty(depStDt)) {
+            if(isNotEmpty(depEndDt)){
+                builder.and(qBooking.depDt.between(depStDt,depEndDt));
             }else{
-                builder.and(qBooking.depDt.goe(depStDate));
+                builder.and(qBooking.depDt.goe(depStDt));
             }
         }
 

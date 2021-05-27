@@ -15,7 +15,7 @@
                 <jsp:attribute name="script">
                     <ax:script-lang key="ax.script" />
                     <script>
-                        var modalParams = {id: "${id}"};
+                        var modalParams = {id: "${id}", modalTyp: "${modalTyp}"};
                     </script>
                     <script type="text/javascript" src="<c:url value='/assets/js/view/pms/book/state-modal.js' />"></script>
                     <ax:script-lang key="ax.script" var="LANG" />
@@ -24,19 +24,22 @@
 
                 <jsp:body>
                     <div data-fit-height-aside="form-view-01">
-                       
-                        <div class="left">
-                            <div data-ax-path="rsvNum" class="js-rsvNum " ><h2> 예약번호:</h2></div>
-                        </div>
-                        <div class="right">
-                            <div style=""> <div> *표시는 필수항목 체크 부분</div></div>
-                        </div>
-                       
-                        <div style="">
-                            <form name="formView01" class="js-form">
+                         <form name="formView01" class="js-form">
+                                <div data-ax-tr class="left">
+                                    <div style="font-weight: bold; display: inline-block; margin: 0px 5px">예약번호 : <input
+                                            style="border: 0; background: none; width: 100px;" data-ax-path="rsvNum" name="rsvNum" class="js-rsvNum"
+                                            readonly="readonly"></div>
+                                    <div style="width: 200px; display: inline-block;">
+                                        <div style="display: inline-block">
+                                            <ax:common-code groupCd="STAY_STATUS" id="sttusCd" clazz="js-sttusCd " />
+                                        </div>
+                                        </div>
+                                    <div style="float: right; margin-top: 10px; padding-right: 10px;">
+                                        <span style="color: red;">* </span>표시는 필수 항목 체크 부분
+                                    </div>
+                                </div>
                                 <ax:tbl clazz="ax-form-tbl" minWidth="500px">
                                     <div data-ax-tr>
-
                                         <div data-ax-td style="width:35%">
                                             <div data-ax-td-label style="width:120px"><span class="def-ask-s" style="color: red;">*</span>도착일</div>
                                             <div data-ax-td-wrap>
@@ -102,7 +105,7 @@
                                         <div data-ax-td style="width:100%">
                                             <div data-ax-td-label style="width:120px;">투숙객
                                                 <button type="button" class="btn btn-default" id="sch_m"
-                                                    data-searchview-btn="modal">
+                                                data-form-view-01-btn="guestModal">
                                                     <i class="cqc-magnifier"></i>검색
                                                 </button>
                                             </div>
@@ -289,9 +292,9 @@
                                             </div>
                                 </ax:tbl>
                             </form>
-                        </div>
+                        
                     </div>
-                    </div>
+                   
                     <div class="ax-button-group">
                         <div class="auto" style="padding-left:380px;">
                             <button type="button" class="btn btn-default" data-page-btn="save">저장 </button>

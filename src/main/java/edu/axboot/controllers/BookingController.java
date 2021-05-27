@@ -32,15 +32,15 @@ public class BookingController extends BaseController {
     public Responses.ListResponse list( @RequestParam(value = "filter",required = false) String filter,
                                         @RequestParam(value = "rsvNum",required = false) String rsvNum,
                                        @RequestParam(value = "roomTypCd",required = false) String roomTypCd,
-                                       @RequestParam(value = "rsvStDate",required = false) String rsvStDate,
-                                        @RequestParam(value = "rsvEndDate",required = false) String rsvEndDate,
-                                        @RequestParam(value = "arrStDate",required = false) String arrStDate,
-                                        @RequestParam(value = "arrEndDate",required = false) String arrEndDate,
-                                        @RequestParam(value = "depStDate",required = false) String depStDate,
-                                        @RequestParam(value = "depEndDate",required = false) String depEndDate,
-                                        @RequestParam(value = "sttusCds",required = false) List<String> sttusCds){
-        List<BookingListResponseDto> list = bookingService.findByL( filter,  rsvNum,  roomTypCd,  rsvStDate,  rsvEndDate,
-                 arrStDate,  arrEndDate, depStDate,  depEndDate, sttusCds);
+                                       @RequestParam(value = "rsvStDt",required = false) String rsvStDt,
+                                        @RequestParam(value = "rsvEndDt",required = false) String rsvEndDt,
+                                        @RequestParam(value = "arrStDt",required = false) String arrStDt,
+                                        @RequestParam(value = "arrEndDt",required = false) String arrEndDt,
+                                        @RequestParam(value = "depStDt",required = false) String depStDt,
+                                        @RequestParam(value = "depEndDt",required = false) String depEndDt,
+                                        @RequestParam(value = "sttusCd",required = false) List<String> sttusCds){
+        List<BookingListResponseDto> list = bookingService.findByL( filter,  rsvNum,  roomTypCd,  rsvStDt,  rsvEndDt,
+                 arrStDt,  arrEndDt, depStDt,  depEndDt, sttusCds);
         return Responses.ListResponse.of(list);
     }
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = APPLICATION_JSON)

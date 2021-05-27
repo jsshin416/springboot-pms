@@ -25,14 +25,12 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     },
 
     ITEM_CLICK: function (caller, act, data) {
-        var id = data.id;
-        axboot.ajax({
-            type: 'GET',
-            url: '/api/v1/guest/' + id,
-            callback: function (res) {
-                caller.formView01.setData(res);
-            },
-        });
+        caller.formView01.setData(data || {});
+    },
+    PAGE_CLOSE: function (caller, act, data) {
+        var modal = fnObj.getModal();
+        if (modal) modal.close();
+        if (opener) window.close();
     },
     PAGE_CHOICE: function (caller, act, data) {
         if (!data) {
@@ -40,9 +38,9 @@ var ACTIONS = axboot.actionExtend(fnObj, {
             if (list.length > 0) data = list[0];
         }
         if (data) {
-            if (parent && parent.axboot && parent.axboot.modal) {
-                parent.axboot.modal.callback(data);
-            }
+            var modal = fnObj.getModal();
+            if (modal) modal.callback(data);
+            if (opener) window.close();
         } else {
             alert(LANG('ax.script.requireselect'));
         }
@@ -64,11 +62,13 @@ fnObj.getModal = function () {
 
 // fnObj 기본 함수 스타트와 리사이즈
 fnObj.pageStart = function () {
-    var _this = this;
-    _this.pageButtonView.initView();
-    _this.gridView01.initView();
-    _this.formView01.initView();
+    this.pageButtonView.initView();
+    //this.searchView.initView();
+    this.gridView01.initView();
+    this.formView01.initView();
 
+    // this.searchView.guestNm.val(modalParams.guestNm);
+    // this.searchView.guestTel.val(modalParams.guestTel);
     ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
 };
 
@@ -109,6 +109,9 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                 onClick: function () {
                     this.self.select(this.dindex);
                     ACTIONS.dispatch(ACTIONS.ITEM_CLICK, this.item);
+                },
+                onDBLClick: function () {
+                    ACTIONS.dispatch(ACTIONS.PAGE_CHOICE, this.item);
                 },
             },
         });

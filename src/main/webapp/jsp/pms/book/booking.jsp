@@ -16,21 +16,20 @@
 
                 <jsp:body>
                     <div data-page-buttons="">
-                        <div class="button-warp">
-                            <a style="padding-right:10px;">*표시는 필수항목 체크 부분</a>
+                        <class class="button-warp">
+                                <span style="color: red;">* </span>표시는 필수 항목 체크 부분
                             <button type="button" class="btn btn-default" data-page-btn="save"> 저장</button>
                             <button type="button" class="btn btn-default" data-form-view-01-btn="form-clear">
                                 <i class="cqc-erase"></i>신규등록
                             </button>
                         </div>
                     </div>
-
                     <div data-fit-height-aside="form-view-01">
-                            <div class="left">
-                              <div data-ax-path="rsvNum" class="js-rsvNum " ><h2> 예약번호:</h2></div>
-                            </div>
                         <div style="overflow: scroll; width:*; height:500px;">
                             <form name="formView01" class="js-form">
+                                <div data-ax-tr class="left">
+                                    <div style="font-weight: bold; display: inline-block; margin: 0px 5px">예약번호 : <input style="border: 0; background: none; width: 100px;" data-ax-path="rsvNum" name="rsvNum" class="js-rsvNum" readonly="readonly"></div>
+                                     </div>   
                                 <ax:tbl clazz="ax-form-tbl" minWidth="500px">
                                     <div data-ax-tr>
 
@@ -99,7 +98,7 @@
                                         <div data-ax-td style="width:100%">
                                             <div data-ax-td-label style="width:120px;">투숙객
                                                 <button type="button" class="btn btn-default" id="sch_m"
-                                                    data-searchview-btn="modal">
+                                                data-form-view-01-btn="modal">
                                                     <i class="cqc-magnifier"></i>검색
                                                 </button>
                                             </div>
@@ -288,7 +287,7 @@
                             </form>
                         </div>
                     </div>
-                    </div>
+                   
 
                 </jsp:body>
 

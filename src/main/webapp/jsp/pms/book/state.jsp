@@ -15,7 +15,7 @@
         <div data-page-buttons="">
             <div class="button-warp">
                     <button type="button" class="btn btn-default" data-page-btn="search"><i class="cqc-magnifier"></i> 검색 </button>
-                    <button type="button" class="btn btn-default" data-form-view-01-btn="form-clear"> 검색선택 초기화</button>
+                    <button type="button" class="btn btn-default" data-search-view-btn="form-clear"> 검색선택 초기화</button>
                     <button type="button" class="btn btn-default" data-page-btn="excel"><i class="cqc-file-excel-o"></i> 엑셀 다운로드</button>
             </div>
         </div>
@@ -26,16 +26,16 @@
                 <ax:tbl clazz="ax-search-tbl" minWidth="500px">
                     <ax:tr>
                         <ax:td label='검색어' width="350px">
-                            <input type="text" class="form-control" />
+                            <input type="text" class="js-filter form-control" name ="filter"/>
                         </ax:td>
                         <ax:td label='예약번호' width="350px">
                             <input type="text" class="js-rsvNum form-control" />
                         </ax:td>
                         <ax:td label='예약일' width="350px">
-                            <div class="input-group" data-ax5picker="date">
-                                <input type="text" class="js-rsvDt form-control" placeholder="YYYY-MM-DD" data-ax5formatter="date">
+                            <div class="input-group" data-ax5picker="rsvDt">
+                                <input type="text" name="rsvStDt" class="js-rsvDtSt form-control" placeholder="YYYY-MM-DD" data-ax5formatter="date">
                                 <span class="input-group-addon">~</span>
-                                <input type="text" class="js-rsvDt form-control" placeholder="YYYY-MM-DD" data-ax5formatter="date">
+                                <input type="text"  name="rsvEndDt"class="js-rsvDtEnd form-control" placeholder="YYYY-MM-DD" data-ax5formatter="date">
                                 <span class="input-group-addon"><i class="cqc-calendar"></i></span>
                             </div>                       
                          </ax:td>
@@ -46,23 +46,25 @@
                             clazz="js-roomTypCd " emptyText="전체" />
                     </ax:td>
                         <ax:td label='도착일' width="350px">
-                            <div class="input-group" data-ax5picker="date">
-                                <input type="text" class="js-arrDt form-control" placeholder="YYYY-MM-DD" data-ax5formatter="date">
+                            <div class="input-group" data-ax5picker="arrDt">
+                                <input type="text" name ="arrStDt" class="js-arrStDt form-control" placeholder="YYYY-MM-DD" data-ax5formatter="date">
                                 <span class="input-group-addon">~</span>
-                                <input type="text" class="js-arrDt form-control" placeholder="YYYY-MM-DD" data-ax5formatter="date">
+                                <input type="text" name ="arrEndDt" class="js-arrEndDt form-control" placeholder="YYYY-MM-DD" data-ax5formatter="date">
                                 <span class="input-group-addon"><i class="cqc-calendar"></i></span>
                             </div>                             </ax:td>
                         <ax:td label='출발일' width="350px">
-                            <div class="input-group" data-ax5picker="date">
-                                <input type="text" class="js-depDt form-control"placeholder="YYYY-MM-DD" data-ax5formatter="date">
+                            <div class="input-group" data-ax5picker="depDt">
+                                <input type="text" name ="depStDt" class="js-depStDt form-control"placeholder="YYYY-MM-DD" data-ax5formatter="date">
                                 <span class="input-group-addon">~</span>
-                                <input type="text" class="js-depDt form-control"placeholder="YYYY-MM-DD" data-ax5formatter="date">
+                                <input type="text"  name ="depEndDt" class="js-depEndDt form-control"placeholder="YYYY-MM-DD" data-ax5formatter="date">
                                 <span class="input-group-addon"><i class="cqc-calendar"></i></span>
-                            </div>                             </ax:td>
+                            </div>
+                        </ax:td>
                     </ax:tr>
                     <ax:tr>
                         <ax:td label='상태' width="1000px">
-                            <ax:common-code groupCd="STAY_STATUS" dataPath="sttusCd" clazz="js-sttusCd "  type ="checkbox"/>
+                            <label class="checkbox-inline"><input type="checkbox" class="js-sttusCd-all" value="">전체 </label>
+                            <ax:common-code groupCd="STAY_STATUS" name="sttusCd"  type ="checkbox"/>
                          </ax:td>
                     </ax:tr>
                 </ax:tbl>
@@ -79,8 +81,8 @@
                         <h2><i class="cqc-list"></i>예약목록 </h2>
                     </div>
                     <div class="right" style="width:200px">
-                        <div style="display: inline-block">
-                        <ax:common-code groupCd="STAY_STATUS" id="sttusCd" dataPath="sttusCd"  clazz="js-sttusCd " /> 
+                        <div style="display: inline-block ">
+                        <ax:common-code groupCd="STAY_STATUS"  id="sttusCd" clazz="js-sttusCd " /> 
                        </div>
                         <button type="button" class="btn btn-default" data-grid-view-01-btn="sstus"><i class="cqc-circle-with-plus"></i> 상태변경</button>
                     </div>

@@ -20,8 +20,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         return false;
     },
     PAGE_SAVE: function (caller, act, data) {
-        var saveList = [].concat(caller.gridView01.getData(''));
-        saveList = saveList.concat(caller.gridView01.getData('deleted'));
+        var saveList = [].concat(caller.gridView01.getData('selected'));
 
         axboot.ajax({
             type: 'POST',
@@ -33,16 +32,15 @@ var ACTIONS = axboot.actionExtend(fnObj, {
             },
         });
     },
-    ITEM_CLICK: function (caller, act, data) {
-        caller.formView01.setData(data);
-    },
+    ITEM_CLICK: function (caller, act, data) {},
     STATE_MODAL: function (caller, act, data) {
         if (!data) data = {};
+        modalType = 'All';
         axboot.modal.open({
-            width: 1100,
-            height: 800,
+            width: 1200,
+            height: 900,
             iframe: {
-                param: 'id=' + (data.id || ''),
+                param: 'id=' + data.id + '&modalTyp=' + data.modalTyp,
                 url: 'state-modal.jsp',
             },
             header: { title: '예약 조회' },
@@ -52,6 +50,31 @@ var ACTIONS = axboot.actionExtend(fnObj, {
                 }
                 this.close();
             },
+        });
+    },
+    STATE_CHANGE: function (caller, act, data) {
+        axDialog.confirm({ msg: '선택한 항목의 상태를 변경하시겠습니까?' }, function () {
+            if (this.key == 'ok') {
+                var items = caller.gridView01.getData('selected');
+                if (!items.length) {
+                    axDialog.alert('변경할 데이터가 없습니다.');
+                    return false;
+                } else {
+                    items.forEach(function (val) {
+                        val.sttusCd = $('.js-sttusCd').val();
+                    });
+                }
+
+                axboot.ajax({
+                    type: 'PUT',
+                    url: '/api/v1/booking',
+                    data: JSON.stringify(items),
+                    callback: function (res) {
+                        axDialog.alert('변경 되었습니다');
+                        ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
+                    },
+                });
+            }
         });
     },
     dispatch: function (caller, act, data) {
@@ -68,6 +91,18 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         frm.action = '/api/v1/booking/exceldown';
         frm.enctype = 'application/x-www-form-urlencoded';
         frm.submit();
+    },
+    // SEARCH_CLEAR: function (caller, act, data) {
+    //     caller.searchView.defaultSearch();
+    // },
+
+    FORM_CLEAR: function (caller, act, data) {
+        axDialog.confirm({ msg: LANG('ax.script.form.clearconfirm') }, function () {
+            if (this.key == 'ok') {
+                caller.searchView.clear();
+                $('[data-ax-path="arrDt"]').focus();
+            }
+        });
     },
 });
 
@@ -91,7 +126,9 @@ fnObj.pageButtonView = axboot.viewExtend({
             save: function () {
                 ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
             },
-            excel: function () {},
+            excel: function () {
+                ACTIONS.dispatch(ACTIONS.EXCEL_DOWN);
+            },
         });
     },
 });
@@ -102,21 +139,39 @@ fnObj.pageButtonView = axboot.viewExtend({
  */
 fnObj.searchView = axboot.viewExtend(axboot.searchView, {
     initView: function () {
+        axboot.buttonClick(this, 'data-search-view-btn', {
+            'form-clear': function () {
+                ACTIONS.dispatch(ACTIONS.FORM_CLEAR);
+            },
+        });
+
         this.target = $(document['searchView0']);
         this.target.attr('onsubmit', 'return false');
-        this.filter = $('#filter');
         this.target.on('keydown.search', 'input, .form-control', function (e) {
             if (e.keyCode === 13) {
                 ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
             }
         });
-        this.rsvNum = $('.js-rsvNum');
-        this.rsvDt = $('.js-rsvDt');
-        this.roomTypCd = $('.js-roomTypCd');
-        this.arrDt = $('.js-arrDt');
-        this.depDt = $('.js-depDt');
-        this.sttusCd = this.target.find('[dataPath="sttusCd"]');
-        this.target.find('[data-ax5picker="date"]').ax5picker({
+        this.filter = this.target.find('input[name="filter"]');
+        this.rsvNum = this.target.find('.js-rsvNum');
+        this.rsvStDt = this.target.find('input[name="rsvStDt"]');
+        this.rsvEndDt = this.target.find('input[name="rsvEndDt"]');
+        this.roomTypCd = this.target.find('input[name="roomTypCd"]');
+        this.arrStDt = this.target.find('input[name="arrStDt"]');
+        this.arrEndDt = this.target.find('input[name="arrEndDt"]');
+        this.depStDt = this.target.find('input[name="depStDt"]');
+        this.depEndDt = this.target.find('input[name="depEndDt"]');
+        this.sttusCd = this.target.find('input[name="sttusCd"]');
+        $('.js-sttusCd-all').on('change', function () {
+            var $this = $(this),
+                value = $this.val();
+            var checked;
+            if (value === '') {
+                checked = $this.prop('checked');
+                $('input[name ="sttusCd"]').prop('checked', checked);
+            }
+        });
+        this.target.find('[data-ax5picker="rsvDt"],[data-ax5picker="arrDt"],[data-ax5picker="depDt"]').ax5picker({
             direction: 'auto',
             content: {
                 type: 'date',
@@ -124,15 +179,25 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
         });
     },
     getData: function () {
+        var sttusCds = [];
+        this.sttusCd.each(function () {
+            if ($(this).is(':checked')) {
+                sttusCds.push($(this).val());
+            }
+        });
         return {
             pageNumber: this.pageNumber,
             pageSize: this.pageSize,
             filter: this.filter.val(),
             rsvNum: this.rsvNum.val(),
-            rsvDt: this.rsvDt.val(),
+            rsvStDt: this.rsvStDt.val(),
+            rsvEndDt: this.rsvEndDt.val(),
             roomTypCd: this.roomTypCd.val(),
-            arrDt: this.arrDt.val(),
-            depDt: this.depDt.val(),
+            arrStDt: this.arrStDt.val(),
+            arrEndDt: this.arrEndDt.val(),
+            depStDt: this.depStDt.val(),
+            depEndDt: this.depEndDt.val(),
+            sttusCd: sttusCds.join(','),
         };
     },
 });
@@ -143,7 +208,6 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
 fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
     initView: function () {
         var _this = this;
-
         this.target = axboot.gridBuilder({
             showRowSelector: true,
             frozenColumnIndex: 0,
@@ -209,12 +273,23 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
 
         axboot.buttonClick(this, 'data-grid-view-01-btn', {
             sstus: function () {
-                ACTIONS.dispatch();
+                ACTIONS.dispatch(ACTIONS.STATE_CHANGE);
             },
         });
+        this.sttusCd = $('.js-sttusCd');
     },
+
     getData: function (_type) {
         var list = [];
         var _list = this.target.getList(_type);
+
+        if (_type == 'selected') {
+            list = ax5.util.filter(_list, function () {
+                return this.id;
+            });
+        } else {
+            list = _list;
+        }
+        return list;
     },
 });

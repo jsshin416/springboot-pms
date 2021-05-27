@@ -61,20 +61,21 @@ var ACTIONS = axboot.actionExtend(fnObj, {
             }
         });
     },
-    GUEST_MODAL:function(caller, act, data){
-        
-    }
+    GUEST_MODAL: function (caller, act, data) {
+        // data = caller.formView01.searchData();
+        if (!data) data = {};
+        caller.guestModalView.open(data);
+    },
 });
 
 var CODE = {};
 
 // fnObj 기본 함수 스타트와 리사이즈
 fnObj.pageStart = function () {
-    var _this = this;
-    _this.pageButtonView.initView();
-    _this.gridView01.initView();
-    _this.formView01.initView();
-    _this.guestView01.initView();
+    this.pageButtonView.initView();
+    this.gridView01.initView();
+    this.formView01.initView();
+    this.guestModalView.initView();
 
     ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
 };
@@ -90,39 +91,32 @@ fnObj.pageButtonView = axboot.viewExtend({
             close: function () {
                 ACTIONS.dispatch(ACTIONS.PAGE_CLOSE);
             },
-            guestModal: function(){
-                ACTIONS.dispatch(ACTIONS.PAGE_CLOSE);
-            }
         });
     },
 });
-fnObj.guestView01 =axboot.viewExtend(axboot.formView, {
-    open:function(data){
+fnObj.guestModalView = axboot.viewExtend({
+    open: function (data) {
         if (!data) data = {};
-        axboot.modal.open({
+        this.modal.open({
             width: 730,
             height: 600,
             iframe: {
-                param: 'id=' + (data.id || ''),
-                url: 'guest-modal.jsp',
-            },
-            header: { title: '투숙객 조회' },
-            callback: function (data) {
-                if (data) {
-                    caller.formView01.setGuest(data);
-                }
-                this.close();
+                param: 'guestNm=' + (data.guestNm || '') + '&guestTel=' + (data.guestTel || '') + '&modalView=guestModalView',
+                url: '/jsp/pms/book/guest-modal.jsp',
             },
         });
     },
-    close: function(data){
-        if (parent) {
-            parent.axboot.modal.close(data);
-        }
+    close: function () {
+        this.modal.close();
     },
-
-},
-
+    callback: function (data) {
+        fnObj.formView01.setGuest(data);
+        this.modal.close();
+    },
+    initView: function () {
+        this.modal = new ax5.ui.modal();
+    },
+});
 fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     setGuest: function (data) {
         this.model.set('guestId', data.id || '');
@@ -144,10 +138,9 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     },
 
     setData: function (data) {
-        var _this = this;
         data = $.extend({}, data);
-        $('.js-rsvNum').text('예약번호:' + data.rsvNum);
-        // _this.model.set('.js-rsvNum', data.rsvNum);
+        //$('.js-rsvNum').text('예약번호:' + data.rsvNum);
+        this.model.set('.js-rsvNum', data.rsvNum);
         this.model.setModel(data);
         this.modelFormatter.formatting();
     },
@@ -190,6 +183,9 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
             'form-clear': function () {
                 ACTIONS.dispatch(ACTIONS.FORM_CLEAR);
             }, //1번만 실행 하거나 init, eventbinding 나중에 호출 할 수도 있어서 따로 분리
+            guestModal: function () {
+                ACTIONS.dispatch(ACTIONS.GUEST_MODAL);
+            },
         });
         this.target.find('[data-ax5picker="date"]').ax5picker({
             direction: 'auto',

@@ -72,7 +72,6 @@ public class BookingSaveRequestDto {
         this.payCd = payCd;
         this.advnYn = advnYn;
         this.salePrc = salePrc;
-        this.svcPrc = svcPrc;
         this.memoList = memoList;
 
     }
@@ -99,7 +98,6 @@ public class BookingSaveRequestDto {
                 .payCd(payCd)
                 .advnYn(advnYn)
                 .salePrc(salePrc)
-                .svcPrc(svcPrc)
                 .build();
 
 

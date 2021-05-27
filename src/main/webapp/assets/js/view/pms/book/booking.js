@@ -141,11 +141,9 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     },
 
     setData: function (data) {
-        var _this = this;
         data = $.extend({}, data);
         if (data.rsvNum) {
-            $('.js-rsvNum').text('예약번호:' + data.rsvNum);
-            // _this.model.set('.js-rsvNum', data.rsvNum);
+            this.model.set('.js-rsvNum', data.rsvNum);
         }
         this.model.setModel(data);
         this.modelFormatter.formatting();
@@ -189,6 +187,9 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
             'form-clear': function () {
                 ACTIONS.dispatch(ACTIONS.FORM_CLEAR);
             }, //1번만 실행 하거나 init, eventbinding 나중에 호출 할 수도 있어서 따로 분리
+            modal: function () {
+                ACTIONS.dispatch(ACTIONS.MODAL_OPEN);
+            },
         });
         this.target.find('[data-ax5picker="date"]').ax5picker({
             direction: 'auto',
@@ -196,12 +197,6 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
                 type: 'date',
             },
         }); //달력
-
-        axboot.buttonClick(this, 'data-searchview-btn', {
-            modal: function () {
-                ACTIONS.dispatch(ACTIONS.MODAL_OPEN);
-            },
-        }); //검색 모달
     },
     dateCnt: function () {
         var _this = this;
