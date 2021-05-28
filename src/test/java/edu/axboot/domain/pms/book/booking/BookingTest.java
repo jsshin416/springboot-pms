@@ -32,8 +32,8 @@ public class BookingTest {
     public void test1_예약등록_저장하기() {
         //given
       BookingSaveRequestDto dtos = BookingSaveRequestDto.builder()
-              .arrDt("2021-05-20")
-              .depDt("2021-05-21")
+              .arrDt("2021-07-28")
+              .depDt("2021-07-29")
               .nightCnt(1)
               .roomTypCd("SB")
               .adultCnt(2)
@@ -43,9 +43,9 @@ public class BookingTest {
               .salePrc(new BigDecimal(50000))
               .advnYn("N")
               .guestId(1L)
-              .guestNm("김여빈")
+              .guestNm("철수")
               .guestNmEng("kim")
-              .guestTel("010-1111-2222")
+              .guestTel("010-0000-2222")
               .email("kim@naver.com")
                 .build();
         //when
@@ -123,7 +123,7 @@ public class BookingTest {
         //given
         List<MemoSaveRequestDto> memos = new ArrayList<MemoSaveRequestDto>();
         memos.add(MemoSaveRequestDto.builder()
-                .id(1L)
+                .id(1010L)
                 .memoCn("테스트 수정4")
                 .__created__(false)
                 .__modified__(true)
@@ -131,9 +131,9 @@ public class BookingTest {
                 .build());
 
         BookingSaveRequestDto saveDto = BookingSaveRequestDto.builder()
-                .id(38L)
-                .arrDt("2021-05-21")
-                .depDt("2021-05-22")
+                .id(1010L)
+                .arrDt("2021-07-28")
+                .depDt("2021-07-29")
                 .nightCnt(1)
                 .roomTypCd("SB")
                 .adultCnt(2)
@@ -143,8 +143,9 @@ public class BookingTest {
                 .salePrc(new BigDecimal(50000))
                 .advnYn("N")
                 .guestId(1L)
-                .guestNm("전백호")
-                .guestNmEng("okaymano")
+                .guestNm("철수")
+                .guestNmEng("kim")
+
 
 
                 .guestTel("010-1111-2222")

@@ -36,6 +36,7 @@ public class BookingResponseDto {
     private String advnYn;
     private BigDecimal salePrc;
     private BigDecimal svcPrc;
+    private String sttusCd;
     private List<MemoResponseDto> memoList = new ArrayList<MemoResponseDto>();
 
     public BookingResponseDto(Booking entity){
@@ -62,6 +63,7 @@ public class BookingResponseDto {
         this.advnYn =entity.getAdvnYn();
         this.salePrc = entity.getSalePrc();
         this.svcPrc =entity.getSvcPrc();
+        this.sttusCd = entity.getSttusCd();
     for(Memo memo: entity.getMemoList()){
         this.memoList.add(new MemoResponseDto(memo));
     }

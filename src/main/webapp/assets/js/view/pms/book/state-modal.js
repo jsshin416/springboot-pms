@@ -29,8 +29,11 @@ var ACTIONS = axboot.actionExtend(fnObj, {
                 url: '/api/v1/booking',
                 data: JSON.stringify(item),
                 callback: function (res) {
-                    ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
-                    axToast.push('저장 되었습니다');
+                    axDialog.alert('변경 되었습니다', function () {
+                        if (parent && parent.axboot && parent.axboot.modal) {
+                            parent.axboot.modal.callback({ dirty: true });
+                        }
+                    });
                 },
             });
         }
@@ -139,7 +142,7 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
 
     setData: function (data) {
         data = $.extend({}, data);
-        //$('.js-rsvNum').text('예약번호:' + data.rsvNum);
+        this.model.set('.js-sttusCd', data.sttusCd);
         this.model.set('.js-rsvNum', data.rsvNum);
         this.model.setModel(data);
         this.modelFormatter.formatting();

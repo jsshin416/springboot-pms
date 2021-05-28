@@ -1,14 +1,12 @@
 <%@ page import="com.chequer.axboot.core.utils.RequestUtils" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <%@ taglib prefix="ax" tagdir="/WEB-INF/tags" %>
-        <%
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="ax" tagdir="/WEB-INF/tags" %>
+<%
     RequestUtils requestUtils = RequestUtils.of(request);
     request.setAttribute("id", requestUtils.getString("id"));
+    request.setAttribute("modalTyp", requestUtils.getString("modalTyp"));
 %>
-
-
-
             <ax:set key="page_auto_height" value="true" />
 
             <ax:layout name="modal">
@@ -31,7 +29,24 @@
                                             readonly="readonly"></div>
                                     <div style="width: 200px; display: inline-block;">
                                         <div style="display: inline-block">
-                                            <ax:common-code groupCd="STAY_STATUS" id="sttusCd" clazz="js-sttusCd " />
+                                            <c:if test ="${modalTyp = All}">
+                                            <ax:common-code groupCd="STAY_STATUS" id="sttusCd" dataPath ="sttusCd" clazz="js-sttusCd "/>
+                                            </c:if>
+                                            <c:if test ="${modalTyp = ChkIn || modalTyp = InHouse}">
+                                                <div style="display: inline-block ">
+                                                    <input
+                                                    style="border: 0; background: none; width: 100px;" data-ax-path="roomNum" name="roomNum" class="js-roomNum"
+                                                    readonly="readonly">
+                                                   </div>
+                                                    <button type="button" class="btn btn-default" data-grid-view-01-btn="room"><i class="cqc-circle-with-plus"></i> 객실배정</button>
+                                            </c:if>
+                                            <c:if test ="${modalTyp = ChkOut}">
+                                                <div style="display: inline-block ">
+                                                    <input
+                                                    style="border: 0; background: none; width: 100px;" data-ax-path="roomNum" name="roomNum" class="js-roomNum"
+                                                    readonly="readonly">
+                                                   </div>
+                                            </c:if>
                                         </div>
                                         </div>
                                     <div style="float: right; margin-top: 10px; padding-right: 10px;">
@@ -118,7 +133,7 @@
                                                         <div data-ax-td-wrap>
                                                             <input type="text" name="guestNm" id="guestNm"
                                                                 data-ax-path="guestNm"
-                                                                class="js-guestNm form-control" />
+                                                                class="js-guestNm form-control"  />
                                                         </div>
                                                     </div>
                                                     <div data-ax-td style="width:50%">
@@ -127,7 +142,7 @@
                                                             영문</div>
                                                         <div data-ax-td-wrap>
                                                             <input type="text" name="guestNmEng" id="guestNmEng"
-                                                            data-ax-path="guestNmEng" class="js-guestNmEng form-control" />
+                                                            data-ax-path="guestNmEng" class="js-guestNmEng form-control"  />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -140,7 +155,7 @@
                                                             <input type="text" name="guestTel" id="guestTel"
                                                                 data-ax-path="guestTel" data-ax5formatter="guestTel"
                                                                 class="js-guestTel form-control"
-                                                                placeholder="000-000-000" />
+                                                                placeholder="000-000-000"  />
                                                         </div>
                                                     </div>
                                                     <div data-ax-td style="width:50%">
@@ -149,7 +164,7 @@
                                                             이메일</div>
                                                         <div data-ax-td-wrap>
                                                             <input type="text" name="email" id="email"
-                                                                data-ax-path="email" class="js-email form-control" />
+                                                                data-ax-path="email" class="js-email form-control"  />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -160,7 +175,7 @@
                                                             언어</div>
                                                         <div data-ax-td-wrap>
                                                             <ax:common-code groupCd="LANG" id="js-langCd"
-                                                                dataPath="langCd" clazz="js-langCd" emptyText="전체" />
+                                                                dataPath="langCd" clazz="js-langCd" emptyText="전체"  />
                                                         </div>
                                                     </div>
                                                     <div data-ax-td style="width:40%">
@@ -171,7 +186,7 @@
                                                             <div class="input-group" data-ax5picker="date">
                                                                 <input type="text" name="brth" id="brth"
                                                                     data-ax-path="brth" class="js-brth form-control"
-                                                                    placeholder="YYYY-MM-DD" data-ax5formatter="date" />
+                                                                    placeholder="YYYY-MM-DD" data-ax5formatter="date"  />
                                                                 <span class="input-group-addon"><i
                                                                         class="cqc-calendar"></i></span>
                                                             </div>
@@ -179,10 +194,10 @@
                                                     </div>
                                                     <span>
                                                         <label><input type="radio" data-ax-path="gender" name="gender"
-                                                                value="M">남
+                                                                value="M" >남
                                                         </label>
                                                         <label><input type="radio" data-ax-path="gender" name="gender"
-                                                                value="F">여
+                                                                value="F" >여
                                                         </label>
                                                     </span>
 

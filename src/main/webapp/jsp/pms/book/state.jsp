@@ -11,11 +11,11 @@
         <script type="text/javascript" src="<c:url value='/assets/js/view/pms/book/state.js' />"></script>
     </jsp:attribute>
     <jsp:body>
-
+        <form name="excelForm" class="js-grid" method="post">
         <div data-page-buttons="">
             <div class="button-warp">
                     <button type="button" class="btn btn-default" data-page-btn="search"><i class="cqc-magnifier"></i> 검색 </button>
-                    <button type="button" class="btn btn-default" data-search-view-btn="form-clear"> 검색선택 초기화</button>
+                    <button type="button" class="btn btn-default" data-page-btn="form-clear"> 검색선택 초기화</button>
                     <button type="button" class="btn btn-default" data-page-btn="excel"><i class="cqc-file-excel-o"></i> 엑셀 다운로드</button>
             </div>
         </div>

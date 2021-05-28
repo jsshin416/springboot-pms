@@ -11,7 +11,7 @@
                     <script type="text/javascript" src="<c:url value='/assets/js/view/pms/info/guest.js' />"></script>
                 </jsp:attribute>
                 <jsp:body>
-
+                    <form name="excelForm" class="js-grid" method="post">
                     <div data-page-buttons="">
                         <div class="button-warp">
                                 <button type="button" class="btn btn-default" data-page-btn="search"><i class="cqc-magnifier"></i> 검색 </button>
@@ -49,7 +49,7 @@
                                 </div>
 
                             </div>
-                            <div data-ax5grid="grid-view-01" data-fit-height-content="grid-view-01"
+                            <div data-ax5grid="grid-view-01" class="js-grid" data-fit-height-content="grid-view-01"
                                 style="height: 300px;"></div>
                         </ax:split-panel>
                         <ax:splitter></ax:splitter>

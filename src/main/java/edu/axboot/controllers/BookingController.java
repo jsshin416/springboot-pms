@@ -2,7 +2,10 @@ package edu.axboot.controllers;
 
 import com.chequer.axboot.core.api.response.Responses;
 import com.chequer.axboot.core.controllers.BaseController;
+import com.chequer.axboot.core.utils.DateUtils;
+import com.chequer.axboot.core.utils.ExcelUtils;
 import com.chequer.axboot.core.utils.MessageUtils;
+import com.wordnik.swagger.annotations.ApiOperation;
 import edu.axboot.controllers.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,6 +15,8 @@ import edu.axboot.domain.pms.book.booking.BookingService;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -63,6 +68,25 @@ public class BookingController extends BaseController {
         bookingService.updateByStatus(requestDtos);
         return ok();
     }
+
+    @ApiOperation(value = "엑셀다운로드", notes = "/resources/excel/pms_booking.xlsx")
+    @RequestMapping(value = "/exceldown", method = {RequestMethod.POST}, produces = APPLICATION_JSON)
+    public void excelDown( @RequestParam(value = "filter",required = false) String filter,
+                           @RequestParam(value = "rsvNum",required = false) String rsvNum,
+                           @RequestParam(value = "roomTypCd",required = false) String roomTypCd,
+                           @RequestParam(value = "rsvStDt",required = false) String rsvStDt,
+                           @RequestParam(value = "rsvEndDt",required = false) String rsvEndDt,
+                           @RequestParam(value = "arrStDt",required = false) String arrStDt,
+                           @RequestParam(value = "arrEndDt",required = false) String arrEndDt,
+                           @RequestParam(value = "depStDt",required = false) String depStDt,
+                           @RequestParam(value = "depEndDt",required = false) String depEndDt,
+                           @RequestParam(value = "sttusCd",required = false) List<String> sttusCds,
+
+        HttpServletRequest request, HttpServletResponse response) throws IOException {
+        List<BookingListResponseDto> list = bookingService.findByL(filter,rsvNum, roomTypCd, rsvStDt,rsvEndDt,arrStDt,arrEndDt,depStDt,depEndDt,sttusCds);
+        ExcelUtils.renderExcel("/excel/pms_booking.xlsx", list, "Booking_" + DateUtils.getYyyyMMddHHmmssWithDate(), request, response);
+    }
+
 
 
 }

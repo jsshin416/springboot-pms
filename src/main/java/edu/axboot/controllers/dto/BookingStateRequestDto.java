@@ -17,9 +17,4 @@ public class BookingStateRequestDto  {
         this.sttusCd =sttusCd;
     }
 
-   /* public Booking toEntity() {
-        return Booking.builder()
-                .sttusCd(sttusCd)
-                .build();
-    }*/
 }

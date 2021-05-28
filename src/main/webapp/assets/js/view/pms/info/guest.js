@@ -46,7 +46,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         });
     },
     EXCEL_DOWN: function (caller, act, data) {
-        var frm = $('.js-form').get(0);
+        var frm = $('.js-grid').get(0);
         frm.action = '/api/v1/guest/exceldown';
         frm.enctype = 'application/x-www-form-urlencoded';
         frm.submit();
@@ -144,6 +144,7 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                 { key: 'email', label: '이메일', width: 150, align: 'center', editor: 'text' },
                 { key: 'gender', label: '성별', width: 70, align: 'center', editor: 'text' },
                 { key: 'brth', label: '생년월일', width: 150, align: 'center', editor: 'text' },
+                { key: 'langCd', label: '언어', width: 150, align: 'center', editor: 'text' },
             ],
             body: {
                 onClick: function () {

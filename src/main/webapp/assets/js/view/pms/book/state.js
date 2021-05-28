@@ -87,22 +87,14 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         }
     },
     EXCEL_DOWN: function (caller, act, data) {
-        var frm = $('.js-form').get(0);
+        var frm = $('.js-grid').get(0);
         frm.action = '/api/v1/booking/exceldown';
         frm.enctype = 'application/x-www-form-urlencoded';
         frm.submit();
     },
-    // SEARCH_CLEAR: function (caller, act, data) {
-    //     caller.searchView.defaultSearch();
-    // },
 
-    FORM_CLEAR: function (caller, act, data) {
-        axDialog.confirm({ msg: LANG('ax.script.form.clearconfirm') }, function () {
-            if (this.key == 'ok') {
-                caller.searchView.clear();
-                $('[data-ax-path="arrDt"]').focus();
-            }
-        });
+    RESET_SEARCH: function (caller, act, data) {
+        caller.searchView.getdefaultsearch();
     },
 });
 
@@ -123,8 +115,8 @@ fnObj.pageButtonView = axboot.viewExtend({
             search: function () {
                 ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
             },
-            save: function () {
-                ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
+            'form-clear': function () {
+                ACTIONS.dispatch(ACTIONS.RESET_SEARCH);
             },
             excel: function () {
                 ACTIONS.dispatch(ACTIONS.EXCEL_DOWN);
@@ -139,29 +131,24 @@ fnObj.pageButtonView = axboot.viewExtend({
  */
 fnObj.searchView = axboot.viewExtend(axboot.searchView, {
     initView: function () {
-        axboot.buttonClick(this, 'data-search-view-btn', {
-            'form-clear': function () {
-                ACTIONS.dispatch(ACTIONS.FORM_CLEAR);
-            },
-        });
-
         this.target = $(document['searchView0']);
-        this.target.attr('onsubmit', 'return false');
+        this.target.attr('onsubmit', 'return false;');
         this.target.on('keydown.search', 'input, .form-control', function (e) {
             if (e.keyCode === 13) {
                 ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
             }
         });
-        this.filter = this.target.find('input[name="filter"]');
-        this.rsvNum = this.target.find('.js-rsvNum');
-        this.rsvStDt = this.target.find('input[name="rsvStDt"]');
-        this.rsvEndDt = this.target.find('input[name="rsvEndDt"]');
-        this.roomTypCd = this.target.find('input[name="roomTypCd"]');
-        this.arrStDt = this.target.find('input[name="arrStDt"]');
-        this.arrEndDt = this.target.find('input[name="arrEndDt"]');
-        this.depStDt = this.target.find('input[name="depStDt"]');
-        this.depEndDt = this.target.find('input[name="depEndDt"]');
-        this.sttusCd = this.target.find('input[name="sttusCd"]');
+        this.filter = $('.js-filter');
+        this.rsvNum = $('.js-rsvNum');
+        this.rsvStDt = $('input[name="rsvStDt"]');
+        this.rsvEndDt = $('input[name="rsvEndDt"]');
+        this.roomTypCd = $('input[name="roomTypCd"]');
+        this.arrStDt = $('input[name="arrStDt"]');
+        this.arrEndDt = $('input[name="arrEndDt"]');
+        this.depStDt = $('input[name="depStDt"]');
+        this.depEndDt = $('input[name="depEndDt"]');
+        this.sttusCd = $('input[name="sttusCd"]');
+
         $('.js-sttusCd-all').on('change', function () {
             var $this = $(this),
                 value = $this.val();
@@ -171,7 +158,7 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
                 $('input[name ="sttusCd"]').prop('checked', checked);
             }
         });
-        this.target.find('[data-ax5picker="rsvDt"],[data-ax5picker="arrDt"],[data-ax5picker="depDt"]').ax5picker({
+        $('[data-ax5picker="rsvDt"],[data-ax5picker="arrDt"],[data-ax5picker="depDt"]').ax5picker({
             direction: 'auto',
             content: {
                 type: 'date',
@@ -199,6 +186,12 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
             depEndDt: this.depEndDt.val(),
             sttusCd: sttusCds.join(','),
         };
+    },
+    getdefaultsearch: function () {
+        $('input:text').val('');
+        $('.js-sttus').prop('checked', false);
+        $('.js-sttusAll').prop('checked', true);
+        $('.js-roomTypCd').val('');
     },
 });
 

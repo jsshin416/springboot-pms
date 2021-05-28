@@ -57,12 +57,17 @@ public class BookingService extends BaseService<Booking, Long> {
             } else {
                 booking = bookingRepository.findOne(saveDto.getId());
                 booking.투숙번호갱신(guestId);
+
                 booking.예약수정(guestId, saveDto.getArrDt(), saveDto.getNightCnt(), saveDto.getDepDt(),
                         saveDto.getRoomTypCd(), saveDto.getAdultCnt(), saveDto.getChldCnt(),
                         saveDto.getGuestNm(), saveDto.getGuestNmEng(), saveDto.getGuestTel(),
                         saveDto.getEmail(), saveDto.getLangCd(), saveDto.getBrth(), saveDto.getGender(),
                         saveDto.getSaleTypCd(), saveDto.getSrcCd(), saveDto.getPayCd(),
                         saveDto.getAdvnYn(), saveDto.getSalePrc(), saveDto.getSvcPrc());
+                if(saveDto.getSttusCd() != null){
+                    booking.예약상태변경(saveDto.getSttusCd());
+                }
+
                 id = saveDto.getId();
             }
 
