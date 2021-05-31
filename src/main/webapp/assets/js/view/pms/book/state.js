@@ -35,7 +35,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     ITEM_CLICK: function (caller, act, data) {},
     STATE_MODAL: function (caller, act, data) {
         if (!data) data = {};
-        modalType = 'All';
+        data.modalTyp = 'All';
         axboot.modal.open({
             width: 1200,
             height: 900,

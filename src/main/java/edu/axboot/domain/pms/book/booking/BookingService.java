@@ -67,6 +67,9 @@ public class BookingService extends BaseService<Booking, Long> {
                 if(saveDto.getSttusCd() != null){
                     booking.예약상태변경(saveDto.getSttusCd());
                 }
+                if(saveDto.getRoomNum() != null){
+                    booking.객실배정(saveDto.getRoomNum());
+                }
 
                 id = saveDto.getId();
             }
@@ -215,6 +218,7 @@ public class BookingService extends BaseService<Booking, Long> {
      }
      return cnt;
     }
+
 
 
 }

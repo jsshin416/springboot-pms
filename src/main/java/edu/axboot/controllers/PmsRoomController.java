@@ -24,8 +24,8 @@ public class PmsRoomController extends BaseController {
     private final PmsRoomService pmsRoomService;
     //Dto----------------------------------------------------------------------
     @RequestMapping( method = RequestMethod.GET, produces = APPLICATION_JSON)
-    public Responses.ListResponse list( @RequestParam(value = "roomType",required = false) String roomType){
-             List<PmsRoomListResponseDto> list = pmsRoomService.findByL(roomType);
+    public Responses.ListResponse list( @RequestParam(value = "roomTypCd",required = false) String roomTypCd){
+             List<PmsRoomListResponseDto> list = pmsRoomService.findByL(roomTypCd);
             return Responses.ListResponse.of(list);
             }
 

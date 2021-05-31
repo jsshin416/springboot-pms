@@ -52,10 +52,10 @@ public class PmsRoomTest {
     @Test
     public void test2_객실_불러오기() {
         //given
-        String roomType = "AA";
+        String roomTypCd = "AA";
 
         //when
-        List<PmsRoomListResponseDto> result = pmsRoomService.findByL(roomType);
+        List<PmsRoomListResponseDto> result = pmsRoomService.findByL(roomTypCd);
 
         //then
         assertTrue(result.size() > 0);

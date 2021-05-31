@@ -28,11 +28,6 @@ public class BookingController extends BaseController {
     @Inject
     private final BookingService bookingService;
 
-   /* @RequestMapping(method = RequestMethod.POST, produces = APPLICATION_JSON)
-    public ApiResponse save(@RequestBody BookingSaveRequestDto request){
-        bookingService.save(request);
-        return ok();
-    }*/
     @RequestMapping( method = RequestMethod.GET, produces = APPLICATION_JSON)
     public Responses.ListResponse list( @RequestParam(value = "filter",required = false) String filter,
                                         @RequestParam(value = "rsvNum",required = false) String rsvNum,
@@ -68,6 +63,7 @@ public class BookingController extends BaseController {
         bookingService.updateByStatus(requestDtos);
         return ok();
     }
+
 
     @ApiOperation(value = "엑셀다운로드", notes = "/resources/excel/pms_booking.xlsx")
     @RequestMapping(value = "/exceldown", method = {RequestMethod.POST}, produces = APPLICATION_JSON)

@@ -37,6 +37,8 @@ public class BookingSaveRequestDto {
     private BigDecimal salePrc;
     private BigDecimal svcPrc;
     private String sttusCd;
+    private String roomNum;
+
 
     private List<MemoSaveRequestDto> memoList = new ArrayList<MemoSaveRequestDto>();
 
@@ -48,7 +50,7 @@ public class BookingSaveRequestDto {
                                  String depDt, Integer nightCnt, String roomTypCd,
                                  Integer adultCnt, Integer chldCnt, String saleTypCd,
                                String srcCd, String brth, String gender, String payCd, String advnYn,
-                                 BigDecimal salePrc, BigDecimal svcPrc,String sttusCd,
+                                 BigDecimal salePrc, BigDecimal svcPrc,String sttusCd,String roomNum,
                                  List<MemoSaveRequestDto>memoList) {
 
 
@@ -76,6 +78,8 @@ public class BookingSaveRequestDto {
         this.svcPrc =svcPrc;
         this.sttusCd = sttusCd;
         this.memoList = memoList;
+        this.roomNum = roomNum;
+
 
     }
 
@@ -103,6 +107,7 @@ public class BookingSaveRequestDto {
                 .salePrc(salePrc)
                 .svcPrc(svcPrc)
                 .sttusCd(sttusCd)
+                .roomNum(roomNum)
                 .build();
 
 

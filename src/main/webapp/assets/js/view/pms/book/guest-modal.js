@@ -1,4 +1,3 @@
-var modalParams = modalParams || {};
 var fnObj = {};
 var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_CLOSE: function (caller, act, data) {
@@ -63,12 +62,9 @@ fnObj.getModal = function () {
 // fnObj 기본 함수 스타트와 리사이즈
 fnObj.pageStart = function () {
     this.pageButtonView.initView();
-    //this.searchView.initView();
     this.gridView01.initView();
     this.formView01.initView();
 
-    // this.searchView.guestNm.val(modalParams.guestNm);
-    // this.searchView.guestTel.val(modalParams.guestTel);
     ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
 };
 

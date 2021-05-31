@@ -34,13 +34,13 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     },
     STATE_MODAL: function (caller, act, data) {
         if (!data) data = {};
-        modalType = 'ChkIn';
+        data.modalTyp = 'ChkIn';
         axboot.modal.open({
             width: 1200,
             height: 900,
             iframe: {
                 param: 'id=' + data.id + '&modalTyp=' + data.modalTyp,
-                url: 'state-modal.jsp',
+                url: '/jsp/pms/book/state-modal.jsp',
             },
             header: { title: '체크인' },
             callback: function (data) {
@@ -149,7 +149,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
     initView: function () {
         var _this = this;
         this.target = axboot.gridBuilder({
-            showRowSelector: true,
             frozenColumnIndex: 0,
             multipleSelect: true,
             target: $('[data-ax5grid="grid-view-01"]'),

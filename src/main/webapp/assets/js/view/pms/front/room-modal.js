@@ -1,11 +1,14 @@
 var fnObj = {};
 var ACTIONS = axboot.actionExtend(fnObj, {
+    PAGE_CLOSE: function (caller, act, data) {
+        if (parent) {
+            parent.axboot.modal.close();
+        }
+    },
     PAGE_SEARCH: function (caller, act, data) {
-        var parmaObj = $.extend(caller.searchView.getData(), data, { pageSize: 2 });
         axboot.ajax({
             type: 'GET',
             url: '/api/v1/pmsroom',
-            data: parmaObj,
             callback: function (res) {
                 caller.gridView01.setData(res);
             },
@@ -16,45 +19,46 @@ var ACTIONS = axboot.actionExtend(fnObj, {
                 },
             },
         });
-
         return false;
     },
-    PAGE_SAVE: function (caller, act, data) {
-        var saveList = [].concat(caller.gridView01.getData());
-        saveList = saveList.concat(caller.gridView01.getData('deleted'));
 
-        axboot.ajax({
-            type: 'POST',
-            url: '/api/v1/pmsroom',
-            data: JSON.stringify(saveList),
-            callback: function (res) {
-                ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
-                axToast.push('저장 되었습니다');
-            },
-        });
-    },
     ITEM_CLICK: function (caller, act, data) {},
-    ITEM_ADD: function (caller, act, data) {
-        caller.gridView01.addRow();
+    PAGE_CLOSE: function (caller, act, data) {
+        var modal = fnObj.getModal();
+        if (modal) modal.close();
+        if (opener) window.close();
     },
-    ITEM_DEL: function (caller, act, data) {
-        caller.gridView01.delRow('selected');
-    },
-    dispatch: function (caller, act, data) {
-        var result = ACTIONS.exec(caller, act, data);
-        if (result != 'error') {
-            return result;
+    PAGE_CHOICE: function (caller, act, data) {
+        if (!data) {
+            var list = caller.gridView01.getData('selected');
+            if (list.length > 0) data = list[0];
+        }
+        if (data) {
+            var modal = fnObj.getModal();
+            if (modal) modal.callback(data);
+            if (opener) window.close();
         } else {
-            // 직접코딩
-            return false;
+            alert(LANG('ax.script.requireselect'));
         }
     },
 });
 
+var CODE = {};
+
+fnObj.getModal = function () {
+    var modalView;
+    if (parent && modalParams.modalView && (modalView = parent[axboot.def.pageFunctionName][modalParams.modalView])) {
+        return modalView;
+    } else if (opener && modalParams.modalView && (modalView = opener[axboot.def.pageFunctionName][modalParams.modalView])) {
+        return modalView;
+    } else if (parent && parent.axboot && parent.axboot.modal) {
+        return parent.axboot.modal;
+    }
+};
+
 // fnObj 기본 함수 스타트와 리사이즈
 fnObj.pageStart = function () {
     this.pageButtonView.initView();
-    this.searchView.initView();
     this.gridView01.initView();
 
     ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
@@ -65,32 +69,13 @@ fnObj.pageResize = function () {};
 fnObj.pageButtonView = axboot.viewExtend({
     initView: function () {
         axboot.buttonClick(this, 'data-page-btn', {
-            search: function () {
-                ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
+            choice: function () {
+                ACTIONS.dispatch(ACTIONS.PAGE_CHOICE);
             },
-            save: function () {
-                ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
+            close: function () {
+                ACTIONS.dispatch(ACTIONS.PAGE_CLOSE);
             },
         });
-    },
-});
-
-//== view 시작
-/**
- * searchView
- */
-fnObj.searchView = axboot.viewExtend(axboot.searchView, {
-    initView: function () {
-        this.target = $(document['searchView0']);
-        this.target.attr('onsubmit', 'return false');
-        this.roomTypCd = $('.js-roomTypCd');
-    },
-    getData: function () {
-        return {
-            pageNumber: this.pageNumber || 0,
-            pageSize: this.pageSize || 50,
-            roomTypCd: this.roomTypCd.val(),
-        };
     },
 });
 
@@ -102,10 +87,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
         var _this = this;
 
         this.target = axboot.gridBuilder({
-            onPageChange: function (pageNumber) {
-                ACTIONS.dispatch(ACTIONS.PAGE_SEARCH, { pageNumber: pageNumber });
-            },
-            showRowSelector: true,
             frozenColumnIndex: 0,
             multipleSelect: true,
             target: $('[data-ax5grid="grid-view-01"]'),
@@ -114,7 +95,7 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                 {
                     key: 'roomTypCd',
                     label: COL('room.type'),
-                    width: 350,
+                    width: 100,
                     align: 'center',
                     formatter: function () {
                         if (!this.value) return '';
@@ -194,37 +175,15 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                     },
                 },
             ],
-
             body: {
                 onClick: function () {
-                    this.self.select(this.dindex, { selectedClear: true });
+                    this.self.select(this.dindex);
+                    ACTIONS.dispatch(ACTIONS.ITEM_CLICK, this.item);
+                },
+                onDBLClick: function () {
+                    ACTIONS.dispatch(ACTIONS.PAGE_CHOICE, this.item);
                 },
             },
         });
-
-        axboot.buttonClick(this, 'data-grid-view-01-btn', {
-            add: function () {
-                ACTIONS.dispatch(ACTIONS.ITEM_ADD);
-            },
-            delete: function () {
-                ACTIONS.dispatch(ACTIONS.ITEM_DEL);
-            },
-        });
-    },
-    getData: function (_type) {
-        var list = [];
-        var _list = this.target.getList(_type);
-
-        if (_type == 'modified' || _type == 'deleted') {
-            list = ax5.util.filter(_list, function () {
-                return this.id;
-            });
-        } else {
-            list = _list;
-        }
-        return list;
-    },
-    addRow: function () {
-        this.target.addRow({ __created__: true }, 'last');
     },
 });

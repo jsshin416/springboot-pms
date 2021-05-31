@@ -7,7 +7,11 @@
     request.setAttribute("id", requestUtils.getString("id"));
     request.setAttribute("modalTyp", requestUtils.getString("modalTyp"));
 %>
-            <ax:set key="page_auto_height" value="true" />
+<ax:set key="title" value="${pageName}"/>
+<ax:set key="page_desc" value="${PAGE_REMARK}"/>
+<ax:set key="page_auto_height" value="true"/>
+<ax:set key="axbody_class" value="baseStyle"/>
+
 
             <ax:layout name="modal">
                 <jsp:attribute name="script">
@@ -27,28 +31,24 @@
                                     <div style="font-weight: bold; display: inline-block; margin: 0px 5px">예약번호 : <input
                                             style="border: 0; background: none; width: 100px;" data-ax-path="rsvNum" name="rsvNum" class="js-rsvNum"
                                             readonly="readonly"></div>
-                                    <div style="width: 200px; display: inline-block;">
-                                        <div style="display: inline-block">
-                                            <c:if test ="${modalTyp = All}">
-                                            <ax:common-code groupCd="STAY_STATUS" id="sttusCd" dataPath ="sttusCd" clazz="js-sttusCd "/>
-                                            </c:if>
-                                            <c:if test ="${modalTyp = ChkIn || modalTyp = InHouse}">
+                                    <div style="width: 200px; display: inline-block; margin: 5px;">
+                                        <c:if test="${modalTyp == 'All'}">
+                                            <ax:common-code groupCd="STAY_STATUS" id="sttusCd" dataPath="sttusCd" clazz="js-sttusCd " />
+                                        </c:if>
+                                        <c:if test="${modalTyp == 'ChkIn' || modalTyp == 'InHouse' }">
+                                            <div style="width:200px">
                                                 <div style="display: inline-block ">
-                                                    <input
-                                                    style="border: 0; background: none; width: 100px;" data-ax-path="roomNum" name="roomNum" class="js-roomNum"
-                                                    readonly="readonly">
-                                                   </div>
-                                                    <button type="button" class="btn btn-default" data-grid-view-01-btn="room"><i class="cqc-circle-with-plus"></i> 객실배정</button>
-                                            </c:if>
-                                            <c:if test ="${modalTyp = ChkOut}">
-                                                <div style="display: inline-block ">
-                                                    <input
-                                                    style="border: 0; background: none; width: 100px;" data-ax-path="roomNum" name="roomNum" class="js-roomNum"
-                                                    readonly="readonly">
-                                                   </div>
-                                            </c:if>
-                                        </div>
-                                        </div>
+                                                    <input type ="text" data-ax-path="roomNum" id ="roomNum" name="roomNum" class="js-roomNum form-control" readonly="readonly"  style="width: 50px; display: inline; text-align: center;">
+                                                </div>
+                                                <button type="button" class="btn btn-default" data-form-view-01-btn="roomModal"><i class="cqc-circle-with-plus"></i> 객실배정</button> 
+                                            </div>
+                                        </c:if>
+                                        <c:if test ="${modalTyp == 'ChkOut'}">
+                                            <div style="display: inline-block ">
+                                                <input  style="width: 50px; display: inline; text-align: center;" data-ax-path="roomNum" name="roomNum" class="js-roomNum"  readonly="readonly">
+                                               </div>
+                                        </c:if>
+                                    </div>
                                     <div style="float: right; margin-top: 10px; padding-right: 10px;">
                                         <span style="color: red;">* </span>표시는 필수 항목 체크 부분
                                     </div>
@@ -129,7 +129,7 @@
                                                     <div data-ax-td style="width:50%">
                                                         <div data-ax-td-label
                                                             style="width:120px; background-color: #fff; background-image: none;">
-                                                            이름</div>
+                                                            <span class="def-ask-s" style="color: red;">*</span>이름</div>
                                                         <div data-ax-td-wrap>
                                                             <input type="text" name="guestNm" id="guestNm"
                                                                 data-ax-path="guestNm"
@@ -150,7 +150,7 @@
                                                     <div data-ax-td style="width:50%">
                                                         <div data-ax-td-label
                                                             style="width:120px; background-color: #fff; background-image: none;">
-                                                            연락처</div>
+                                                            <span class="def-ask-s" style="color: red;">*</span>연락처</div>
                                                         <div data-ax-td-wrap>
                                                             <input type="text" name="guestTel" id="guestTel"
                                                                 data-ax-path="guestTel" data-ax5formatter="guestTel"
@@ -312,9 +312,23 @@
                    
                     <div class="ax-button-group">
                         <div class="auto" style="padding-left:380px;">
-                            <button type="button" class="btn btn-default" data-page-btn="save">저장 </button>
-                            <button type="button" class="btn btn-default" data-page-btn="close">닫기</button>
+                            <c:if test="${modalTyp == 'All'}">
+                                <button type="button" class="btn btn-default" data-page-btn="save">저장 </button>
+                            </c:if>
+                            <c:if test="${modalTyp == 'ChkIn' }">
+                                <button type="button" class="btn btn-default" data-page-btn="chk_in" data-value="CHK_01">체크인 </button>
+                            </c:if>
+                            <c:if test="${ modalTyp == 'InHouse' }">
+                                <button type="button" class="btn btn-default" data-page-btn="chk_out" data-value= "CHK_02">체크아웃 </button>
+                                <button type="button" class="btn btn-default" data-page-btn="cancel_chk" data-value="CHK_03">체크인 취소 </button>
+                            </c:if>
+                                <button type="button" class="btn btn-default" data-page-btn="close">닫기</button>
+                         
                         </div>
+
+                        
+                           
+                      
                     </div>
                 </jsp:body>
 

@@ -65,9 +65,12 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         });
     },
     GUEST_MODAL: function (caller, act, data) {
-        // data = caller.formView01.searchData();
         if (!data) data = {};
         caller.guestModalView.open(data);
+    },
+    ROOM_MODAL: function (caller, act, data) {
+        if (!data) data = {};
+        caller.roomModalView.open(data);
     },
 });
 
@@ -79,6 +82,7 @@ fnObj.pageStart = function () {
     this.gridView01.initView();
     this.formView01.initView();
     this.guestModalView.initView();
+    this.roomModalView.initView();
 
     ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
 };
@@ -89,6 +93,16 @@ fnObj.pageButtonView = axboot.viewExtend({
     initView: function () {
         axboot.buttonClick(this, 'data-page-btn', {
             save: function () {
+                ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
+            },
+            chk_in: function () {
+                var data = $(' [data-page-btn="chk_in"]').data('value');
+                ACTIONS.dispatch(ACTIONS.PAGE_SAVE, data);
+            },
+            chk_out: function () {
+                ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
+            },
+            cancel_chk: function () {
                 ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
             },
             close: function () {
@@ -120,6 +134,29 @@ fnObj.guestModalView = axboot.viewExtend({
         this.modal = new ax5.ui.modal();
     },
 });
+fnObj.roomModalView = axboot.viewExtend({
+    open: function (data) {
+        if (!data) data = {};
+        this.modal.open({
+            width: 700,
+            height: 400,
+            iframe: {
+                param: 'roomTypCd=' + (data.roomTypCd || '') + '&modalView=roomModalView',
+                url: '/jsp/pms/front/room-modal.jsp',
+            },
+        });
+    },
+    close: function () {
+        this.modal.close();
+    },
+    callback: function (data) {
+        fnObj.formView01.setRoom(data);
+        this.modal.close();
+    },
+    initView: function () {
+        this.modal = new ax5.ui.modal();
+    },
+});
 fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     setGuest: function (data) {
         this.model.set('guestId', data.id || '');
@@ -130,6 +167,9 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
         this.model.set('gender', data.gender || '');
         this.model.set('brth', data.brth || '');
         this.model.set('langCd', data.langCd || '');
+    },
+    setRoom: function (data) {
+        this.model.set('roomNum', data.roomNum);
     },
     getDefaultData: function () {
         return { adultCnt: '1', chldCnt: '0' };
@@ -144,6 +184,7 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
         data = $.extend({}, data);
         this.model.set('.js-sttusCd', data.sttusCd);
         this.model.set('.js-rsvNum', data.rsvNum);
+        this.model.set('.js-roomNum', data.roomNum);
         this.model.setModel(data);
         this.modelFormatter.formatting();
     },
@@ -188,6 +229,9 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
             }, //1번만 실행 하거나 init, eventbinding 나중에 호출 할 수도 있어서 따로 분리
             guestModal: function () {
                 ACTIONS.dispatch(ACTIONS.GUEST_MODAL);
+            },
+            roomModal: function () {
+                ACTIONS.dispatch(ACTIONS.ROOM_MODAL);
             },
         });
         this.target.find('[data-ax5picker="date"]').ax5picker({

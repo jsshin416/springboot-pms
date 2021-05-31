@@ -269,4 +269,6 @@ public class Booking extends BaseJpaModel<Long> {
 	public  void 예약상태변경(String sttusCd){
 		this.sttusCd = sttusCd;
 	}
+	public  void 객실배정(String roomNum){ this.roomNum = roomNum; }
+
 }

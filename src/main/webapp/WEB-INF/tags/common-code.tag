@@ -12,6 +12,8 @@
 <%@ attribute name="defaultValue" required="false" %>
 <%@ attribute name="emptyValue" required="false" %>
 <%@ attribute name="emptyText" required="false" %>
+<%@ attribute name="modalTyp" required="false" %>
+
 
 <%
     if (StringUtils.isEmpty(type)) {

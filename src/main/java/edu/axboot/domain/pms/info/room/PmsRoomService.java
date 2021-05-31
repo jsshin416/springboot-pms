@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 public class PmsRoomService extends BaseService<PmsRoom, Long> {
     private final PmsRoomRepository pmsRoomRepository;
 
-    public List<PmsRoomListResponseDto> findByL(String roomType) {
+    public List<PmsRoomListResponseDto> findByL(String roomTypCd) {
 
         BooleanBuilder builder = new BooleanBuilder();
-        if(isNotEmpty(roomType)){
-            builder.and(qPmsRoom.roomTypCd.eq(roomType));
+        if(isNotEmpty(roomTypCd)){
+            builder.and(qPmsRoom.roomTypCd.eq(roomTypCd));
         }
         List<PmsRoom> entitis = select()
                 .from(qPmsRoom)
