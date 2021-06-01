@@ -21,7 +21,6 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     },
     PAGE_SAVE: function (caller, act, data) {
         var saveList = [].concat(caller.gridView01.getData('modified'));
-
         axboot.ajax({
             type: 'POST',
             url: '/api/v1/booking',

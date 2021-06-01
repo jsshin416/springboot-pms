@@ -23,7 +23,10 @@ var ACTIONS = axboot.actionExtend(fnObj, {
             var memos = [].concat(caller.gridView01.getData());
             memos = memos.concat(caller.gridView01.getData('deleted'));
             item.memoList = memos;
+
             if (!item.id) item.__created__ = true;
+
+            if (data) item.sttusCd = data;
             axboot.ajax({
                 type: 'POST',
                 url: '/api/v1/booking',
@@ -100,9 +103,11 @@ fnObj.pageButtonView = axboot.viewExtend({
                 ACTIONS.dispatch(ACTIONS.PAGE_SAVE, data);
             },
             chk_out: function () {
+                var data = $(' [data-page-btn="chk_out"]').data('value');
                 ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
             },
             cancel_chk: function () {
+                var data = $(' [data-page-btn="cancel_chk"]').data('value');
                 ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
             },
             close: function () {
@@ -169,7 +174,7 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
         this.model.set('langCd', data.langCd || '');
     },
     setRoom: function (data) {
-        this.model.set('roomNum', data.roomNum);
+        this.model.set('roomNum', data.roomNum || '');
     },
     getDefaultData: function () {
         return { adultCnt: '1', chldCnt: '0' };

@@ -31,7 +31,8 @@ CREATE TABLE PMS_CHK (
 	CREATED_BY   VARCHAR(100) NULL     COMMENT '등록자', -- 등록자
 	UPDATED_AT   TIMESTAMP    NULL     COMMENT '변경일', -- 변경일
 	UPDATED_BY   VARCHAR(100) NULL     COMMENT '변경자' -- 변경자
-);
+)
+COMMENT '숙박정보';
 -- 숙박정보
 ALTER TABLE PMS_CHK
 	ADD CONSTRAINT PK_rsv_dtls -- 예약 상세 기본키
