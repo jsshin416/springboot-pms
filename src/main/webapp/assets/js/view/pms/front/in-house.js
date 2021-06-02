@@ -2,6 +2,7 @@ var fnObj = {};
 var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SEARCH: function (caller, act, data) {
         var paramObj = $.extend(caller.searchView.getData(), data);
+        paramObj.sttusCd = 'CHK_01';
         axboot.ajax({
             type: 'GET',
             url: '/api/v1/booking',
@@ -51,9 +52,6 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         });
     },
     ITEM_CLICK: function (caller, act, data) {},
-    ITEM_ADD: function (caller, act, data) {
-        caller.gridView01.addRow();
-    },
     ITEM_DEL: function (caller, act, data) {
         caller.gridView01.delRow('selected');
     },
@@ -221,20 +219,12 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                 },
             },
         });
-
-        axboot.buttonClick(this, 'data-grid-view-01-btn', {
-            sstus: function () {
-                ACTIONS.dispatch(ACTIONS.STATE_CHANGE);
-            },
-        });
-        this.sttusCd = $('.js-sttusCd');
     },
-
     getData: function (_type) {
         var list = [];
         var _list = this.target.getList(_type);
 
-        if (_type == 'selected') {
+        if (_type == 'modified' || _type == 'deleted') {
             list = ax5.util.filter(_list, function () {
                 return this.id;
             });

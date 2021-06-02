@@ -104,11 +104,11 @@ fnObj.pageButtonView = axboot.viewExtend({
             },
             chk_out: function () {
                 var data = $(' [data-page-btn="chk_out"]').data('value');
-                ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
+                ACTIONS.dispatch(ACTIONS.PAGE_SAVE, data);
             },
             cancel_chk: function () {
                 var data = $(' [data-page-btn="cancel_chk"]').data('value');
-                ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
+                ACTIONS.dispatch(ACTIONS.PAGE_SAVE, data);
             },
             close: function () {
                 ACTIONS.dispatch(ACTIONS.PAGE_CLOSE);
